@@ -1,0 +1,13 @@
+{
+  "general": {
+    "signUp": "Регистрация",
+    "logIn": "Войти"
+  },
+  "features": {
+    "Auth": {
+      "Login": {
+        "loginButton": ""
+      }
+    }
+  }
+}

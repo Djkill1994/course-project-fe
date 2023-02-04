@@ -14,10 +14,12 @@
     "@mui/lab": "^5.0.0-alpha.73",
     "@mui/material": "^5.10.13",
     "@reduxjs/toolkit": "^1.9.0",
+    "i18next": "^22.4.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.0",
     "react-hot-toast": "^2.4.0",
+    "react-i18next": "^12.1.5",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3"
   },

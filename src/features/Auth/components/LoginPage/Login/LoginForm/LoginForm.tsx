@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { EMAIL_REGEX } from "../../../../../../common/constans/regex";
 import { usersApi } from "../../../../../Admin/api/users.api";
 import { ROUTE_PATHS } from "../../../../../../App";
+import { AUTH_TOKEN_KEY } from "../../../../../../common/constans/localStorage";
 
 interface ILoginForm {
   email: string;
@@ -40,7 +41,7 @@ export const LoginForm: FC = () => {
 
   useEffect(() => {
     if (data?.token) {
-      localStorage.setItem("token", data.token ?? "");
+      localStorage.setItem(AUTH_TOKEN_KEY, data.token ?? "");
       usersApi.util.invalidateTags(["User"]);
       navigate(ROUTE_PATHS.Home, { replace: true });
     }

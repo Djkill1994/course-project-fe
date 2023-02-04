@@ -4,6 +4,7 @@ import { LoginForm } from "./LoginForm";
 import { LockOutlined } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../../../App";
+import { i18n } from "../../../../../common/i18n";
 
 export const Login: FC = () => (
   <Stack justifyContent="center" m="0 20px">
@@ -15,10 +16,11 @@ export const Login: FC = () => (
       <LoginForm />
       <Link
         to={ROUTE_PATHS.Registration}
-        style={{ color: "#0095f6", textDecoration: "inherit" }}
+        replace={true}
+        style={{ textDecoration: "inherit" }}
       >
         <Typography fontSize="14px" fontWeight="bolder" mt="20px">
-          Sign Up
+          {i18n.t("general.signUp")}
         </Typography>
       </Link>
     </Stack>

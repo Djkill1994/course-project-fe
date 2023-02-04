@@ -60,55 +60,46 @@ export const UsersTable: FC = () => {
             rowCount={data?.length || 0}
           />
           <TableBody>
-            {data?.map(
-              ({
-                email,
-                username,
-                id,
-                status,
-                registrationDate,
-                lastVisit,
-              }) => {
-                const isItemSelected = selected.indexOf(id) !== -1;
-                const labelId = `enhanced-table-checkbox-${id}`;
+            {data?.map(({ email, username, id }) => {
+              const isItemSelected = selected.indexOf(id) !== -1;
+              const labelId = `enhanced-table-checkbox-${id}`;
 
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={id}
-                    selected={isItemSelected}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell id={labelId} scope="row">
-                      {id}
-                    </TableCell>
-                    <TableCell>{username}</TableCell>
-                    <TableCell>{email}</TableCell>
-                    <TableCell>{registrationDate}</TableCell>
-                    <TableCell>{lastVisit}</TableCell>
-                    <TableCell>
-                      {status ? (
-                        <Block color="error" />
-                      ) : (
-                        <CheckCircleOutline color="success" />
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              }
-            )}
+              return (
+                <TableRow
+                  hover
+                  onClick={(event) => handleClick(event, id)}
+                  role="checkbox"
+                  aria-checked={isItemSelected}
+                  tabIndex={-1}
+                  key={id}
+                  selected={isItemSelected}
+                >
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      color="primary"
+                      checked={isItemSelected}
+                      inputProps={{
+                        "aria-labelledby": labelId,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell id={labelId} scope="row">
+                    {id}
+                  </TableCell>
+                  <TableCell>{username}</TableCell>
+                  <TableCell>{email}</TableCell>
+                  <TableCell>???</TableCell>
+                  <TableCell>???</TableCell>
+                  <TableCell>
+                    {status ? (
+                      <Block color="error" />
+                    ) : (
+                      <CheckCircleOutline color="success" />
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
