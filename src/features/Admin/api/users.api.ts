@@ -1,15 +1,13 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
 
-type Role = "admin" | "user";
-
 export interface IUser {
   id: string;
   email: string;
   username: string;
   banned: boolean;
   avatarSrc: string;
-  roles: Role[];
+  roles: string;
 }
 
 export const usersApi = createApi({
@@ -32,32 +30,52 @@ export const usersApi = createApi({
       },
       providesTags: ["User"],
     }),
-    deleteUser: build.mutation<void, string[]>({
-      query(ids) {
+    deleteUser: build.mutation<void, string>({
+      query(id) {
         return {
           url: "/admin/users",
           method: "DELETE",
-          body: { ids },
+          body: { id },
         };
       },
       invalidatesTags: ["User"],
     }),
-    banUser: build.mutation<void, string[]>({
-      query(ids) {
+    banUser: build.mutation<void, string>({
+      query(id) {
         return {
           url: "/admin/users/ban",
           method: "POST",
-          body: { ids },
+          body: { id },
         };
       },
       invalidatesTags: ["User"],
     }),
-    unBanUser: build.mutation<void, string[]>({
-      query(ids) {
+    unBanUser: build.mutation<void, string>({
+      query(id) {
         return {
           url: "/admin/users/unban",
           method: "POST",
-          body: { ids },
+          body: { id },
+        };
+      },
+      invalidatesTags: ["User"],
+    }),
+    appointAdmin: build.mutation<void, string>({
+      query(id) {
+        return {
+          url: "/admin/users/appoint-admin",
+          method: "POST",
+          body: { id },
+        };
+      },
+      invalidatesTags: ["User"],
+    }),
+    removeAdmin: build.mutation<void, string>({
+      query(id) {
+        return {
+          url: "/admin/users/remove-admin",
+          method: "POST",
+          body: { id },
         };
       },
       invalidatesTags: ["User"],
@@ -71,4 +89,6 @@ export const {
   useBanUserMutation,
   useUnBanUserMutation,
   useAuthRefreshQuery,
+  useAppointAdminMutation,
+  useRemoveAdminMutation,
 } = usersApi;

@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { store } from "./store";
 import { Provider } from "react-redux";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
+import "./common/i18n";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter>

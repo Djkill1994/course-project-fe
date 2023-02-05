@@ -1,0 +1,64 @@
+{
+  "general": {
+    "signUp": "Регистрация",
+    "logIn": "Войти",
+    "search": "Поиск"
+  },
+  "features": {
+    "Auth": {
+      "form": {
+        "errors": {
+          "email": "Введите свою почту",
+          "password": "Введите пароль",
+          "name": "Введите имя",
+          "confirmPassword": "Пароли не совпадают"
+        },
+        "labels": {
+          "email": "Почта",
+          "password": "Пароль",
+          "name": "Имя",
+          "confirmPassword": "Подтвердите пароль"
+        }
+      }
+    },
+    "MyCollectionsPage": {
+      "CreateCollectionModal": {
+        "labels": {
+          "name": "Название",
+          "theme": "Тема",
+          "description": "Описание"
+        },
+        "errors": {
+          "name": "Введите название",
+          "theme": "Введите тему",
+          "description": "Введите описание"
+        }
+      }
+    },
+    "Admin": {
+      "UsersActions": {
+        "buttons": {
+          "delete": "Удалить",
+          "ban": "Заблокировать",
+          "unBan": "Разблокировать",
+          "appointAdmin": "Назначить администратора",
+          "removeAdmin": "Удалить администратора"
+        }
+      },
+      "UsersTableHeader": {
+        "id": "ID",
+        "avatar" : "Аватар",
+        "name": "Имя",
+        "status": "Статус",
+        "role": "Роль",
+        "actions": "Действия"
+      },
+      "UsersTable": {
+        "roles": {
+          "user": "Пользователь",
+          "admin": "Администратор"
+        }
+      }
+    }
+  }
+}

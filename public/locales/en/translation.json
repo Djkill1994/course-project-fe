@@ -1,0 +1,64 @@
+{
+  "general": {
+    "signUp": "Sign up",
+    "logIn": "Log in",
+    "search": "Search"
+  },
+  "features": {
+    "Auth": {
+      "form": {
+        "errors": {
+          "email": "Enter email",
+          "password": "Enter password",
+          "name": "Enter name",
+          "confirmPassword": "Confirm password is not valid"
+        },
+        "labels": {
+          "email": "Email",
+          "password": "Password",
+          "name": "Name",
+          "confirmPassword": "Confirm password"
+        }
+      }
+    },
+    "MyCollectionsPage": {
+      "CreateCollectionModal": {
+        "labels": {
+          "name": "Name",
+          "theme": "Theme",
+          "description": "Description"
+        },
+        "errors": {
+          "name": "Enter name",
+          "theme": "Enter theme",
+          "description": "Enter description"
+        }
+      }
+    },
+    "Admin": {
+      "UsersActions": {
+        "buttons": {
+          "delete": "Delete",
+          "ban": "Ban",
+          "unBan": "UnBan",
+          "appointAdmin": "Appoint admin",
+          "removeAdmin": "Remove admin"
+        }
+      },
+      "UsersTableHeader": {
+        "id": "ID",
+        "avatar": "Avatar",
+        "name": "Name",
+        "status": "Status",
+        "role": "Role",
+        "actions": "Actions"
+      },
+      "UsersTable": {
+        "roles": {
+          "user": "User",
+          "admin": "Admin"
+        }
+      }
+    }
+  }
+}

@@ -1,24 +1,25 @@
 import { AppBar, Avatar, Button, Stack, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { Logout } from "@mui/icons-material";
 import { useAuthRefreshQuery } from "../../../features/Admin/api/users.api";
 import { SelectLeague } from "./SelectLeague";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { ROUTE_PATHS } from "../../../App";
-import { Search } from "@mui/icons-material";
+import { SearchApp } from "./SearchApp";
 import { AUTH_TOKEN_KEY } from "../../constans/localStorage";
-import { i18n } from "../../i18n";
+import { useTranslation } from "react-i18next";
 
 const token = localStorage.getItem(AUTH_TOKEN_KEY);
 
 export const Header: FC = () => {
   const navigate = useNavigate();
   const { data } = useAuthRefreshQuery(undefined, { skip: !token });
+  const { t } = useTranslation();
 
   const logOut = (): void => {
     localStorage.clear();
-    navigate(ROUTE_PATHS.Home, { replace: true });
+    navigate(ROUTE_PATHS.Login, { replace: true });
   };
 
   return (
@@ -33,19 +34,19 @@ export const Header: FC = () => {
       >
         {data && (
           <IconButton
-            onClick={() => navigate(ROUTE_PATHS.Login, { replace: true })}
+            onClick={() => navigate(ROUTE_PATHS.Collection, { replace: true })}
           >
             <Avatar src={data?.avatarSrc} />
           </IconButton>
         )}
-        <Search />
+        <SearchApp />
         <Stack direction="row" alignItems="center" gap="10px">
           <SelectLeague />
           <ThemeSwitcher />
           <Stack>
             {data ? (
               <IconButton onClick={logOut}>
-                <LogoutIcon />
+                <Logout />
               </IconButton>
             ) : (
               <Button
@@ -53,7 +54,7 @@ export const Header: FC = () => {
                 onClick={() => navigate(ROUTE_PATHS.Login, { replace: true })}
                 variant="contained"
               >
-                {i18n.t("general.logIn")}
+                {t("general.logIn")}
               </Button>
             )}
           </Stack>

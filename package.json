@@ -14,12 +14,14 @@
     "@mui/lab": "^5.0.0-alpha.73",
     "@mui/material": "^5.10.13",
     "@reduxjs/toolkit": "^1.9.0",
-    "i18next": "^22.4.9",
+    "i18next": "^19.6.3",
+    "i18next-browser-languagedetector": "^5.0.1",
+    "i18next-http-backend": "^1.0.17",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.0",
     "react-hot-toast": "^2.4.0",
-    "react-i18next": "^12.1.5",
+    "react-i18next": "^11.7.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3"
   },
@@ -28,15 +30,15 @@
     "@types/react-dom": "^18.0.8",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
-    "@vitejs/plugin-react": "^2.2.0",
+    "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.31.11",
     "prettier": "^2.7.1",
     "typescript": "^4.6.4",
-    "vite": "^3.2.3",
-    "vite-plugin-svgr": "^2.2.1",
-    "vite-tsconfig-paths": "^3.5.0"
+    "vite": "^4.1.1",
+    "vite-plugin-svgr": "^2.4.0",
+    "vite-tsconfig-paths": "^4.0.5"
   }
 }
