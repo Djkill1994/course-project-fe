@@ -21,7 +21,9 @@
         }
       }
     },
-    "MyCollectionsPage": {
+    "Collection": {
+      "MyCollectionsPage": {
+      },
       "CreateCollectionModal": {
         "labels": {
           "name": "Название",
@@ -32,6 +34,10 @@
           "name": "Введите название",
           "theme": "Введите тему",
           "description": "Введите описание"
+        },
+        "button": {
+          "send": "Отправить",
+          "close": "Закрыть"
         }
       }
     },
@@ -54,7 +60,7 @@
         "actions": "Действия"
       },
       "UsersTable": {
-        "roles": {
+        "role": {
           "user": "Пользователь",
           "admin": "Администратор"
         }

@@ -23,7 +23,7 @@ export const UsersTable: FC = () => {
         <Table aria-labelledby="tableTitle">
           <UsersTableHeader />
           <TableBody>
-            {data?.map(({ username, id, avatarSrc, banned, roles }) => {
+            {data?.map(({ username, id, avatarSrc, banned, role }) => {
               return (
                 <TableRow key={id}>
                   <TableCell scope="row">{id}</TableCell>
@@ -37,12 +37,12 @@ export const UsersTable: FC = () => {
                     )}
                   </TableCell>
                   <TableCell>
-                    {roles === "admin"
-                      ? t("features.Admin.UsersTable.roles.admin")
-                      : t("features.Admin.UsersTable.roles.user")}
+                    {role === "admin"
+                      ? t("features.Admin.UsersTable.role.admin")
+                      : t("features.Admin.UsersTable.role.user")}
                   </TableCell>
                   <TableCell>
-                    <UserActions userId={id} role={roles} />
+                    <UserActions userId={id} role={role} />
                   </TableCell>
                 </TableRow>
               );

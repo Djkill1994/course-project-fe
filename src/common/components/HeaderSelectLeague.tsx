@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-export const SelectLeague: FC = () => {
+export const HeaderSelectLeague: FC = () => {
   const { i18n } = useTranslation();
 
   return (

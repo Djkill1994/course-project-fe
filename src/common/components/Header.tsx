@@ -2,12 +2,12 @@ import { AppBar, Avatar, Button, Stack, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import { Logout } from "@mui/icons-material";
-import { useAuthRefreshQuery } from "../../../features/Admin/api/users.api";
-import { SelectLeague } from "./SelectLeague";
-import { ThemeSwitcher } from "./ThemeSwitcher";
-import { ROUTE_PATHS } from "../../../App";
-import { SearchApp } from "./SearchApp";
-import { AUTH_TOKEN_KEY } from "../../constans/localStorage";
+import { useAuthRefreshQuery } from "../../features/Admin/api/users.api";
+import { HeaderSelectLeague } from "./HeaderSelectLeague";
+import { HeaderThemeSwitcher } from "./HeaderThemeSwitcher";
+import { ROUTE_PATHS } from "../../App";
+import { HeaderSearchApp } from "./HeaderSearchApp";
+import { AUTH_TOKEN_KEY } from "../constans/localStorage";
 import { useTranslation } from "react-i18next";
 
 const token = localStorage.getItem(AUTH_TOKEN_KEY);
@@ -39,10 +39,10 @@ export const Header: FC = () => {
             <Avatar src={data?.avatarSrc} />
           </IconButton>
         )}
-        <SearchApp />
+        <HeaderSearchApp />
         <Stack direction="row" alignItems="center" gap="10px">
-          <SelectLeague />
-          <ThemeSwitcher />
+          <HeaderSelectLeague />
+          <HeaderThemeSwitcher />
           <Stack>
             {data ? (
               <IconButton onClick={logOut}>

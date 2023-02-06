@@ -7,7 +7,7 @@ export interface IUser {
   username: string;
   banned: boolean;
   avatarSrc: string;
-  roles: string;
+  role: string;
 }
 
 export const usersApi = createApi({

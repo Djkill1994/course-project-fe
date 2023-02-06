@@ -21,7 +21,9 @@
         }
       }
     },
-    "MyCollectionsPage": {
+    "Collection": {
+      "MyCollectionsPage": {
+      },
       "CreateCollectionModal": {
         "labels": {
           "name": "Name",
@@ -32,6 +34,10 @@
           "name": "Enter name",
           "theme": "Enter theme",
           "description": "Enter description"
+        },
+        "button": {
+          "send": "Send",
+          "close": "Close"
         }
       }
     },
@@ -54,7 +60,7 @@
         "actions": "Actions"
       },
       "UsersTable": {
-        "roles": {
+        "role": {
           "user": "User",
           "admin": "Admin"
         }

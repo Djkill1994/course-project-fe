@@ -5,6 +5,7 @@ import { useModal } from "../../../common/hooks/useModal";
 import { AddBoxOutlined } from "@mui/icons-material";
 import { useGetCollectionsQuery } from "../api/collections.api";
 import { Header } from "../../../common/components/Header";
+import { CollectionCard } from "./CollectionCard";
 
 export const MyCollectionsPage: FC = () => {
   const { isOpened, open, close } = useModal();
@@ -14,18 +15,22 @@ export const MyCollectionsPage: FC = () => {
     <Box>
       <Header />
       <Box mt="50px">
-        {" "}
         {isOpened && <CreateCollectionModal onClose={close} />}
       </Box>
       <IconButton onClick={() => open()} size="large" color="primary">
         <AddBoxOutlined />
       </IconButton>
-      <Stack gap="5px">
-        {data?.map(({ name, id, theme, description }) => (
+      <Stack gap="10px" direction="row" flexWrap="wrap" justifyContent="center">
+        {data?.map(({ name, id, theme, description, imgSrc, date }) => (
           <Box key={id}>
-            <Box>{name}</Box>
-            <Box>{theme}</Box>
-            <Box>{description}</Box>
+            <CollectionCard
+              id={id}
+              name={name}
+              theme={theme}
+              description={description}
+              imgSrc={imgSrc}
+              date={date}
+            />
           </Box>
         ))}
       </Stack>

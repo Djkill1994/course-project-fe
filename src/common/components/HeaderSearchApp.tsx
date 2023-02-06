@@ -3,7 +3,7 @@ import { Search } from "@mui/icons-material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-export const SearchApp: FC = () => {
+export const HeaderSearchApp: FC = () => {
   const { t } = useTranslation();
   return (
     <TextField

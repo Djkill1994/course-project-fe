@@ -18,14 +18,6 @@ interface IUserActions {
 export const UserActions: FC<IUserActions> = ({ userId, role }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { t } = useTranslation();
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const [deleteUser] = useDeleteUserMutation();
   const [banUser] = useBanUserMutation();
   const [unBanUser] = useUnBanUserMutation();
@@ -35,20 +27,17 @@ export const UserActions: FC<IUserActions> = ({ userId, role }) => {
   return (
     <Box>
       <IconButton
-        aria-label="more"
-        id="long-button"
-        aria-controls={open ? "long-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
+        aria-controls={anchorEl ? "long-menu" : undefined}
+        aria-expanded={anchorEl ? "true" : undefined}
         aria-haspopup="true"
-        onClick={handleClick}
+        onClick={({ currentTarget }) => setAnchorEl(currentTarget)}
       >
         <MoreVert />
       </IconButton>
       <Menu
-        id="basic-menu"
         anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
+        open={Boolean(anchorEl)}
+        onClose={() => setAnchorEl(null)}
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}

@@ -7,6 +7,7 @@ export interface ICollection {
   description: string;
   theme: string;
   imgSrc: string;
+  date: string;
 }
 
 export const collectionApi = createApi({
@@ -22,7 +23,7 @@ export const collectionApi = createApi({
       },
       providesTags: ["Collection"],
     }),
-    createCollection: build.mutation<void, Omit<ICollection, "id">>({
+    createCollection: build.mutation<void, Omit<ICollection, "id" | "date">>({
       query(collection) {
         return {
           url: "/collection/create",
