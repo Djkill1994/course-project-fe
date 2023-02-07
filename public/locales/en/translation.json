@@ -22,8 +22,6 @@
       }
     },
     "Collection": {
-      "MyCollectionsPage": {
-      },
       "CreateCollectionModal": {
         "labels": {
           "name": "Name",
@@ -38,6 +36,12 @@
         "button": {
           "send": "Send",
           "close": "Close"
+        }
+      },
+      "CollectionCard": {
+        "buttons": {
+          "delete": "Delete",
+          "edit": "Edit"
         }
       }
     },

@@ -10,16 +10,15 @@ import { HeaderSearchApp } from "./HeaderSearchApp";
 import { AUTH_TOKEN_KEY } from "../constans/localStorage";
 import { useTranslation } from "react-i18next";
 
-const token = localStorage.getItem(AUTH_TOKEN_KEY);
-
 export const Header: FC = () => {
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const navigate = useNavigate();
   const { data } = useAuthRefreshQuery(undefined, { skip: !token });
   const { t } = useTranslation();
 
   const logOut = (): void => {
     localStorage.clear();
-    navigate(ROUTE_PATHS.Login, { replace: true });
+    window.location.replace(ROUTE_PATHS.Login);
   };
 
   return (
