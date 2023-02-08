@@ -16,10 +16,11 @@ import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../App";
 import { CollectionSettingsDrawer } from "./CollectionSettingsDrawer";
+import { useModalWindows } from "../../../common/hooks/useModalWindows";
 
 export const CollectionTableToolbar: FC = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  const { isOpened, open, close } = useModalWindows();
 
   return (
     <Toolbar
@@ -33,17 +34,21 @@ export const CollectionTableToolbar: FC = () => {
           onClick={() => navigate(ROUTE_PATHS.Collection, { replace: true })}
           underline="hover"
           color="inherit"
-          href="/"
         >
           Collections
         </Link>
         <Typography color="text.primary">NAME COLLECTION</Typography>
       </Breadcrumbs>
-      <IconButton onClick={() => setOpen(true)}>
+      <IconButton onClick={() => open()}>
         <Settings />
       </IconButton>
-      <CollectionSettingsDrawer open={open} />
-      <Button variant="contained" size="small" sx={{ textTransform: "none" }}>
+      {isOpened && <CollectionSettingsDrawer onClose={close} />}
+      <Button
+        onClick={() => open()}
+        variant="contained"
+        size="small"
+        sx={{ textTransform: "none" }}
+      >
         <Add sx={{ width: "14px" }} /> New item
       </Button>
     </Toolbar>

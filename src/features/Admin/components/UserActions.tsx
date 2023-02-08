@@ -15,6 +15,8 @@ interface IUserActions {
   role: string;
 }
 
+// todo зарефачить useState и Menu
+
 export const UserActions: FC<IUserActions> = ({ userId, role }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { t } = useTranslation();

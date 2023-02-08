@@ -10,8 +10,9 @@ import {
   TextField,
   Box,
   InputAdornment,
+  Button,
 } from "@mui/material";
-import { Block, CheckCircleOutline, Search } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import { CollectionTableToolbar } from "./CollectionTableToolbar";
 import { CollectionTableHeader } from "./CollectionTableHeader";
 import { useTranslation } from "react-i18next";
@@ -42,6 +43,8 @@ const data = [
     tags: "Tag[3]",
   },
 ];
+
+// todo сделать перевод, зарефачить кнопку Delete
 
 export const CollectionTable: FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
@@ -76,7 +79,7 @@ export const CollectionTable: FC = () => {
 
     setSelected(newSelected);
   };
-
+  console.log(selected);
   return (
     <Paper sx={{ width: "100%", mb: 2 }}>
       <CollectionTableToolbar />
@@ -138,6 +141,7 @@ export const CollectionTable: FC = () => {
             })}
           </TableBody>
         </Table>
+        {selected[0] ? <Button>Delete</Button> : undefined}
       </TableContainer>
     </Paper>
   );

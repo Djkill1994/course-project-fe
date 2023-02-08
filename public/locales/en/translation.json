@@ -21,7 +21,7 @@
         }
       }
     },
-    "Collection": {
+    "CollectionPage": {
       "CreateCollectionModal": {
         "labels": {
           "name": "Name",

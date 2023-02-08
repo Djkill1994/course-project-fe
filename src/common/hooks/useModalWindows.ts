@@ -6,7 +6,7 @@ interface IUseModalReturn {
   close: () => void;
 }
 
-export const useModal = (): IUseModalReturn => {
+export const useModalWindows = (): IUseModalReturn => {
   const [isOpened, setIsOpened] = useState(false);
   return {
     isOpened,

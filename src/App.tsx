@@ -8,7 +8,7 @@ import { Box } from "@mui/material";
 import { RegistrationPage } from "./features/Auth/components/RegistrationPage";
 import { HomePage } from "./features/Home/components/HomePage";
 import { MyCollectionsPage } from "./features/Collection/components/MyCollectionsPage";
-import { Collection } from "./features/Collection/components/Collection";
+import { CollectionPage } from "./features/Collection/components/CollectionPage";
 
 export const ROUTE_PATHS = {
   Home: "/",
@@ -16,6 +16,7 @@ export const ROUTE_PATHS = {
   Registration: "/registration",
   Admin: "/admin",
   Collection: "/collection",
+  CollectionId: "/collectionId",
 };
 
 export const App: FC = () => {
@@ -23,10 +24,11 @@ export const App: FC = () => {
     <Box height="100vh" bgcolor="#FAFAFA">
       <Toaster position="top-right" />
       <Routes>
-        <Route path={ROUTE_PATHS.Home} element={<Collection />} />
+        <Route path={ROUTE_PATHS.Home} element={<HomePage />} />
         <Route path={ROUTE_PATHS.Login} element={<LoginPage />} />
         <Route path={ROUTE_PATHS.Registration} element={<RegistrationPage />} />
         <Route path={ROUTE_PATHS.Collection} element={<MyCollectionsPage />} />
+        <Route path={ROUTE_PATHS.CollectionId} element={<CollectionPage />} />
         <Route
           path={ROUTE_PATHS.Admin}
           element={

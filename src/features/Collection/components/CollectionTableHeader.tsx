@@ -1,13 +1,13 @@
 import { TableHead, TableRow, TableCell, Checkbox } from "@mui/material";
 import { ChangeEvent, FC } from "react";
 
-interface IUsersTableHeaderProps {
+interface ICollectionTableHeaderProps {
   numSelected: number;
   onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
   rowCount: number;
 }
 
-export const CollectionTableHeader: FC<IUsersTableHeaderProps> = ({
+export const CollectionTableHeader: FC<ICollectionTableHeaderProps> = ({
   numSelected,
   onSelectAllClick,
   rowCount,
@@ -20,9 +20,6 @@ export const CollectionTableHeader: FC<IUsersTableHeaderProps> = ({
           indeterminate={numSelected > 0 && numSelected < rowCount}
           checked={rowCount > 0 && numSelected === rowCount}
           onChange={onSelectAllClick}
-          inputProps={{
-            "aria-label": "select all desserts",
-          }}
         />
       </TableCell>
       <TableCell>ID</TableCell>

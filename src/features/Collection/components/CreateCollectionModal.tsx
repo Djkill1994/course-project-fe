@@ -40,11 +40,11 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
           error={!!errors.name}
           helperText={
             !!errors.name &&
-            t("features.Collection.CreateCollectionModal.errors.name")
+            t("features.CollectionPage.CreateCollectionModal.errors.name")
           }
           size="small"
           autoComplete="name"
-          label={t("features.Collection.CreateCollectionModal.labels.name")}
+          label={t("features.CollectionPage.CreateCollectionModal.labels.name")}
           fullWidth
         />
         <TextField
@@ -52,11 +52,13 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
           error={!!errors.theme}
           helperText={
             !!errors.name &&
-            t("features.Collection.CreateCollectionModal.errors.theme")
+            t("features.CollectionPage.CreateCollectionModal.errors.theme")
           }
           size="small"
           autoComplete="theme"
-          label={t("features.Collection.CreateCollectionModal.labels.theme")}
+          label={t(
+            "features.CollectionPage.CreateCollectionModal.labels.theme"
+          )}
           fullWidth
         />
         <TextField
@@ -64,21 +66,23 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
           error={!!errors.name}
           helperText={
             !!errors.name &&
-            t("features.Collection.CreateCollectionModal.errors.description")
+            t(
+              "features.CollectionPage.CreateCollectionModal.errors.description"
+            )
           }
           size="small"
           autoComplete="description"
           label={t(
-            "features.Collection.CreateCollectionModal.labels.description"
+            "features.CollectionPage.CreateCollectionModal.labels.description"
           )}
           fullWidth
         />
         <Stack direction="row" justifyContent="space-between">
           <Button onClick={onClose}>
-            {t("features.Collection.CreateCollectionModal.button.close")}
+            {t("features.CollectionPage.CreateCollectionModal.button.close")}
           </Button>
           <Button type="submit">
-            {t("features.Collection.CreateCollectionModal.button.send")}
+            {t("features.CollectionPage.CreateCollectionModal.button.send")}
           </Button>
         </Stack>
       </Stack>
