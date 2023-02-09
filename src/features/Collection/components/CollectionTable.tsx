@@ -79,7 +79,7 @@ export const CollectionTable: FC = () => {
 
     setSelected(newSelected);
   };
-  console.log(selected);
+
   return (
     <Paper sx={{ width: "100%", mb: 2 }}>
       <CollectionTableToolbar />

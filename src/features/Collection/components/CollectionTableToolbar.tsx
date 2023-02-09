@@ -16,11 +16,11 @@ import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../App";
 import { CollectionSettingsDrawer } from "./CollectionSettingsDrawer";
-import { useModalWindows } from "../../../common/hooks/useModalWindows";
+import { useModal } from "../../../common/hooks/useModal";
 
 export const CollectionTableToolbar: FC = () => {
   const navigate = useNavigate();
-  const { isOpened, open, close } = useModalWindows();
+  const { isOpened, open, close } = useModal();
 
   return (
     <Toolbar

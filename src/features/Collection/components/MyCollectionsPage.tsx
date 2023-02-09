@@ -1,14 +1,14 @@
 import { Box, IconButton, Stack } from "@mui/material";
 import { FC } from "react";
 import { CreateCollectionModal } from "./CreateCollectionModal";
-import { useModalWindows } from "../../../common/hooks/useModalWindows";
+import { useModal } from "../../../common/hooks/useModal";
 import { AddBoxOutlined } from "@mui/icons-material";
 import { useGetCollectionsQuery } from "../api/collections.api";
 import { Header } from "../../../common/components/Header";
 import { CollectionCard } from "./CollectionCard";
 
 export const MyCollectionsPage: FC = () => {
-  const { isOpened, open, close } = useModalWindows();
+  const { isOpened, open, close } = useModal();
   const { data } = useGetCollectionsQuery();
 
   return (
