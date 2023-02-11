@@ -16,7 +16,6 @@ import { ICollection } from "../api/collections.api";
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { useNavigate } from "react-router-dom";
-import { loginApi } from "../../Auth/api/login.api";
 
 export const CollectionCard: FC<ICollection> = ({
   theme,

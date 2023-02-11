@@ -1,25 +1,26 @@
-import { Box, IconButton, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { FC } from "react";
 import { CreateCollectionModal } from "./CreateCollectionModal";
 import { useModal } from "../../../common/hooks/useModal";
-import { AddBoxOutlined } from "@mui/icons-material";
 import { useGetCollectionsQuery } from "../api/collections.api";
-import { Header } from "../../../common/components/Header";
 import { CollectionCard } from "./CollectionCard";
+import { Add } from "@mui/icons-material";
 
 export const MyCollectionsPage: FC = () => {
   const { isOpened, open, close } = useModal();
   const { data } = useGetCollectionsQuery();
 
   return (
-    <Box>
-      <Header />
-      <Box mt="50px">
-        {isOpened && <CreateCollectionModal onClose={close} />}
-      </Box>
-      <IconButton onClick={() => open()} size="large" color="primary">
-        <AddBoxOutlined />
-      </IconButton>
+    <Box m="0">
+      {isOpened && <CreateCollectionModal onClose={close} />}
+      <Button
+        onClick={() => open()}
+        variant="contained"
+        size="small"
+        sx={{ textTransform: "none" }}
+      >
+        <Add sx={{ width: "14px" }} /> New collection
+      </Button>
       <Stack gap="10px" direction="row" flexWrap="wrap" justifyContent="center">
         {data?.map(({ name, id, theme, description, imgSrc, date }) => (
           <Box key={id}>

@@ -22,7 +22,7 @@ export const Header: FC = () => {
   };
 
   return (
-    <AppBar color="default">
+    <AppBar color="default" position="sticky">
       <Stack
         alignItems="center"
         flexDirection="row"

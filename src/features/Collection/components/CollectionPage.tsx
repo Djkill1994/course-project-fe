@@ -6,7 +6,7 @@ import { CollectionTable } from "./CollectionTable";
 
 export const CollectionPage: FC = () => {
   return (
-    <Box m="50px">
+    <Box>
       <CollectionTable />
     </Box>
   );
