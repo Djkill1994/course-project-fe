@@ -24,15 +24,15 @@ export const App: FC = () => {
   return (
     <Box height="100vh">
       <Toaster position="top-right" />
-      <Routes>
-        <Route path={ROUTE_PATHS.Login} element={<LoginPage />} />
-        <Route path={ROUTE_PATHS.Registration} element={<RegistrationPage />} />
-      </Routes>
+      <Header />
       <Box m="22px 0">
-        <Header />
         <Routes>
+          <Route path={ROUTE_PATHS.Login} element={<LoginPage />} />
+          <Route
+            path={ROUTE_PATHS.Registration}
+            element={<RegistrationPage />}
+          />
           <Route path={ROUTE_PATHS.Home} element={<HomePage />} />
-
           <Route
             path={ROUTE_PATHS.Collection}
             element={<MyCollectionsPage />}
