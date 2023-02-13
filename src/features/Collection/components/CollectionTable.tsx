@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import {
   Table,
   TableBody,
@@ -16,40 +16,45 @@ import { Search } from "@mui/icons-material";
 import { CollectionTableToolbar } from "./CollectionTableToolbar";
 import { CollectionTableHeader } from "./CollectionTableHeader";
 import { useTranslation } from "react-i18next";
+import { useGetCollectionQuery } from "../api/collections.api";
+import { useParams } from "react-router-dom";
 
-const data = [
-  {
-    id: "1",
-    name: "Nok",
-    imgSrc: "img",
-    comments: "Comment[]",
-    like: "Like[]",
-    tags: "Tag[]",
-  },
-  {
-    id: "2",
-    name: "NokJod",
-    imgSrc: "img1",
-    comments: "Comment[2]",
-    like: "Like[2]",
-    tags: "Tag[2]",
-  },
-  {
-    id: "3",
-    name: "Nok901",
-    imgSrc: "img3",
-    comments: "Comment[3]",
-    like: "Like[3]",
-    tags: "Tag[3]",
-  },
-];
+// const data = [
+//   {
+//     id: "1",
+//     name: "Nok",
+//     imgSrc: "img",
+//     comments: "Comment[]",
+//     like: "Like[]",
+//     tags: "Tag[]",
+//   },
+//   {
+//     id: "2",
+//     name: "NokJod",
+//     imgSrc: "img1",
+//     comments: "Comment[2]",
+//     like: "Like[2]",
+//     tags: "Tag[2]",
+//   },
+//   {
+//     id: "3",
+//     name: "Nok901",
+//     imgSrc: "img3",
+//     comments: "Comment[3]",
+//     like: "Like[3]",
+//     tags: "Tag[3]",
+//   },
+// ];
 
 // todo сделать перевод, зарефачить кнопку Delete
 
 export const CollectionTable: FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
-  // const { data } = useGetUsersQuery();
+  const params = useParams();
+  const { data } = useGetCollectionQuery(params.id!);
+  // todo получить тут id из урла и передать в юз гет коллекция (useLocation()) rrd
   const { t } = useTranslation();
+  console.log(data);
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.checked) {
@@ -81,7 +86,7 @@ export const CollectionTable: FC = () => {
   };
 
   return (
-    <Paper sx={{ width: "100%", mb: 2 }}>
+    <Paper sx={{ width: "100%" }}>
       <CollectionTableToolbar />
       <Box p="5px 20px">
         <TextField
@@ -141,7 +146,7 @@ export const CollectionTable: FC = () => {
             })}
           </TableBody>
         </Table>
-        {selected[0] ? <Button>Delete</Button> : undefined}
+        {!!selected.length && <Button>Delete</Button>}
       </TableContainer>
     </Paper>
   );

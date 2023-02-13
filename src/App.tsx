@@ -16,8 +16,8 @@ export const ROUTE_PATHS = {
   Login: "/login",
   Registration: "/registration",
   Admin: "/admin",
-  Collection: "/collection",
-  CollectionId: "/collectionId",
+  Collection: "/collections",
+  CollectionId: "/collections/:id",
 };
 
 export const App: FC = () => {

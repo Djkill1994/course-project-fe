@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Button, Stack, IconButton } from "@mui/material";
+import { AppBar, Avatar, Button, Stack, IconButton, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import { Logout } from "@mui/icons-material";
@@ -31,13 +31,17 @@ export const Header: FC = () => {
         borderBottom="1px solid #dbdbdb"
         p="0 10px"
       >
-        {data && (
-          <IconButton
-            onClick={() => navigate(ROUTE_PATHS.Collection, { replace: true })}
-          >
-            <Avatar src={data?.avatarSrc} />
-          </IconButton>
-        )}
+        <Box>
+          {data && (
+            <IconButton
+              onClick={() =>
+                navigate(ROUTE_PATHS.Collection, { replace: true })
+              }
+            >
+              <Avatar src={data?.avatarSrc} />
+            </IconButton>
+          )}
+        </Box>
         <HeaderSearchApp />
         <Stack direction="row" alignItems="center" gap="10px">
           <HeaderSelectLeague />

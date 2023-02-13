@@ -12,10 +12,13 @@ import {
   CardActionArea,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { ICollection } from "../api/collections.api";
+import {
+  ICollection,
+  useDeleteCollectionMutation,
+} from "../api/collections.api";
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, generatePath } from "react-router-dom";
 
 export const CollectionCard: FC<ICollection> = ({
   theme,
@@ -23,21 +26,19 @@ export const CollectionCard: FC<ICollection> = ({
   date,
   name,
   imgSrc,
-  id,
+  _id,
 }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isOpened, setIsOpened] = useState<null | HTMLElement>(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [deleteCollection] = useDeleteCollectionMutation();
 
   return (
-    <Card key={id} sx={{ width: 345 }}>
+    <Card>
       <CardHeader
         action={
           <IconButton
-            aria-controls={anchorEl ? "long-menu" : undefined}
-            aria-expanded={anchorEl ? "true" : undefined}
-            aria-haspopup="true"
-            onClick={({ currentTarget }) => setAnchorEl(currentTarget)}
+            onClick={({ currentTarget }) => setIsOpened(currentTarget)}
           >
             <MoreVertIcon />
           </IconButton>
@@ -45,43 +46,48 @@ export const CollectionCard: FC<ICollection> = ({
         title={name}
         subheader={theme}
       />
-      <CardActionArea
-        onClick={() => navigate(ROUTE_PATHS.CollectionId, { replace: true })}
-      >
+      <CardActionArea>
         <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={() => setAnchorEl(null)}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}
+          anchorEl={isOpened}
+          open={Boolean(isOpened)}
+          onClose={() => setIsOpened(null)}
         >
           <MenuItem
-            onClick={() => navigate(ROUTE_PATHS.Login, { replace: true })}
+            onClick={() =>
+              navigate(generatePath(ROUTE_PATHS.CollectionId, { id: _id }), {
+                replace: true,
+              })
+            }
           >
             {t("features.CollectionPage.CollectionCard.buttons.edit")}
           </MenuItem>
-          <MenuItem
-            onClick={() =>
-              navigate(ROUTE_PATHS.Registration, { replace: true })
-            }
-          >
+          <MenuItem onClick={() => deleteCollection(_id)}>
             {t("features.CollectionPage.CollectionCard.buttons.delete")}
           </MenuItem>
         </Menu>
-        <CardMedia
-          component="img"
-          height="194"
-          image={imgSrc}
-          alt="Collection img"
-        />
-        <CardContent>
-          <Typography variant="body1">{description}</Typography>
-        </CardContent>
-        <Box display="flex" justifyContent="flex-end" p="5px 15px">
-          <Typography variant="body2" color="text.secondary">
-            {date}
-          </Typography>
+        {/*todo переход к станице айтемов коллекции*/}
+        <Box
+          onClick={() =>
+            navigate(generatePath(ROUTE_PATHS.CollectionId, { id: _id }), {
+              replace: true,
+            })
+          }
+        >
+          <CardMedia
+            component="img"
+            height="194"
+            image={imgSrc}
+            alt="Collection img"
+          />
+          <CardContent>
+            <Typography variant="body1">{description}</Typography>
+          </CardContent>
+          <Box display="flex" justifyContent="flex-end" p="5px 15px">
+            {/*todo зарефачить date*/}
+            <Typography variant="body2" color="text.secondary">
+              {date}
+            </Typography>
+          </Box>
         </Box>
       </CardActionArea>
     </Card>

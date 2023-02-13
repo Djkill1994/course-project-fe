@@ -22,7 +22,14 @@
       }
     },
     "CollectionPage": {
+      "MyCollectionsPage": {
+        "titleFirstCollection": "Create first collection",
+        "button": {
+          "newCollection": "New collection"
+        }
+      },
       "CreateCollectionModal": {
+        "title": "Create new collection",
         "labels": {
           "name": "Name",
           "theme": "Theme",
@@ -35,7 +42,8 @@
         },
         "button": {
           "send": "Send",
-          "close": "Close"
+          "close": "Close",
+          "uploadImg": "Upload collection images"
         }
       },
       "CollectionCard": {

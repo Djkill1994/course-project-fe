@@ -1,14 +1,20 @@
-import { Button, Modal, Stack, TextField } from "@mui/material";
-import { FC } from "react";
+import { Button, Modal, Stack, TextField, Typography } from "@mui/material";
+import { FC, useEffect } from "react";
 import {
   ICollection,
   useCreateCollectionMutation,
 } from "../api/collections.api";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { LoadingButton } from "@mui/lab";
 
 interface IProps {
   onClose: () => void;
+}
+
+interface ICreateCollectionForm
+  extends Pick<ICollection, "name" | "theme" | "description" | "imgSrc"> {
+  file: File[];
 }
 
 export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
@@ -16,13 +22,39 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ICollection>();
-  const [createCollection] = useCreateCollectionMutation();
+  } = useForm<ICreateCollectionForm>();
+  const [createCollection, { isLoading, isSuccess }] =
+    useCreateCollectionMutation();
   const { t } = useTranslation();
 
-  const onSubmit: SubmitHandler<ICollection> = (data) => {
-    createCollection(data);
+  const onSubmit: SubmitHandler<ICreateCollectionForm> = async (data) => {
+    const img = new FormData();
+    img.append("file", data.file[0]);
+    img.append("upload_preset", "course-prt");
+    img.append("cloud_name", "djkill");
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/djkill/image/upload",
+      {
+        method: "post",
+        body: img,
+      }
+    ).then((resp) => resp.json());
+    const uploadImg = res.url
+      ? res.url
+      : "https://res.cloudinary.com/djkill/image/upload/v1676294851/cld-sample-2.jpg";
+    createCollection({
+      name: data.name,
+      imgSrc: uploadImg,
+      description: data.description,
+      theme: data.theme,
+    });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+    }
+  }, [isSuccess]);
 
   return (
     <Modal open onClose={onClose} sx={{ display: "flex" }}>
@@ -32,9 +64,14 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
         noValidate
         m="auto"
         gap="12px"
-        color="default"
+        bgcolor="#fafafa"
         p="18px"
+        borderRadius="5px"
+        width="350px"
       >
+        <Typography variant="h6" fontWeight="600">
+          {t("features.CollectionPage.CreateCollectionModal.title")}
+        </Typography>
         <TextField
           {...register("name", { required: true })}
           error={!!errors.name}
@@ -77,13 +114,28 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
           )}
           fullWidth
         />
+        <Button variant="contained" component="label">
+          {t("features.CollectionPage.CreateCollectionModal.button.uploadImg")}
+          <input
+            hidden
+            accept="image/*"
+            multiple
+            type="file"
+            {...register("file")}
+          />
+        </Button>
         <Stack direction="row" justifyContent="space-between">
           <Button onClick={onClose}>
             {t("features.CollectionPage.CreateCollectionModal.button.close")}
           </Button>
-          <Button type="submit">
+          <LoadingButton
+            loadingPosition="center"
+            variant="contained"
+            type="submit"
+            loading={isLoading}
+          >
             {t("features.CollectionPage.CreateCollectionModal.button.send")}
-          </Button>
+          </LoadingButton>
         </Stack>
       </Stack>
     </Modal>

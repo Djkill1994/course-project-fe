@@ -39,7 +39,7 @@ interface ISettingsForm {
 
 export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
   const [select, setSelect] = useState("");
-  const { register, handleSubmit, reset, control } = useForm<ISettingsForm>({
+  const { register, handleSubmit } = useForm<ISettingsForm>({
     defaultValues: {
       nameCollection: "CollectionPage NAME",
       type: "",

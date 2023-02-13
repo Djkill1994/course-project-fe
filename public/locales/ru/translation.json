@@ -22,7 +22,14 @@
       }
     },
     "CollectionPage": {
+      "MyCollectionsPage": {
+        "titleFirstCollection": "Создать первую коллекцию",
+        "button": {
+          "newCollection": "Новая коллекция"
+        }
+      },
       "CreateCollectionModal": {
+        "title": "Создать новую коллекцию",
         "labels": {
           "name": "Название",
           "theme": "Тема",
@@ -35,7 +42,8 @@
         },
         "button": {
           "send": "Отправить",
-          "close": "Закрыть"
+          "close": "Закрыть",
+          "uploadImg": "Загрузить картинку коллекции"
         }
       },
       "CollectionCard": {
