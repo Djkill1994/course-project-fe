@@ -62,7 +62,7 @@ export const CollectionCard: FC<ICollection> = ({
             {t("features.CollectionPage.CollectionCard.buttons.edit")}
           </MenuItem>
           <MenuItem onClick={() => deleteCollection(_id)}>
-            {t("features.CollectionPage.CollectionCard.buttons.delete")}
+            {t("general.delete")}
           </MenuItem>
         </Menu>
         {/*todo переход к станице айтемов коллекции*/}

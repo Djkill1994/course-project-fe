@@ -1,6 +1,15 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
 
+export interface IItem {
+  id: string;
+  name: string;
+  imgSrc: string;
+  comments: [];
+  likes: [];
+  tags: [];
+}
+
 export interface ICollection {
   // todo зарефачить id
   _id: string;
@@ -9,7 +18,7 @@ export interface ICollection {
   theme: string;
   imgSrc?: string;
   date: string;
-  items?: [];
+  items?: IItem[];
 }
 
 export const collectionApi = createApi({

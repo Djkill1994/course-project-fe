@@ -19,46 +19,17 @@ import { useTranslation } from "react-i18next";
 import { useGetCollectionQuery } from "../api/collections.api";
 import { useParams } from "react-router-dom";
 
-// const data = [
-//   {
-//     id: "1",
-//     name: "Nok",
-//     imgSrc: "img",
-//     comments: "Comment[]",
-//     like: "Like[]",
-//     tags: "Tag[]",
-//   },
-//   {
-//     id: "2",
-//     name: "NokJod",
-//     imgSrc: "img1",
-//     comments: "Comment[2]",
-//     like: "Like[2]",
-//     tags: "Tag[2]",
-//   },
-//   {
-//     id: "3",
-//     name: "Nok901",
-//     imgSrc: "img3",
-//     comments: "Comment[3]",
-//     like: "Like[3]",
-//     tags: "Tag[3]",
-//   },
-// ];
-
-// todo сделать перевод, зарефачить кнопку Delete
+// todo зарефачить кнопку Delete
 
 export const CollectionTable: FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const params = useParams();
-  const { data } = useGetCollectionQuery(params.id!);
-  // todo получить тут id из урла и передать в юз гет коллекция (useLocation()) rrd
+  const { data } = useGetCollectionQuery(params.id as string);
   const { t } = useTranslation();
-  console.log(data);
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.checked) {
-      const newSelected = data?.map((n) => n.id);
+      const newSelected = data?.items?.map((item) => item.id);
       setSelected(newSelected || []);
     } else {
       setSelected([]);
@@ -87,7 +58,7 @@ export const CollectionTable: FC = () => {
 
   return (
     <Paper sx={{ width: "100%" }}>
-      <CollectionTableToolbar />
+      <CollectionTableToolbar collectionName={data?.name} />
       <Box p="5px 20px">
         <TextField
           size="small"
@@ -107,10 +78,10 @@ export const CollectionTable: FC = () => {
           <CollectionTableHeader
             numSelected={selected.length}
             onSelectAllClick={handleSelectAllClick}
-            rowCount={data?.length || 0}
+            rowCount={data?.items?.length || 0}
           />
           <TableBody>
-            {data?.map(({ name, imgSrc, comments, tags, like, id }) => {
+            {data?.items?.map(({ name, imgSrc, comments, tags, likes, id }) => {
               const isItemSelected = selected.indexOf(id) !== -1;
               const labelId = `enhanced-table-checkbox-${id}`;
 
@@ -140,13 +111,13 @@ export const CollectionTable: FC = () => {
                   <TableCell>{imgSrc}</TableCell>
                   <TableCell>{comments}</TableCell>
                   <TableCell>{tags}</TableCell>
-                  <TableCell>{like}</TableCell>
+                  <TableCell>{likes}</TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
         </Table>
-        {!!selected.length && <Button>Delete</Button>}
+        {!!selected.length && <Button>{t("general.delete")}</Button>}
       </TableContainer>
     </Paper>
   );

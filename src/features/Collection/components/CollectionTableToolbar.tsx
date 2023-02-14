@@ -13,10 +13,16 @@ import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../App";
 import { CollectionSettingsDrawer } from "./CollectionSettingsDrawer";
 import { useModal } from "../../../common/hooks/useModal";
+import { useTranslation } from "react-i18next";
 
-export const CollectionTableToolbar: FC = () => {
+interface IProps {
+  collectionName: string | undefined;
+}
+
+export const CollectionTableToolbar: FC<IProps> = ({ collectionName }) => {
   const navigate = useNavigate();
   const { isOpened, open, close } = useModal();
+  const { t } = useTranslation();
 
   return (
     <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -28,9 +34,11 @@ export const CollectionTableToolbar: FC = () => {
             color="inherit"
             sx={{ cursor: "pointer" }}
           >
-            Collections
+            {t(
+              "features.CollectionPage.CollectionTableToolbar.collectionsLink"
+            )}
           </Link>
-          <Typography color="text.primary">NAME COLLECTION</Typography>
+          <Typography color="text.primary">{collectionName}</Typography>
         </Breadcrumbs>
         <IconButton onClick={() => open()}>
           <Settings />
@@ -43,7 +51,8 @@ export const CollectionTableToolbar: FC = () => {
         size="small"
         sx={{ textTransform: "none" }}
       >
-        <Add sx={{ width: "14px" }} /> New item
+        <Add sx={{ width: "14px" }} />
+        {t("features.CollectionPage.CollectionTableToolbar.newItem")}
       </Button>
     </Toolbar>
   );

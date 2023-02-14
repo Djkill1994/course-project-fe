@@ -2,7 +2,8 @@
   "general": {
     "signUp": "Sign up",
     "logIn": "Log in",
-    "search": "Search"
+    "search": "Search",
+    "delete": "Delete"
   },
   "features": {
     "Auth": {
@@ -22,6 +23,18 @@
       }
     },
     "CollectionPage": {
+      "CollectionTableToolbar": {
+        "collectionsLink": "Collection",
+        "newItem": "New item"
+      },
+      "CollectionTableHeader": {
+        "id": "ID",
+        "name": "Name",
+        "img": "Images",
+        "comments": "Comments",
+        "tags": "Tags",
+        "likes": "Likes"
+      },
       "MyCollectionsPage": {
         "titleFirstCollection": "Create first collection",
         "button": {
@@ -48,7 +61,6 @@
       },
       "CollectionCard": {
         "buttons": {
-          "delete": "Delete",
           "edit": "Edit"
         }
       }

@@ -2,7 +2,8 @@
   "general": {
     "signUp": "Регистрация",
     "logIn": "Войти",
-    "search": "Поиск"
+    "search": "Поиск",
+    "delete": "Удалить"
   },
   "features": {
     "Auth": {
@@ -22,6 +23,18 @@
       }
     },
     "CollectionPage": {
+      "CollectionTableToolbar": {
+        "collectionsLink": "Коллекция",
+        "newItem": "Новый элемент"
+      },
+      "CollectionTableHeader": {
+        "id": "ID",
+        "name": "Имя",
+        "img": "Изображение",
+        "comments": "Комментарии",
+        "tags": "Тэги",
+        "likes": "Лайки"
+      },
       "MyCollectionsPage": {
         "titleFirstCollection": "Создать первую коллекцию",
         "button": {
@@ -48,7 +61,6 @@
       },
       "CollectionCard": {
         "buttons": {
-          "delete": "Удалить",
           "edit": "Редактировать"
         }
       }

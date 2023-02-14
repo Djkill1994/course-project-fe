@@ -1,5 +1,6 @@
 import { TableHead, TableRow, TableCell, Checkbox } from "@mui/material";
 import { ChangeEvent, FC } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ICollectionTableHeaderProps {
   numSelected: number;
@@ -11,23 +12,39 @@ export const CollectionTableHeader: FC<ICollectionTableHeaderProps> = ({
   numSelected,
   onSelectAllClick,
   rowCount,
-}) => (
-  <TableHead>
-    <TableRow>
-      <TableCell padding="checkbox">
-        <Checkbox
-          color="primary"
-          indeterminate={numSelected > 0 && numSelected < rowCount}
-          checked={rowCount > 0 && numSelected === rowCount}
-          onChange={onSelectAllClick}
-        />
-      </TableCell>
-      <TableCell>ID</TableCell>
-      <TableCell>Name</TableCell>
-      <TableCell>Img</TableCell>
-      <TableCell>Comments</TableCell>
-      <TableCell>Tags</TableCell>
-      <TableCell>Like</TableCell>
-    </TableRow>
-  </TableHead>
-);
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <TableHead>
+      <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+          />
+        </TableCell>
+        <TableCell>
+          {t("features.CollectionPage.CollectionTableHeader.id")}
+        </TableCell>
+        <TableCell>
+          {t("features.CollectionPage.CollectionTableHeader.name")}
+        </TableCell>
+        <TableCell>
+          {t("features.CollectionPage.CollectionTableHeader.img")}
+        </TableCell>
+        <TableCell>
+          {t("features.CollectionPage.CollectionTableHeader.comments")}
+        </TableCell>
+        <TableCell>
+          {t("features.CollectionPage.CollectionTableHeader.tags")}
+        </TableCell>
+        <TableCell>
+          {t("features.CollectionPage.CollectionTableHeader.likes")}
+        </TableCell>
+      </TableRow>
+    </TableHead>
+  );
+};
