@@ -7,9 +7,10 @@ import { EMAIL_REGEX } from "../../../common/constans/regex";
 import { LoadingButton } from "@mui/lab";
 import { FormInputPassword } from "../../../common/components/FormInputPassword";
 import { useTranslation } from "react-i18next";
+import { ROUTE_PATHS } from "../../../App";
 
 export interface IRegistrationForm {
-  username: string;
+  userName: string;
   email: string;
   password: string;
   passwordConfirm: string;
@@ -31,7 +32,7 @@ export const RegistrationForm: FC = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/", { replace: true });
+      navigate(ROUTE_PATHS.Login, { replace: true });
     }
   }, [isSuccess]);
 
@@ -62,10 +63,10 @@ export const RegistrationForm: FC = () => {
         </Grid>
         <Grid item xs={12} width="100%">
           <TextField
-            {...register("username", { required: true })}
-            error={!!errors.username}
+            {...register("userName", { required: true })}
+            error={!!errors.userName}
             helperText={
-              !!errors.username && t("features.Auth.form.errors.name")
+              !!errors.userName && t("features.Auth.form.errors.name")
             }
             size="small"
             label={t("features.Auth.form.labels.name")}

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuthRefreshQuery } from "../../features/Admin/api/users.api";
+import { useAuthRefreshQuery } from "../../features/Profile/api/user.api";
 import { Box, CircularProgress } from "@mui/material";
 
 interface IRequireAuthProps {

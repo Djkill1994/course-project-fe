@@ -11,8 +11,7 @@ export interface IItem {
 }
 
 export interface ICollection {
-  // todo зарефачить id
-  _id: string;
+  id: string;
   name: string;
   description: string;
   theme: string;
@@ -42,7 +41,7 @@ export const collectionApi = createApi({
       },
       providesTags: ["Collection"],
     }),
-    createCollection: build.mutation<void, Omit<ICollection, "_id" | "date">>({
+    createCollection: build.mutation<void, Omit<ICollection, "id" | "date">>({
       query(collection) {
         return {
           url: "/collections",

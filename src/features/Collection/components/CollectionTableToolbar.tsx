@@ -14,6 +14,7 @@ import { ROUTE_PATHS } from "../../../App";
 import { CollectionSettingsDrawer } from "./CollectionSettingsDrawer";
 import { useModal } from "../../../common/hooks/useModal";
 import { useTranslation } from "react-i18next";
+import { ICollection } from "../api/collections.api";
 
 interface IProps {
   collectionName: string | undefined;

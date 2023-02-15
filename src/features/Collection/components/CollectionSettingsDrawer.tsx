@@ -3,48 +3,47 @@ import {
   Typography,
   List,
   TextField,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Stack,
-  FormControl,
-  MenuItem,
-  Select,
-  InputLabel,
   Button,
   IconButton,
   Drawer,
 } from "@mui/material";
 import { FC, useState } from "react";
-import {
-  Add,
-  ExpandMore,
-  ChevronRight,
-  DeleteForever,
-} from "@mui/icons-material";
+import { Add, ChevronRight, DeleteForever } from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { CollectionFields } from "./CollectionFields";
 
 interface IProps {
   onClose: () => void;
 }
 
-// todo перевести,
+// todo перевести, зарефачить код, добавление полей доработать
 
 interface ISettingsForm {
   nameCollection: string;
-  type: string;
-  minLength: number | null;
-  maxLength: number | null;
+  nameFieldName: string;
+  nameFieldDescription: string;
+  typeFieldName: string;
+  typeFieldDescription: string;
+  minLengthFieldName: number | null;
+  minLengthFieldDescription: number | null;
+  maxLengthFieldName: number | null;
+  maxLengthFieldDescription: number | null;
 }
 
 export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
-  const [select, setSelect] = useState("");
+  const [newField, setNewField] = useState(false);
   const { register, handleSubmit } = useForm<ISettingsForm>({
     defaultValues: {
-      nameCollection: "CollectionPage NAME",
-      type: "",
-      minLength: null,
-      maxLength: null,
+      nameCollection: "Names",
+      nameFieldName: "",
+      nameFieldDescription: "",
+      typeFieldName: "",
+      typeFieldDescription: "",
+      minLengthFieldName: null,
+      minLengthFieldDescription: null,
+      maxLengthFieldName: null,
+      maxLengthFieldDescription: null,
     },
   });
 
@@ -74,51 +73,39 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
               {...register("nameCollection", { required: true })}
             />
             <Typography>Fields</Typography>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMore />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>Name</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Stack direction="row" flexWrap="wrap" gap="10px">
-                  <FormControl sx={{ minWidth: "222px" }}>
-                    <InputLabel>Type</InputLabel>
-                    <Select
-                      {...register("type", { required: true })}
-                      value={select}
-                      label="Type"
-                      onChange={({ target: { value } }) => setSelect(value)}
-                    >
-                      <MenuItem value="string">String</MenuItem>
-                      <MenuItem value="number">Number</MenuItem>
-                      <MenuItem value="boolean">Boolean</MenuItem>
-                      <MenuItem value="date">Data</MenuItem>
-                      <MenuItem value="text">Text</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <TextField
-                    label="Name"
-                    {...register("nameCollection", { required: true })}
-                  />
-                  <TextField
-                    label="Min length"
-                    {...register("minLength", { required: true })}
-                  />
-                  <TextField
-                    label="Max length"
-                    {...register("maxLength", { required: true })}
-                  />
-                </Stack>
-              </AccordionDetails>
-            </Accordion>
+            <Stack gap="4px">
+              <CollectionFields
+                fieldName="Name"
+                registerType={register("typeFieldName")}
+                registerName={register("nameFieldName")}
+                registerMinLength={register("minLengthFieldName")}
+                registerMaxLength={register("maxLengthFieldName")}
+              />
+              <CollectionFields
+                fieldName="Description"
+                registerType={register("typeFieldDescription")}
+                registerName={register("nameFieldDescription")}
+                registerMinLength={register("minLengthFieldDescription")}
+                registerMaxLength={register("maxLengthFieldDescription")}
+              />
+              {newField && (
+                <CollectionFields
+                  fieldName="New field"
+                  registerType={register("typeFieldDescription")}
+                  registerName={register("nameFieldDescription")}
+                  registerMinLength={register("minLengthFieldDescription")}
+                  registerMaxLength={register("maxLengthFieldDescription")}
+                />
+              )}
+              {/*<CollectionFields fieldName="Theme" register={register} />*/}
+              {/*<CollectionFields fieldName="Image" register={register} />*/}
+            </Stack>
             <Button
               variant="contained"
               size="small"
               sx={{ textTransform: "none" }}
               fullWidth
+              onClick={() => setNewField(true)}
             >
               <Add sx={{ width: "14px" }} /> New field
             </Button>

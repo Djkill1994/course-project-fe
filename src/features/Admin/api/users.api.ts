@@ -4,7 +4,7 @@ import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
 export interface IUser {
   id: string;
   email: string;
-  username: string;
+  userName: string;
   banned: boolean;
   avatarSrc: string;
   role: string;
@@ -15,13 +15,6 @@ export const usersApi = createApi({
   baseQuery: authFetchBaseQuery,
   tagTypes: ["User"],
   endpoints: (build) => ({
-    authRefresh: build.query<IUser, void>({
-      query() {
-        return {
-          url: "/auth/auth-user",
-        };
-      },
-    }),
     getUsers: build.query<IUser[], void>({
       query() {
         return {
@@ -88,7 +81,6 @@ export const {
   useDeleteUserMutation,
   useBanUserMutation,
   useUnBanUserMutation,
-  useAuthRefreshQuery,
   useAppointAdminMutation,
   useRemoveAdminMutation,
 } = usersApi;

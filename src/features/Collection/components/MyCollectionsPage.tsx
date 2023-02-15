@@ -37,10 +37,10 @@ export const MyCollectionsPage: FC = () => {
             )}
           </Button>
           <Grid container spacing={2}>
-            {data?.map(({ name, _id, theme, description, imgSrc, date }) => (
-              <Grid key={_id} item xs={4}>
+            {data?.map(({ name, id, theme, description, imgSrc, date }) => (
+              <Grid key={id} item xs={4}>
                 <CollectionCard
-                  _id={_id}
+                  id={id}
                   name={name}
                   theme={theme}
                   description={description}

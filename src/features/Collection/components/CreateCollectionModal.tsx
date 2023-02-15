@@ -7,6 +7,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
+import defaultImages from "../../../../public/defaulImg.jpg";
 
 interface IProps {
   onClose: () => void;
@@ -39,9 +40,7 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
         body: img,
       }
     ).then((resp) => resp.json());
-    const uploadImg = res.url
-      ? res.url
-      : "https://res.cloudinary.com/djkill/image/upload/v1676294851/cld-sample-2.jpg";
+    const uploadImg = res.url ? res.url : defaultImages;
     createCollection({
       name: data.name,
       imgSrc: uploadImg,
@@ -67,6 +66,7 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
         bgcolor="#fafafa"
         p="18px"
         borderRadius="5px"
+        // todo зарефачить видс
         width="350px"
       >
         <Typography variant="h6" fontWeight="600">

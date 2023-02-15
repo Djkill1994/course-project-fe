@@ -26,7 +26,7 @@ export const CollectionCard: FC<ICollection> = ({
   date,
   name,
   imgSrc,
-  _id,
+  id,
 }) => {
   const [isOpened, setIsOpened] = useState<null | HTMLElement>(null);
   const { t } = useTranslation();
@@ -54,21 +54,21 @@ export const CollectionCard: FC<ICollection> = ({
         >
           <MenuItem
             onClick={() =>
-              navigate(generatePath(ROUTE_PATHS.CollectionId, { id: _id }), {
+              navigate(generatePath(ROUTE_PATHS.CollectionId, { id: id }), {
                 replace: true,
               })
             }
           >
             {t("features.CollectionPage.CollectionCard.buttons.edit")}
           </MenuItem>
-          <MenuItem onClick={() => deleteCollection(_id)}>
+          <MenuItem onClick={() => deleteCollection(id)}>
             {t("general.delete")}
           </MenuItem>
         </Menu>
         {/*todo переход к станице айтемов коллекции*/}
         <Box
           onClick={() =>
-            navigate(generatePath(ROUTE_PATHS.CollectionId, { id: _id }), {
+            navigate(generatePath(ROUTE_PATHS.CollectionId, { id: id }), {
               replace: true,
             })
           }

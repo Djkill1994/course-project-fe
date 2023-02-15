@@ -11,7 +11,7 @@ export const registrationApi = createApi({
     registration: build.mutation<
       IRegistrationApi,
       {
-        username: string;
+        userName: string;
         email: string;
         password: string;
         passwordConfirm: string;

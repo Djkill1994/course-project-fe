@@ -5,12 +5,14 @@ import { usersApi } from "./features/Admin/api/users.api";
 import { rtkQueryMessenger } from "./common/middleware/rtkQueryMessenger";
 import { registrationApi } from "./features/Auth/api/registration.api";
 import { collectionApi } from "./features/Collection/api/collections.api";
+import { userApi } from "./features/Profile/api/user.api";
 
 export const store = configureStore({
   reducer: {
     [registrationApi.reducerPath]: registrationApi.reducer,
     [loginApi.reducerPath]: loginApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
     [collectionApi.reducerPath]: collectionApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -19,6 +21,7 @@ export const store = configureStore({
       registrationApi.middleware,
       loginApi.middleware,
       usersApi.middleware,
+      userApi.middleware,
       collectionApi.middleware
     ),
 });

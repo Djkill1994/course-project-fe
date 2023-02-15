@@ -34,7 +34,7 @@ export const LoginForm: FC = () => {
     if (data?.token) {
       localStorage.setItem(AUTH_TOKEN_KEY, data.token ?? "");
       usersApi.util.invalidateTags(["User"]);
-      navigate(ROUTE_PATHS.Admin, { replace: true });
+      navigate(ROUTE_PATHS.Home, { replace: true });
     }
   }, [data?.token]);
 

@@ -5,6 +5,7 @@ import {
   TableContainer,
   TableRow,
   Paper,
+  Avatar,
 } from "@mui/material";
 import { Block, CheckCircleOutline } from "@mui/icons-material";
 import { UsersTableHeader } from "./UsersTableHeader";
@@ -23,12 +24,14 @@ export const UsersTable: FC = () => {
         <Table aria-labelledby="tableTitle">
           <UsersTableHeader />
           <TableBody>
-            {data?.map(({ username, id, avatarSrc, banned, role }) => {
+            {data?.map(({ userName, id, avatarSrc, banned, role }) => {
               return (
                 <TableRow key={id}>
                   <TableCell scope="row">{id}</TableCell>
-                  <TableCell>{avatarSrc}</TableCell>
-                  <TableCell>{username}</TableCell>
+                  <TableCell>
+                    <Avatar src={avatarSrc} />
+                  </TableCell>
+                  <TableCell>{userName}</TableCell>
                   <TableCell>
                     {banned ? (
                       <Block color="error" />

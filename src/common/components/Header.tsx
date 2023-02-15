@@ -1,8 +1,8 @@
 import { AppBar, Avatar, Button, Stack, IconButton, Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, generatePath } from "react-router-dom";
 import { FC } from "react";
 import { Logout } from "@mui/icons-material";
-import { useAuthRefreshQuery } from "../../features/Admin/api/users.api";
+import { useAuthRefreshQuery } from "../../features/Profile/api/user.api";
 import { HeaderSelectLeague } from "./HeaderSelectLeague";
 import { HeaderThemeSwitcher } from "./HeaderThemeSwitcher";
 import { ROUTE_PATHS } from "../../App";
@@ -35,7 +35,12 @@ export const Header: FC = () => {
           {data && (
             <IconButton
               onClick={() =>
-                navigate(ROUTE_PATHS.Collection, { replace: true })
+                navigate(
+                  generatePath(ROUTE_PATHS.MyProfile, { id: data?.id }),
+                  {
+                    replace: true,
+                  }
+                )
               }
             >
               <Avatar src={data?.avatarSrc} />

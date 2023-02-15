@@ -10,6 +10,7 @@ import { HomePage } from "./features/Home/components/HomePage";
 import { MyCollectionsPage } from "./features/Collection/components/MyCollectionsPage";
 import { CollectionPage } from "./features/Collection/components/CollectionPage";
 import { Header } from "./common/components/Header";
+import { ProfilePage } from "./features/Profile/components/ProfilePage";
 
 export const ROUTE_PATHS = {
   Home: "/",
@@ -18,6 +19,7 @@ export const ROUTE_PATHS = {
   Admin: "/admin",
   Collection: "/collections",
   CollectionId: "/collections/:id",
+  MyProfile: "/me/:id",
 };
 
 export const App: FC = () => {
@@ -32,6 +34,7 @@ export const App: FC = () => {
             path={ROUTE_PATHS.Registration}
             element={<RegistrationPage />}
           />
+          <Route path={ROUTE_PATHS.MyProfile} element={<ProfilePage />} />
           <Route path={ROUTE_PATHS.Home} element={<HomePage />} />
           <Route
             path={ROUTE_PATHS.Collection}
