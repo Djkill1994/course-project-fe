@@ -24,7 +24,7 @@
     },
     "CollectionPage": {
       "CollectionTableToolbar": {
-        "collectionsLink": "Коллекция",
+        "collectionsLink": "Коллекции",
         "newItem": "Новый элемент"
       },
       "CollectionTableHeader": {
@@ -89,6 +89,19 @@
           "admin": "Администратор"
         }
       }
+    },
+    "ProfilePage": {
+      "buttons": {
+        "deleteUser": "Удалить пользователя",
+        "sendForm" : "Отправить изменения",
+        "myCollections": "Мои коллекции"
+      },
+      "errors": {
+        "email": "Не корректная почта",
+        "userName": "Не корректное имя"
+      },
+      "name": "Имя",
+      "email": "Почта"
     }
   }
 }

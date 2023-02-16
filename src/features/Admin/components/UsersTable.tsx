@@ -45,7 +45,7 @@ export const UsersTable: FC = () => {
                       : t("features.Admin.UsersTable.role.user")}
                   </TableCell>
                   <TableCell>
-                    <UserActions userId={id} role={role} />
+                    <UserActions userId={id} role={role} banned={banned} />
                   </TableCell>
                 </TableRow>
               );

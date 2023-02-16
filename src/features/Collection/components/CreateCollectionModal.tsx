@@ -64,10 +64,8 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
         m="auto"
         gap="12px"
         bgcolor="#fafafa"
-        p="18px"
+        p="22px"
         borderRadius="5px"
-        // todo зарефачить видс
-        width="350px"
       >
         <Typography variant="h6" fontWeight="600">
           {t("features.CollectionPage.CreateCollectionModal.title")}

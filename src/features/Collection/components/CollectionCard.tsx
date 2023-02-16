@@ -83,7 +83,6 @@ export const CollectionCard: FC<ICollection> = ({
             <Typography variant="body1">{description}</Typography>
           </CardContent>
           <Box display="flex" justifyContent="flex-end" p="5px 15px">
-            {/*todo зарефачить date*/}
             <Typography variant="body2" color="text.secondary">
               {date}
             </Typography>

@@ -13,46 +13,40 @@ import { useTranslation } from "react-i18next";
 interface IUserActions {
   userId: string;
   role: string;
+  banned: boolean;
 }
 
-// todo зарефачить useState и Menu
-
-export const UserActions: FC<IUserActions> = ({ userId, role }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+export const UserActions: FC<IUserActions> = ({ userId, role, banned }) => {
+  const [isOpened, setIsOpened] = useState<null | HTMLElement>(null);
   const { t } = useTranslation();
   const [deleteUser] = useDeleteUserMutation();
   const [banUser] = useBanUserMutation();
   const [unBanUser] = useUnBanUserMutation();
   const [appointAdmin] = useAppointAdminMutation();
   const [removeAdmin] = useRemoveAdminMutation();
-
+  // todo при удалении себя редирект
   return (
     <Box>
-      <IconButton
-        aria-controls={anchorEl ? "long-menu" : undefined}
-        aria-expanded={anchorEl ? "true" : undefined}
-        aria-haspopup="true"
-        onClick={({ currentTarget }) => setAnchorEl(currentTarget)}
-      >
+      <IconButton onClick={({ currentTarget }) => setIsOpened(currentTarget)}>
         <MoreVert />
       </IconButton>
       <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
+        anchorEl={isOpened}
+        open={Boolean(isOpened)}
+        onClose={() => setIsOpened(null)}
       >
         <MenuItem onClick={() => deleteUser(userId)}>
           {t("features.Admin.UsersActions.buttons.delete")}
         </MenuItem>
-        <MenuItem onClick={() => banUser(userId)}>
-          {t("features.Admin.UsersActions.buttons.ban")}
-        </MenuItem>
-        <MenuItem onClick={() => unBanUser(userId)}>
-          {t("features.Admin.UsersActions.buttons.unBan")}
-        </MenuItem>
+        {banned ? (
+          <MenuItem onClick={() => unBanUser(userId)}>
+            {t("features.Admin.UsersActions.buttons.unBan")}
+          </MenuItem>
+        ) : (
+          <MenuItem onClick={() => banUser(userId)}>
+            {t("features.Admin.UsersActions.buttons.ban")}
+          </MenuItem>
+        )}
         {role === "user" ? (
           <MenuItem onClick={() => appointAdmin(userId)}>
             {t("features.Admin.UsersActions.buttons.appointAdmin")}

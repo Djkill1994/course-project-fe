@@ -24,7 +24,7 @@
     },
     "CollectionPage": {
       "CollectionTableToolbar": {
-        "collectionsLink": "Collection",
+        "collectionsLink": "Collections",
         "newItem": "New item"
       },
       "CollectionTableHeader": {
@@ -89,6 +89,19 @@
           "admin": "Admin"
         }
       }
+    },
+    "ProfilePage": {
+      "buttons": {
+        "deleteUser": "Delete user",
+        "sendForm" : "Submit Changes",
+        "myCollections": "My collections"
+      },
+      "errors": {
+        "email": "Not correct Email",
+        "userName": "Not correct Name"
+      },
+      "name": "Name",
+      "email": "Email"
     }
   }
 }

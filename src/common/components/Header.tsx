@@ -9,17 +9,13 @@ import { ROUTE_PATHS } from "../../App";
 import { HeaderSearchApp } from "./HeaderSearchApp";
 import { AUTH_TOKEN_KEY } from "../constans/localStorage";
 import { useTranslation } from "react-i18next";
+import { logOutUser } from "../utils/logOutUser";
 
 export const Header: FC = () => {
   const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const navigate = useNavigate();
   const { data } = useAuthRefreshQuery(undefined, { skip: !token });
   const { t } = useTranslation();
-
-  const logOut = (): void => {
-    localStorage.clear();
-    window.location.replace(ROUTE_PATHS.Login);
-  };
 
   return (
     <AppBar color="default" position="sticky">
@@ -53,7 +49,7 @@ export const Header: FC = () => {
           <HeaderThemeSwitcher />
           <Stack>
             {data ? (
-              <IconButton onClick={logOut}>
+              <IconButton onClick={logOutUser}>
                 <Logout />
               </IconButton>
             ) : (

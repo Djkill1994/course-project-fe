@@ -11,6 +11,8 @@ import { MyCollectionsPage } from "./features/Collection/components/MyCollection
 import { CollectionPage } from "./features/Collection/components/CollectionPage";
 import { Header } from "./common/components/Header";
 import { ProfilePage } from "./features/Profile/components/ProfilePage";
+import { Item } from "./features/Items/components/Item";
+import { Items } from "./features/Items/components/Items";
 
 export const ROUTE_PATHS = {
   Home: "/",
@@ -20,7 +22,10 @@ export const ROUTE_PATHS = {
   Collection: "/collections",
   CollectionId: "/collections/:id",
   MyProfile: "/me/:id",
+  Item: "/item",
 };
+
+// todo  настроить роуты , добавить проверку на авторизированного пользователя , добавить Collapse на карточки коллекции и айтема
 
 export const App: FC = () => {
   return (
@@ -49,6 +54,7 @@ export const App: FC = () => {
               </RequireAuth>
             }
           />
+          <Route path={ROUTE_PATHS.Item} element={<Items />} />
         </Routes>
       </Box>
     </Box>

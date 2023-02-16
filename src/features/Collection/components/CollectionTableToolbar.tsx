@@ -7,14 +7,13 @@ import {
   Button,
   Stack,
 } from "@mui/material";
-import { Add, Settings } from "@mui/icons-material";
+import { Add, Settings, KeyboardArrowLeft } from "@mui/icons-material";
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../App";
 import { CollectionSettingsDrawer } from "./CollectionSettingsDrawer";
 import { useModal } from "../../../common/hooks/useModal";
 import { useTranslation } from "react-i18next";
-import { ICollection } from "../api/collections.api";
 
 interface IProps {
   collectionName: string | undefined;
@@ -35,9 +34,12 @@ export const CollectionTableToolbar: FC<IProps> = ({ collectionName }) => {
             color="inherit"
             sx={{ cursor: "pointer" }}
           >
-            {t(
-              "features.CollectionPage.CollectionTableToolbar.collectionsLink"
-            )}
+            <Stack direction="row">
+              <KeyboardArrowLeft />
+              {t(
+                "features.CollectionPage.CollectionTableToolbar.collectionsLink"
+              )}
+            </Stack>
           </Link>
           <Typography color="text.primary">{collectionName}</Typography>
         </Breadcrumbs>

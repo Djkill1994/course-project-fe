@@ -20,10 +20,10 @@ import { AUTH_TOKEN_KEY } from "../../../common/constans/localStorage";
 import { DeleteForever, Edit } from "@mui/icons-material";
 import { ROUTE_PATHS } from "../../../App";
 import { useNavigate } from "react-router-dom";
+import { logOutUser } from "../../../common/utils/logOutUser";
+import { EMAIL_REGEX } from "../../../common/constans/regex";
 
-// todo перевести i18n
-
-interface IProfileEditing {
+interface IProfileEditingForm {
   userName: string;
   email: string;
   file: File[];
@@ -37,15 +37,14 @@ export const ProfilePage: FC = () => {
   const [deleteUser, { isSuccess: isSuccessDelete }] = useDeleteUserMutation();
   const [edit, setEdit] = useState<boolean>(false);
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IProfileEditing>();
-  const { t } = useTranslation();
+  } = useForm<IProfileEditingForm>();
 
-  const onSubmit: SubmitHandler<IProfileEditing> = async (data) => {
+  const onSubmit: SubmitHandler<IProfileEditingForm> = async (data) => {
     const img = new FormData();
     img.append("file", data.file[0]);
     img.append("upload_preset", "course-prt");
@@ -64,14 +63,13 @@ export const ProfilePage: FC = () => {
       avatarSrc: uploadImg,
     });
   };
-  // todo LogOut и delete user одна логика , совместить
+
   useEffect(() => {
     if (isSuccessEditing) {
       setEdit(false);
     }
     if (isSuccessDelete) {
-      localStorage.clear();
-      window.location.replace(ROUTE_PATHS.Login);
+      logOutUser();
     }
   }, [isSuccessEditing, isSuccessDelete]);
 
@@ -80,7 +78,9 @@ export const ProfilePage: FC = () => {
       <Stack alignItems="flex-end" p="0 12px">
         <IconButton onClick={() => deleteUser(data!.id)}>
           <DeleteForever />
-          <Typography variant="body2">Delete user</Typography>
+          <Typography variant="body2">
+            {t("features.ProfilePage.buttons.deleteUser")}
+          </Typography>
         </IconButton>
       </Stack>
       <Stack
@@ -111,7 +111,6 @@ export const ProfilePage: FC = () => {
               sx={{ width: "188px", height: "188px" }}
             />
           )}
-
           <IconButton onClick={() => setEdit((prev) => !prev)}>
             <Edit />
           </IconButton>
@@ -119,20 +118,17 @@ export const ProfilePage: FC = () => {
         <Stack gap="12px">
           <Box>
             <Typography variant="body2" color="text.secondary">
-              Name
+              {t("features.ProfilePage.name")}
             </Typography>
             {edit ? (
               <TextField
                 {...register("userName", { required: true })}
                 error={!!errors.userName}
                 helperText={
-                  !!errors.userName &&
-                  t(
-                    "features.CollectionPage.CreateCollectionModal.errors.description"
-                  )
+                  !!errors.userName && t("features.ProfilePage.errors.userName")
                 }
                 size="small"
-                autoComplete="description"
+                autoComplete="userName"
                 defaultValue={data?.userName}
               />
             ) : (
@@ -141,20 +137,17 @@ export const ProfilePage: FC = () => {
           </Box>
           <Box>
             <Typography variant="body2" color="text.secondary">
-              Email
+              {t("features.ProfilePage.email")}
             </Typography>
             {edit ? (
               <TextField
-                {...register("email", { required: true })}
+                {...register("email", { required: true, pattern: EMAIL_REGEX })}
                 error={!!errors.email}
                 helperText={
-                  !!errors.email &&
-                  t(
-                    "features.CollectionPage.CreateCollectionModal.errors.description"
-                  )
+                  !!errors.email && t("features.ProfilePage.errors.email")
                 }
                 size="small"
-                autoComplete="description"
+                autoComplete="email"
                 defaultValue={data?.email}
               />
             ) : (
@@ -168,14 +161,14 @@ export const ProfilePage: FC = () => {
               type="submit"
               loading={isLoading}
             >
-              {t("features.CollectionPage.CreateCollectionModal.button.send")}
+              {t("features.ProfilePage.buttons.sendForm")}
             </LoadingButton>
           )}
           <Button
             variant="contained"
             onClick={() => navigate(ROUTE_PATHS.Collection, { replace: true })}
           >
-            My collections
+            {t("features.ProfilePage.buttons.myCollections")}
           </Button>
         </Stack>
       </Stack>
