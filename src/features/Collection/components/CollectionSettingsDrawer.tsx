@@ -11,41 +11,30 @@ import {
 import { FC, useState } from "react";
 import { Add, ChevronRight, DeleteForever } from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { CollectionFields } from "./CollectionFields";
+import { CollectionFields, ICollectionFieldsForm } from "./CollectionFields";
 
 interface IProps {
   onClose: () => void;
 }
 
+// {
+//   collection: ""
+//   name: {name: "", type: ""}
+//   description: {name: "", type: ""}
+//   optionalFields: []
+// }
+
 // todo перевести, зарефачить код, добавление полей доработать
 
 interface ISettingsForm {
-  nameCollection: string;
-  nameFieldName: string;
-  nameFieldDescription: string;
-  typeFieldName: string;
-  typeFieldDescription: string;
-  minLengthFieldName: number | null;
-  minLengthFieldDescription: number | null;
-  maxLengthFieldName: number | null;
-  maxLengthFieldDescription: number | null;
+  collectionName: string; //todo разобраться
+  name: ICollectionFieldsForm;
+  description: ICollectionFieldsForm;
+  optionalFields?: ICollectionFieldsForm[];
 }
 
 export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
-  const [newField, setNewField] = useState(false);
-  const { register, handleSubmit } = useForm<ISettingsForm>({
-    defaultValues: {
-      nameCollection: "Names",
-      nameFieldName: "",
-      nameFieldDescription: "",
-      typeFieldName: "",
-      typeFieldDescription: "",
-      minLengthFieldName: null,
-      minLengthFieldDescription: null,
-      maxLengthFieldName: null,
-      maxLengthFieldDescription: null,
-    },
-  });
+  const { register, handleSubmit, setValue, watch } = useForm<ISettingsForm>();
 
   const onSubmit: SubmitHandler<ISettingsForm> = (data) => {
     console.log(data);
@@ -70,33 +59,36 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
           <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
             <TextField
               label="Name"
-              {...register("nameCollection", { required: true })}
+              {...register("collectionName", { required: true })}
             />
             <Typography>Fields</Typography>
             <Stack gap="4px">
               <CollectionFields
-                fieldName="Name"
-                registerType={register("typeFieldName")}
-                registerName={register("nameFieldName")}
-                registerMinLength={register("minLengthFieldName")}
-                registerMaxLength={register("maxLengthFieldName")}
+                fieldName="name"
+                onChange={(fieldName, values) => setValue(fieldName, values)}
               />
               <CollectionFields
-                fieldName="Description"
-                registerType={register("typeFieldDescription")}
-                registerName={register("nameFieldDescription")}
-                registerMinLength={register("minLengthFieldDescription")}
-                registerMaxLength={register("maxLengthFieldDescription")}
+                fieldName="description"
+                onChange={(fieldName, values) => setValue(fieldName, values)}
               />
-              {newField && (
+              {watch("optionalFields")?.map((optionalField) => (
                 <CollectionFields
-                  fieldName="New field"
-                  registerType={register("typeFieldDescription")}
-                  registerName={register("nameFieldDescription")}
-                  registerMinLength={register("minLengthFieldDescription")}
-                  registerMaxLength={register("maxLengthFieldDescription")}
+                  fieldName={optionalField.name}
+                  onChange={(fieldName, values) =>
+                    setValue(optionalField.name, values)
+                  }
                 />
-              )}
+              ))}
+              {/*<CollectionFields*/}
+              {/*  fieldName="Description"*/}
+              {/*  onChange={}*/}
+              {/*/>*/}
+              {/*{newField && (*/}
+              {/*  <CollectionFields*/}
+              {/*    fieldName="New field"*/}
+              {/*    onChange={}*/}
+              {/*  />*/}
+              {/*)}*/}
               {/*<CollectionFields fieldName="Theme" register={register} />*/}
               {/*<CollectionFields fieldName="Image" register={register} />*/}
             </Stack>
@@ -105,7 +97,8 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
               size="small"
               sx={{ textTransform: "none" }}
               fullWidth
-              onClick={() => setNewField(true)}
+              //todo добавлять разные цифры то бы не повторялись
+              onClick={() => setValue("optionalFields", [{ name: "test1" }])}
             >
               <Add sx={{ width: "14px" }} /> New field
             </Button>

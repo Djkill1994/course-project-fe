@@ -12,23 +12,29 @@ import {
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import { useState, FC } from "react";
+import { useForm } from "react-hook-form";
+
+export interface ICollectionFieldsForm {
+  name: string;
+  type: string;
+  minLength?: number;
+  maxLength?: number;
+}
 
 interface IProps {
   fieldName: string;
-  registerType: any;
-  registerName: any;
-  registerMaxLength: any;
-  registerMinLength: any;
+  onChange: (fieldName: string, values: ICollectionFieldsForm) => void;
 }
 
-export const CollectionFields: FC<IProps> = ({
-  fieldName,
-  registerType,
-  registerName,
-  registerMinLength,
-  registerMaxLength,
-}) => {
-  const [select, setSelect] = useState("string");
+export const CollectionFields: FC<IProps> = ({ fieldName, onChange }) => {
+  const { register, watch } = useForm<ICollectionFieldsForm>({
+    defaultValues: {
+      name: fieldName,
+      type: "string",
+    },
+  });
+  const [select, setSelect] = useState("string"); //todo убрать юз стейт
+  watch((data) => onChange(fieldName, { name: data.name, type: data.type }));
 
   return (
     <Accordion>
@@ -44,7 +50,7 @@ export const CollectionFields: FC<IProps> = ({
           <FormControl sx={{ minWidth: "222px" }}>
             <InputLabel>Type</InputLabel>
             <Select
-              {...registerType}
+              {...register("type")}
               value={select}
               label="Type"
               onChange={({ target: { value } }) => setSelect(value)}
@@ -56,13 +62,13 @@ export const CollectionFields: FC<IProps> = ({
               <MenuItem value="text">Text</MenuItem>
             </Select>
           </FormControl>
-          <TextField label="Name" {...registerName} />
-          {select === "string" && (
-            <Stack gap="10px" direction="row">
-              <TextField label="Min length" {...registerMinLength} />
-              <TextField label="Max length" {...registerMaxLength} />
-            </Stack>
-          )}
+          <TextField label="Name" {...register("name")} />
+          {/*{select === "string" && (*/}
+          {/*  <Stack gap="10px" direction="row">*/}
+          {/*    <TextField label="Min length" {...register("minLength")} />*/}
+          {/*    <TextField label="Max length" {...register("maxLength")} />*/}
+          {/*  </Stack>*/}
+          {/*)}*/}
         </Stack>
       </AccordionDetails>
     </Accordion>

@@ -14,6 +14,7 @@ import { ROUTE_PATHS } from "../../../App";
 import { CollectionSettingsDrawer } from "./CollectionSettingsDrawer";
 import { useModal } from "../../../common/hooks/useModal";
 import { useTranslation } from "react-i18next";
+import { NewItemDrawer } from "./NewItemDrawer";
 
 interface IProps {
   collectionName: string | undefined;
@@ -21,7 +22,16 @@ interface IProps {
 
 export const CollectionTableToolbar: FC<IProps> = ({ collectionName }) => {
   const navigate = useNavigate();
-  const { isOpened, open, close } = useModal();
+  const {
+    isOpened: isOpenedSettings,
+    open: openSettings,
+    close: closeSettings,
+  } = useModal();
+  const {
+    isOpened: isOpenedNewItem,
+    open: openNewItem,
+    close: closeNewItem,
+  } = useModal();
   const { t } = useTranslation();
 
   return (
@@ -43,13 +53,15 @@ export const CollectionTableToolbar: FC<IProps> = ({ collectionName }) => {
           </Link>
           <Typography color="text.primary">{collectionName}</Typography>
         </Breadcrumbs>
-        <IconButton onClick={() => open()}>
+        <IconButton onClick={openSettings}>
           <Settings />
         </IconButton>
-        {isOpened && <CollectionSettingsDrawer onClose={close} />}
+        {isOpenedSettings && (
+          <CollectionSettingsDrawer onClose={closeSettings} />
+        )}
       </Stack>
       <Button
-        onClick={() => open()}
+        onClick={openNewItem}
         variant="contained"
         size="small"
         sx={{ textTransform: "none" }}
@@ -57,6 +69,7 @@ export const CollectionTableToolbar: FC<IProps> = ({ collectionName }) => {
         <Add sx={{ width: "14px" }} />
         {t("features.CollectionPage.CollectionTableToolbar.newItem")}
       </Button>
+      {isOpenedNewItem && <NewItemDrawer onClose={closeNewItem} />}
     </Toolbar>
   );
 };

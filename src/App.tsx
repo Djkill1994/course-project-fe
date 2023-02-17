@@ -22,10 +22,11 @@ export const ROUTE_PATHS = {
   Collection: "/collections",
   CollectionId: "/collections/:id",
   MyProfile: "/me/:id",
+  Items: "/items",
   Item: "/item",
 };
 
-// todo  настроить роуты , добавить проверку на авторизированного пользователя , добавить Collapse на карточки коллекции и айтема
+// todo добавить Collapse на карточки коллекции и айтема
 
 export const App: FC = () => {
   return (
@@ -39,13 +40,31 @@ export const App: FC = () => {
             path={ROUTE_PATHS.Registration}
             element={<RegistrationPage />}
           />
-          <Route path={ROUTE_PATHS.MyProfile} element={<ProfilePage />} />
           <Route path={ROUTE_PATHS.Home} element={<HomePage />} />
           <Route
-            path={ROUTE_PATHS.Collection}
-            element={<MyCollectionsPage />}
+            path={ROUTE_PATHS.MyProfile}
+            element={
+              <RequireAuth>
+                <ProfilePage />
+              </RequireAuth>
+            }
           />
-          <Route path={ROUTE_PATHS.CollectionId} element={<CollectionPage />} />
+          <Route
+            path={ROUTE_PATHS.Collection}
+            element={
+              <RequireAuth>
+                <MyCollectionsPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={ROUTE_PATHS.CollectionId}
+            element={
+              <RequireAuth>
+                <CollectionPage />
+              </RequireAuth>
+            }
+          />
           <Route
             path={ROUTE_PATHS.Admin}
             element={
@@ -54,7 +73,8 @@ export const App: FC = () => {
               </RequireAuth>
             }
           />
-          <Route path={ROUTE_PATHS.Item} element={<Items />} />
+          <Route path={ROUTE_PATHS.Items} element={<Items />} />
+          <Route path={ROUTE_PATHS.Item} element={<Item />} />
         </Routes>
       </Box>
     </Box>

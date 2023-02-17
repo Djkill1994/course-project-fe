@@ -1,4 +1,12 @@
-import { Box, Grid, TextField } from "@mui/material";
+import {
+  Box,
+  Grid,
+  TextField,
+  Avatar,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRegistrationMutation } from "../api/registration.api";
@@ -14,12 +22,15 @@ export interface IRegistrationForm {
   email: string;
   password: string;
   passwordConfirm: string;
+  avatarSrc: string;
 }
 
 export const RegistrationForm: FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<IRegistrationForm>();
   const [registerUser, { isSuccess, isLoading }] = useRegistrationMutation();
@@ -27,7 +38,13 @@ export const RegistrationForm: FC = () => {
   const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<IRegistrationForm> = (data) => {
-    registerUser(data);
+    registerUser({
+      userName: data.userName,
+      email: data.email,
+      password: data.password,
+      passwordConfirm: data.passwordConfirm,
+      avatarSrc: data.avatarSrc,
+    });
   };
 
   useEffect(() => {
@@ -37,12 +54,7 @@ export const RegistrationForm: FC = () => {
   }, [isSuccess]);
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      noValidate
-      sx={{ mt: 3 }}
-    >
+    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
       <Grid
         container
         spacing={1}
@@ -50,6 +62,35 @@ export const RegistrationForm: FC = () => {
         alignItems="center"
         flexDirection="column"
       >
+        <IconButton component="label">
+          <input
+            hidden
+            accept="image/*"
+            multiple
+            type="file"
+            onChange={async ({ target: { files } }) => {
+              const img = new FormData();
+              img.append("file", files[0]);
+              img.append("upload_preset", "course-prt");
+              img.append("cloud_name", "djkill");
+              const { url } = await fetch(
+                "https://api.cloudinary.com/v1_1/djkill/image/upload",
+                {
+                  method: "post",
+                  body: img,
+                }
+              ).then((resp) => resp.json());
+              setValue("avatarSrc", url);
+            }}
+          />
+          <Stack direction="column" alignItems="center">
+            <Avatar
+              src={watch("avatarSrc")}
+              sx={{ width: "66px", height: "66px" }}
+            />
+            <Typography variant="body2">Download avatar</Typography>
+          </Stack>
+        </IconButton>
         <Grid item xs={12} width="100%">
           <TextField
             {...register("email", { required: true, pattern: EMAIL_REGEX })}

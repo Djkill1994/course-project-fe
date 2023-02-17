@@ -68,7 +68,7 @@ export const CollectionCard: FC<ICollection> = ({
         {/*todo переход к станице айтемов коллекции*/}
         <Box
           onClick={() =>
-            navigate(generatePath(ROUTE_PATHS.CollectionId, { id: id }), {
+            navigate(generatePath(ROUTE_PATHS.Items), {
               replace: true,
             })
           }

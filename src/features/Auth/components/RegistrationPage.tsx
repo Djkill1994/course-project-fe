@@ -18,7 +18,7 @@ export const RegistrationPage: FC = () => {
         alignItems="flex-end"
         border="1px solid #dbdbdb"
         borderRadius="10px"
-        padding="30px"
+        padding="8px 30px"
       >
         <RegistrationForm />
         <Link
