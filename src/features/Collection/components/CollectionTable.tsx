@@ -11,6 +11,7 @@ import {
   Box,
   InputAdornment,
   Button,
+  Avatar,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { CollectionTableToolbar } from "./CollectionTableToolbar";
@@ -19,7 +20,7 @@ import { useTranslation } from "react-i18next";
 import { useGetCollectionQuery } from "../api/collections.api";
 import { useParams } from "react-router-dom";
 
-// todo зарефачить кнопку Delete
+// todo зарефачить кнопку Delete, зарефачить _id и в apicollection
 
 export const CollectionTable: FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
@@ -81,40 +82,43 @@ export const CollectionTable: FC = () => {
             rowCount={data?.items?.length || 0}
           />
           <TableBody>
-            {data?.items?.map(({ name, imgSrc, comments, tags, likes, id }) => {
-              const isItemSelected = selected.indexOf(id) !== -1;
-              const labelId = `enhanced-table-checkbox-${id}`;
-
-              return (
-                <TableRow
-                  hover
-                  onClick={(event) => handleClick(event, id)}
-                  role="checkbox"
-                  aria-checked={isItemSelected}
-                  tabIndex={-1}
-                  key={id}
-                  selected={isItemSelected}
-                >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      checked={isItemSelected}
-                      inputProps={{
-                        "aria-labelledby": labelId,
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell id={labelId} scope="row">
-                    {id}
-                  </TableCell>
-                  <TableCell>{name}</TableCell>
-                  <TableCell>{imgSrc}</TableCell>
-                  <TableCell>{comments}</TableCell>
-                  <TableCell>{tags}</TableCell>
-                  <TableCell>{likes}</TableCell>
-                </TableRow>
-              );
-            })}
+            {data?.items?.map(
+              ({ name, imgSrc, comments, tags, likes, _id }) => {
+                const isItemSelected = selected.indexOf(_id) !== -1;
+                const labelId = `enhanced-table-checkbox-${_id}`;
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, _id)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={_id}
+                    selected={isItemSelected}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        color="primary"
+                        checked={isItemSelected}
+                        inputProps={{
+                          "aria-labelledby": labelId,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell id={labelId} scope="row">
+                      {_id}
+                    </TableCell>
+                    <TableCell>{name}</TableCell>
+                    <TableCell>
+                      <Avatar src={imgSrc} />
+                    </TableCell>
+                    <TableCell>{comments}</TableCell>
+                    <TableCell>{tags}</TableCell>
+                    <TableCell>{likes}</TableCell>
+                  </TableRow>
+                );
+              }
+            )}
           </TableBody>
         </Table>
         {!!selected.length && <Button>{t("general.delete")}</Button>}

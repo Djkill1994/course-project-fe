@@ -11,16 +11,23 @@ import {
   Chip,
 } from "@mui/material";
 import { FC } from "react";
-import defaultImg from "../../../../public/defaulImg.jpg";
 import { FavoriteBorder } from "@mui/icons-material";
+import { useGetItemQuery } from "../api/item.api";
 // todo перевести i18n реализовать запросы на бэк и рендеринг компонентов, переделать немного по аналогии с pinterest комментарии добавить в Collapse
-export const Item: FC = () => {
+
+interface IProps {
+  id: string;
+}
+
+export const Item: FC<IProps> = ({ id }) => {
+  const { data } = useGetItemQuery(id);
+
   return (
     <Card sx={{ display: "flex", width: "80%", height: "480px", m: "auto" }}>
       <CardMedia
         component="img"
         sx={{ maxWidth: "55%" }}
-        image={defaultImg}
+        image={data?.imgSrc}
         alt="Item images"
       />
       <Box display="flex" flexDirection="column" width="100%">
@@ -29,18 +36,12 @@ export const Item: FC = () => {
             <Stack direction="row" alignItems="center" gap="8px">
               <Avatar />
               <Typography>UserName</Typography>
+              <Typography>{data?.name}</Typography>
             </Stack>
             <Stack gap="4px" flexWrap="wrap" direction="row">
               <Chip label="Tatto" variant="outlined" />
               <Chip label="Skecth" variant="outlined" />
               <Chip label="Nordic" variant="outlined" />
-              <Chip label="Clickable" variant="outlined" />
-              <Chip label="Clickable" variant="outlined" />
-              <Chip label="Clickable" variant="outlined" />
-              <Chip label="Clickable" variant="outlined" />
-              <Chip label="Clickable" variant="outlined" />
-              <Chip label="Clickable" variant="outlined" />
-              <Chip label="Clickable" variant="outlined" />
             </Stack>
             <Box>
               Comments

@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
 
 export interface IItem {
-  id: string;
+  _id: string;
   name: string;
   imgSrc: string;
   comments: [];

@@ -1,33 +1,20 @@
-import {
-  Box,
-  Grid,
-  Breadcrumbs,
-  Link,
-  Typography,
-  Stack,
-  Modal,
-} from "@mui/material";
+import { Box, Grid, Breadcrumbs, Link, Typography, Stack } from "@mui/material";
 import { FC } from "react";
 import { ItemCard } from "./ItemCard";
 import { ROUTE_PATHS } from "../../../App";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { KeyboardArrowLeft } from "@mui/icons-material";
-import { Item } from "./Item";
-import { useModal } from "../../../common/hooks/useModal";
+import { useGetItemsQuery } from "../api/item.api";
 
 export const Items: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { isOpened, open, close } = useModal();
+  const params = useParams();
+  const { data } = useGetItemsQuery(params.id as string);
 
   return (
     <Box p="0 22px">
-      {isOpened && (
-        <Modal open onClose={close} sx={{ display: "flex" }}>
-          <Item />
-        </Modal>
-      )}
       <Breadcrumbs sx={{ pb: "12px" }}>
         <Link
           onClick={() => navigate(ROUTE_PATHS.Collection, { replace: true })}
@@ -45,18 +32,11 @@ export const Items: FC = () => {
         <Typography color="text.primary">collectionName</Typography>
       </Breadcrumbs>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
-          <ItemCard open={open} />
-        </Grid>
-        <Grid item xs={4}>
-          <ItemCard open={open} />
-        </Grid>
-        <Grid item xs={4}>
-          <ItemCard open={open} />
-        </Grid>
-        <Grid item xs={4}>
-          <ItemCard open={open} />
-        </Grid>
+        {data?.map(({ name, imgSrc, id }) => (
+          <Grid key={id} item xs={4}>
+            <ItemCard open={open} name={name} imgSrc={imgSrc} id={id} />
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );

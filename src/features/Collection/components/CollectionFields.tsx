@@ -11,12 +11,12 @@ import {
   TextField,
 } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
-import { useState, FC } from "react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 
 export interface ICollectionFieldsForm {
-  name: string;
-  type: string;
+  name: string | undefined;
+  type: string | undefined;
   minLength?: number;
   maxLength?: number;
 }
@@ -33,7 +33,6 @@ export const CollectionFields: FC<IProps> = ({ fieldName, onChange }) => {
       type: "string",
     },
   });
-  const [select, setSelect] = useState("string"); //todo убрать юз стейт
   watch((data) => onChange(fieldName, { name: data.name, type: data.type }));
 
   return (
@@ -49,12 +48,7 @@ export const CollectionFields: FC<IProps> = ({ fieldName, onChange }) => {
         <Stack direction="row" flexWrap="wrap" gap="10px">
           <FormControl sx={{ minWidth: "222px" }}>
             <InputLabel>Type</InputLabel>
-            <Select
-              {...register("type")}
-              value={select}
-              label="Type"
-              onChange={({ target: { value } }) => setSelect(value)}
-            >
+            <Select {...register("type")} label="Type">
               <MenuItem value="string">String</MenuItem>
               <MenuItem value="number">Number</MenuItem>
               <MenuItem value="boolean">Boolean</MenuItem>

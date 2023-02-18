@@ -8,7 +8,7 @@ import {
   IconButton,
   Drawer,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Add, ChevronRight, DeleteForever } from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CollectionFields, ICollectionFieldsForm } from "./CollectionFields";
@@ -17,19 +17,12 @@ interface IProps {
   onClose: () => void;
 }
 
-// {
-//   collection: ""
-//   name: {name: "", type: ""}
-//   description: {name: "", type: ""}
-//   optionalFields: []
-// }
-
-// todo перевести, зарефачить код, добавление полей доработать
+// todo перевести, зарефачить код
 
 interface ISettingsForm {
-  collectionName: string; //todo разобраться
-  name: ICollectionFieldsForm;
-  description: ICollectionFieldsForm;
+  collectionName: string;
+  name: ICollectionFieldsForm | string;
+  description: ICollectionFieldsForm | string;
   optionalFields?: ICollectionFieldsForm[];
 }
 
@@ -71,26 +64,23 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
                 fieldName="description"
                 onChange={(fieldName, values) => setValue(fieldName, values)}
               />
+              <CollectionFields
+                fieldName="theme"
+                onChange={(fieldName, values) => setValue(fieldName, values)}
+              />
+              <CollectionFields
+                fieldName="image"
+                onChange={(fieldName, values) => setValue(fieldName, values)}
+              />
               {watch("optionalFields")?.map((optionalField) => (
                 <CollectionFields
+                  key={optionalField.name}
                   fieldName={optionalField.name}
                   onChange={(fieldName, values) =>
                     setValue(optionalField.name, values)
                   }
                 />
               ))}
-              {/*<CollectionFields*/}
-              {/*  fieldName="Description"*/}
-              {/*  onChange={}*/}
-              {/*/>*/}
-              {/*{newField && (*/}
-              {/*  <CollectionFields*/}
-              {/*    fieldName="New field"*/}
-              {/*    onChange={}*/}
-              {/*  />*/}
-              {/*)}*/}
-              {/*<CollectionFields fieldName="Theme" register={register} />*/}
-              {/*<CollectionFields fieldName="Image" register={register} />*/}
             </Stack>
             <Button
               variant="contained"
@@ -98,7 +88,9 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
               sx={{ textTransform: "none" }}
               fullWidth
               //todo добавлять разные цифры то бы не повторялись
-              onClick={() => setValue("optionalFields", [{ name: "test1" }])}
+              onClick={() =>
+                setValue("optionalFields", [{ name: "new field 1" }])
+              }
             >
               <Add sx={{ width: "14px" }} /> New field
             </Button>

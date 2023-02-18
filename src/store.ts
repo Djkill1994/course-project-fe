@@ -6,6 +6,7 @@ import { rtkQueryMessenger } from "./common/middleware/rtkQueryMessenger";
 import { registrationApi } from "./features/Auth/api/registration.api";
 import { collectionApi } from "./features/Collection/api/collections.api";
 import { userApi } from "./features/Profile/api/user.api";
+import { itemApi } from "./features/Items/api/item.api";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     [usersApi.reducerPath]: usersApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [collectionApi.reducerPath]: collectionApi.reducer,
+    [itemApi.reducerPath]: itemApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -22,7 +24,8 @@ export const store = configureStore({
       loginApi.middleware,
       usersApi.middleware,
       userApi.middleware,
-      collectionApi.middleware
+      collectionApi.middleware,
+      itemApi.middleware
     ),
 });
 

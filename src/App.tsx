@@ -20,9 +20,9 @@ export const ROUTE_PATHS = {
   Registration: "/registration",
   Admin: "/admin",
   Collection: "/collections",
-  CollectionId: "/collections/:id",
+  CollectionId: "/collection/:id",
   MyProfile: "/me/:id",
-  Items: "/items",
+  Items: "/collection/:id/items",
   Item: "/item",
 };
 
