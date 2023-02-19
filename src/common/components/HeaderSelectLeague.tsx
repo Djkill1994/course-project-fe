@@ -9,7 +9,7 @@ export const HeaderSelectLeague: FC = () => {
     <Button
       onClick={() => i18n.changeLanguage(i18n.language === "en" ? "ru" : "en")}
       variant="outlined"
-      size="small"
+      sx={{ width: "16px", height: "22px" }}
     >
       {i18n.language === "en" ? "Eng" : "Рус"}
     </Button>

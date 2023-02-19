@@ -34,7 +34,7 @@ export const Items: FC = () => {
       <Grid container spacing={2}>
         {data?.map(({ name, imgSrc, id }) => (
           <Grid key={id} item xs={4}>
-            <ItemCard open={open} name={name} imgSrc={imgSrc} id={id} />
+            <ItemCard name={name} imgSrc={imgSrc} id={id} />
           </Grid>
         ))}
       </Grid>

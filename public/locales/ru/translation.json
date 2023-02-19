@@ -3,7 +3,9 @@
     "signUp": "Регистрация",
     "logIn": "Войти",
     "search": "Поиск",
-    "delete": "Удалить"
+    "delete": "Удалить",
+    "collections": "Коллекции",
+    "home": "Главная"
   },
   "features": {
     "Auth": {

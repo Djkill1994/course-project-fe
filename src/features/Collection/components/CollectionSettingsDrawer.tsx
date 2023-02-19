@@ -12,22 +12,31 @@ import { FC } from "react";
 import { Add, ChevronRight, DeleteForever } from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CollectionFields, ICollectionFieldsForm } from "./CollectionFields";
+import { useGetCollectionQuery } from "../api/collections.api";
+import { useParams } from "react-router-dom";
 
 interface IProps {
   onClose: () => void;
 }
 
-// todo перевести, зарефачить код
+// todo перевести, зарефачить код,
 
 interface ISettingsForm {
   collectionName: string;
-  name: ICollectionFieldsForm | string;
-  description: ICollectionFieldsForm | string;
+  fields: ICollectionFieldsForm[];
   optionalFields?: ICollectionFieldsForm[];
 }
 
 export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
-  const { register, handleSubmit, setValue, watch } = useForm<ISettingsForm>();
+  const params = useParams();
+  const { data } = useGetCollectionQuery(params.id as string);
+  const { register, handleSubmit, setValue, watch } = useForm<ISettingsForm>({
+    defaultValues: {
+      collectionName: data?.name,
+      fields: data?.fields,
+      optionalFields: data?.optionalFields,
+    },
+  });
 
   const onSubmit: SubmitHandler<ISettingsForm> = (data) => {
     console.log(data);
@@ -56,29 +65,18 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
             />
             <Typography>Fields</Typography>
             <Stack gap="4px">
-              <CollectionFields
-                fieldName="name"
-                onChange={(fieldName, values) => setValue(fieldName, values)}
-              />
-              <CollectionFields
-                fieldName="description"
-                onChange={(fieldName, values) => setValue(fieldName, values)}
-              />
-              <CollectionFields
-                fieldName="theme"
-                onChange={(fieldName, values) => setValue(fieldName, values)}
-              />
-              <CollectionFields
-                fieldName="image"
-                onChange={(fieldName, values) => setValue(fieldName, values)}
-              />
+              {watch("fields")?.map((field) => (
+                <CollectionFields
+                  key={field.name}
+                  defaultValue={field}
+                  onChange={(value) => setValue("fields", [value])}
+                />
+              ))}
               {watch("optionalFields")?.map((optionalField) => (
                 <CollectionFields
                   key={optionalField.name}
-                  fieldName={optionalField.name}
-                  onChange={(fieldName, values) =>
-                    setValue(optionalField.name, values)
-                  }
+                  defaultValue={optionalField}
+                  onChange={(value) => setValue("optionalFields", [value])}
                 />
               ))}
             </Stack>
@@ -89,7 +87,9 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
               fullWidth
               //todo добавлять разные цифры то бы не повторялись
               onClick={() =>
-                setValue("optionalFields", [{ name: "new field 1" }])
+                setValue("optionalFields", [
+                  { name: "new field 1", type: "string" },
+                ])
               }
             >
               <Add sx={{ width: "14px" }} /> New field

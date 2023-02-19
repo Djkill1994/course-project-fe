@@ -3,7 +3,9 @@
     "signUp": "Sign up",
     "logIn": "Log in",
     "search": "Search",
-    "delete": "Delete"
+    "delete": "Delete",
+    "collections": "Collections",
+    "home": "Home"
   },
   "features": {
     "Auth": {

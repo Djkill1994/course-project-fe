@@ -1,8 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
+import { ICollectionFieldsForm } from "../components/CollectionFields";
 
 export interface IItem {
-  _id: string;
+  id: string;
   name: string;
   imgSrc: string;
   comments: [];
@@ -12,6 +13,8 @@ export interface IItem {
 
 export interface ICollection {
   id: string;
+  fields: ICollectionFieldsForm[];
+  optionFields: ICollectionFieldsForm[];
   name: string;
   description: string;
   theme: string;

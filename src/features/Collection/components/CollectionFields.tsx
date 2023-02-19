@@ -15,25 +15,22 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 
 export interface ICollectionFieldsForm {
-  name: string | undefined;
-  type: string | undefined;
+  name: string;
+  type: string;
   minLength?: number;
   maxLength?: number;
 }
 
 interface IProps {
-  fieldName: string;
-  onChange: (fieldName: string, values: ICollectionFieldsForm) => void;
+  defaultValue: ICollectionFieldsForm;
+  onChange: (values: ICollectionFieldsForm) => void;
 }
 
-export const CollectionFields: FC<IProps> = ({ fieldName, onChange }) => {
+export const CollectionFields: FC<IProps> = ({ defaultValue, onChange }) => {
   const { register, watch } = useForm<ICollectionFieldsForm>({
-    defaultValues: {
-      name: fieldName,
-      type: "string",
-    },
+    defaultValues: defaultValue,
   });
-  watch((data) => onChange(fieldName, { name: data.name, type: data.type }));
+  watch((data) => onChange(data as ICollectionFieldsForm));
 
   return (
     <Accordion>
@@ -42,13 +39,17 @@ export const CollectionFields: FC<IProps> = ({ fieldName, onChange }) => {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography>{fieldName}</Typography>
+        <Typography>{watch("name")}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Stack direction="row" flexWrap="wrap" gap="10px">
           <FormControl sx={{ minWidth: "222px" }}>
             <InputLabel>Type</InputLabel>
-            <Select {...register("type")} label="Type">
+            <Select
+              {...register("type")}
+              label="Type"
+              value={defaultValue.type}
+            >
               <MenuItem value="string">String</MenuItem>
               <MenuItem value="number">Number</MenuItem>
               <MenuItem value="boolean">Boolean</MenuItem>

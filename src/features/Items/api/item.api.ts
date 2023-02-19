@@ -1,14 +1,31 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
 
-export interface IItem {
-  collectionId: string;
+interface IComments {
   id: string;
+  sender: string;
+  comment: string;
+  date: string;
+}
+
+interface ITags {
+  id: string;
+  tag: string;
+}
+
+interface ILikes {
+  id: string;
+  sender: string;
+}
+
+export interface IItem {
+  id: string;
+  collectionId: string;
   name: string;
   imgSrc: string;
-  comments: [];
-  likes: [];
-  tags: [];
+  comments: IComments[];
+  likes: ILikes[];
+  tags: ITags[];
 }
 
 export const itemApi = createApi({
@@ -20,6 +37,14 @@ export const itemApi = createApi({
       query(id) {
         return {
           url: `/items/all/${id}`,
+        };
+      },
+      providesTags: ["Item"],
+    }),
+    getAllItems: build.query<IItem[], void>({
+      query() {
+        return {
+          url: "/items/all",
         };
       },
       providesTags: ["Item"],
@@ -58,5 +83,10 @@ export const itemApi = createApi({
   }),
 });
 
-export const { useCreateItemMutation, useGetItemsQuery, useGetItemQuery } =
-  itemApi;
+export const {
+  useCreateItemMutation,
+  useGetItemsQuery,
+  useGetItemQuery,
+  useGetAllItemsQuery,
+  useLazyGetAllItemsQuery,
+} = itemApi;
