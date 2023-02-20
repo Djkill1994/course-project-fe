@@ -10,7 +10,7 @@ export const RegistrationPage: FC = () => {
   const { t } = useTranslation();
   return (
     <Stack alignItems="center">
-      <Stack m="20px" alignItems="center">
+      <Stack mb="20px" alignItems="center">
         <LockOutlined sx={{ width: "36px", height: "36px" }} />
         <Typography fontSize="1.5rem">{t("general.signUp")}</Typography>
       </Stack>

@@ -5,7 +5,8 @@
     "search": "Поиск",
     "delete": "Удалить",
     "collections": "Коллекции",
-    "home": "Главная"
+    "home": "Главная",
+    "adminArea": "Админ"
   },
   "features": {
     "Auth": {

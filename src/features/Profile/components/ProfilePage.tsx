@@ -16,7 +16,6 @@ import {
   useEditingProfileUserMutation,
   useDeleteUserMutation,
 } from "../api/user.api";
-import { AUTH_TOKEN_KEY } from "../../../common/constans/localStorage";
 import { DeleteForever, Edit } from "@mui/icons-material";
 import { ROUTE_PATHS } from "../../../App";
 import { useNavigate } from "react-router-dom";
@@ -26,12 +25,11 @@ import { EMAIL_REGEX } from "../../../common/constans/regex";
 interface IProfileEditingForm {
   userName: string;
   email: string;
-  file: File[];
+  avatarSrc: string;
 }
 
 export const ProfilePage: FC = () => {
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
-  const { data } = useAuthRefreshQuery(undefined, { skip: !token });
+  const { data } = useAuthRefreshQuery();
   const [profileEditing, { isLoading, isSuccess: isSuccessEditing }] =
     useEditingProfileUserMutation();
   const [deleteUser, { isSuccess: isSuccessDelete }] = useDeleteUserMutation();
@@ -41,26 +39,16 @@ export const ProfilePage: FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<IProfileEditingForm>();
 
   const onSubmit: SubmitHandler<IProfileEditingForm> = async (data) => {
-    const img = new FormData();
-    img.append("file", data.file[0]);
-    img.append("upload_preset", "course-prt");
-    img.append("cloud_name", "djkill");
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/djkill/image/upload",
-      {
-        method: "post",
-        body: img,
-      }
-    ).then((resp) => resp.json());
-    const uploadImg = res.url;
     profileEditing({
       userName: data.userName,
       email: data.email,
-      avatarSrc: uploadImg,
+      avatarSrc: data.avatarSrc,
     });
   };
 
@@ -98,10 +86,23 @@ export const ProfilePage: FC = () => {
                 accept="image/*"
                 multiple
                 type="file"
-                {...register("file")}
+                onChange={async ({ target: { files } }) => {
+                  const img = new FormData();
+                  img.append("file", files[0]);
+                  img.append("upload_preset", "course-prt");
+                  img.append("cloud_name", "djkill");
+                  const { url } = await fetch(
+                    "https://api.cloudinary.com/v1_1/djkill/image/upload",
+                    {
+                      method: "post",
+                      body: img,
+                    }
+                  ).then((resp) => resp.json());
+                  setValue("avatarSrc", url);
+                }}
               />
               <Avatar
-                src={data?.avatarSrc}
+                src={watch("avatarSrc") || data?.avatarSrc}
                 sx={{ width: "188px", height: "188px" }}
               />
             </IconButton>

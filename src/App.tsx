@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { FC } from "react";
 import { Toaster } from "react-hot-toast";
-import { LoginPage } from "./features/Auth/components/LoginPage";
 import { RequireAuth } from "./common/components/RequireAuth";
 import { UserListPage } from "./features/Admin/components/UserListPage";
 import { Box } from "@mui/material";
@@ -13,6 +12,7 @@ import { Header } from "./common/components/Header";
 import { ProfilePage } from "./features/Profile/components/ProfilePage";
 import { Item } from "./features/Items/components/Item";
 import { Items } from "./features/Items/components/Items";
+import { LoginPage } from "./features/Auth/components/LoginPage";
 
 export const ROUTE_PATHS = {
   Home: "/",
@@ -26,7 +26,7 @@ export const ROUTE_PATHS = {
   Item: "/item",
 };
 
-// todo добавить Collapse на карточки коллекции и айтема
+// todo добавить Collapse на карточки коллекции и айтема, защитить роут Admin
 
 export const App: FC = () => {
   return (

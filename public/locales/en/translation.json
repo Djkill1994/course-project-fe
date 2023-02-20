@@ -5,7 +5,8 @@
     "search": "Search",
     "delete": "Delete",
     "collections": "Collections",
-    "home": "Home"
+    "home": "Home",
+    "adminArea": "Admin"
   },
   "features": {
     "Auth": {

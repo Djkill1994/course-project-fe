@@ -16,7 +16,7 @@ import {
 } from "../../features/Items/api/item.api";
 import { ItemCard } from "../../features/Items/components/ItemCard";
 import { Item } from "../../features/Items/components/Item";
-import { loginApi } from "../../features/Auth/api/login.api";
+import { authApi } from "../../features/Auth/api/auth.api";
 
 export const HeaderSearchApp: FC = () => {
   const { t } = useTranslation();

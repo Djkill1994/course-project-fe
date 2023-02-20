@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { Box, Grid, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useLoginMutation } from "../api/login.api";
+import { useLoginMutation } from "../api/auth.api";
 import { useNavigate } from "react-router-dom";
 import { EMAIL_REGEX } from "../../../common/constans/regex";
 import { usersApi } from "../../Admin/api/users.api";
@@ -40,7 +40,13 @@ export const LoginForm: FC = () => {
 
   return (
     <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-      <Grid container spacing={1.8}>
+      <Grid
+        container
+        spacing={1}
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+      >
         <Grid item sm={12} width="100%">
           <TextField
             {...register("email", { required: true, pattern: EMAIL_REGEX })}
@@ -62,11 +68,12 @@ export const LoginForm: FC = () => {
             })}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} width="100%">
           <LoadingButton
             loadingPosition="center"
             variant="contained"
             fullWidth
+            sx={{ mt: 3 }}
             type="submit"
             loading={isLoading}
           >

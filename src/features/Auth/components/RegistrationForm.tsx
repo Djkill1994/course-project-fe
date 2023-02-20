@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useRegistrationMutation } from "../api/registration.api";
 import { useNavigate } from "react-router-dom";
 import { EMAIL_REGEX } from "../../../common/constans/regex";
 import { LoadingButton } from "@mui/lab";
 import { FormInputPassword } from "../../../common/components/FormInputPassword";
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
+import { useRegistrationMutation } from "../api/auth.api";
 
 export interface IRegistrationForm {
   userName: string;

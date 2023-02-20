@@ -23,7 +23,7 @@ export const Header: FC = () => {
   const navigate = useNavigate();
   const { data } = useAuthRefreshQuery(undefined, { skip: !token });
   const { t } = useTranslation();
-
+  console.log(data);
   return (
     <AppBar color="default" position="sticky">
       <Stack
@@ -49,6 +49,15 @@ export const Header: FC = () => {
               >
                 <Avatar src={data?.avatarSrc} />
               </IconButton>
+              {data?.role === "admin" && (
+                <Typography
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => navigate(ROUTE_PATHS.Admin, { replace: true })}
+                  fontWeight="bold"
+                >
+                  {t("general.adminArea")}
+                </Typography>
+              )}
               <Typography
                 sx={{ cursor: "pointer" }}
                 onClick={() =>

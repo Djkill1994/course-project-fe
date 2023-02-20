@@ -9,11 +9,9 @@ import {
   Drawer,
   CardMedia,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { ChevronRight, CloudDownload } from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { IRegistrationForm } from "../../Auth/components/RegistrationForm";
-import { useRegistrationMutation } from "../../Auth/api/registration.api";
 import { useCreateItemMutation } from "../../Items/api/item.api";
 import { useParams } from "react-router-dom";
 
