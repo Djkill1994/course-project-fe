@@ -11,14 +11,15 @@ import {
 import { FC } from "react";
 import { Item } from "./Item";
 import { useModal } from "../../../common/hooks/useModal";
+import { IItem } from "../api/item.api";
 
-interface IProps {
-  id: string;
-  name: string;
-  imgSrc: string;
-}
 // todo ошибки в консоле из за модал , зарефачть
-export const ItemCard: FC<IProps> = ({ name, imgSrc, id }) => {
+export const ItemCard: FC<Pick<IItem, "name" | "tags" | "imgSrc" | "id">> = ({
+  name,
+  imgSrc,
+  id,
+  tags,
+}) => {
   const { isOpened, open, close } = useModal();
   return (
     <Card>
@@ -28,12 +29,7 @@ export const ItemCard: FC<IProps> = ({ name, imgSrc, id }) => {
         </Modal>
       )}
       <CardActionArea onClick={open}>
-        <CardMedia
-          component="img"
-          height="194"
-          image={imgSrc}
-          alt="green iguana"
-        />
+        <CardMedia component="img" height="194" image={imgSrc} alt="Image" />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {name}
@@ -44,7 +40,7 @@ export const ItemCard: FC<IProps> = ({ name, imgSrc, id }) => {
           <Stack direction="row" gap="4px" flexWrap="wrap">
             <Chip
               size="small"
-              label="Nordic"
+              label={tags}
               variant="outlined"
               color="primary"
             />

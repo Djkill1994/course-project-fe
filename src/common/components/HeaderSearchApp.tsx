@@ -21,7 +21,6 @@ import { authApi } from "../../features/Auth/api/auth.api";
 export const HeaderSearchApp: FC = () => {
   const { t } = useTranslation();
   const { data } = useGetAllItemsQuery();
-  console.log(data);
   //todo разобраться с поиском и переходом на коллекцию
 
   return (

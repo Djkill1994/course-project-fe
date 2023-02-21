@@ -1,5 +1,4 @@
 import {
-  Box,
   Typography,
   List,
   TextField,
@@ -7,13 +6,22 @@ import {
   Button,
   IconButton,
   Drawer,
-  CardMedia,
+  Autocomplete,
+  Chip,
 } from "@mui/material";
-import { FC } from "react";
-import { ChevronRight, CloudDownload } from "@mui/icons-material";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useCreateItemMutation } from "../../Items/api/item.api";
+import { FC, useEffect } from "react";
+import { ChevronRight } from "@mui/icons-material";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import {
+  IItem,
+  useCreateItemMutation,
+  useGetTagsQuery,
+  useLazyGetTagsQuery,
+} from "../../Items/api/item.api";
 import { useParams } from "react-router-dom";
+import defaultImages from "../../../../public/defaulImg.jpg";
+import { UploadImages } from "../../../common/components/UploadImages";
+import { useGetCollectionQuery } from "../api/collections.api";
 
 interface IProps {
   onClose: () => void;
@@ -21,26 +29,34 @@ interface IProps {
 
 // todo перевести, зарефачить код, добавление полей доработать
 
-interface INewItemForm {
-  collectionId: string;
-  name: string;
-  imgSrc: string;
-}
+type NewItemForm = Pick<IItem, "name" | "imgSrc" | "tags">;
 
 export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
-  const { register, handleSubmit, setValue, watch } = useForm<INewItemForm>();
+  const { register, handleSubmit, setValue, watch, control } =
+    useForm<NewItemForm>();
   // todo доработать компонент , на загрузку и успешное создание реализовать логику
   const [createItem, { isSuccess, isLoading }] = useCreateItemMutation();
   const params = useParams();
-  // todo collectionId зарефачить ошибку
-  const onSubmit: SubmitHandler<INewItemForm> = (data) => {
+  // const { data } = useGetCollectionQuery(params.id as string);
+  const { data: tagsData } = useGetTagsQuery();
+  const [refetchTags] = useLazyGetTagsQuery();
+
+  const onSubmit: SubmitHandler<NewItemForm> = (data) => {
     createItem({
-      collectionId: params.id,
-      name: data.name,
-      imgSrc: data.imgSrc,
+      collectionId: params.id as string,
+      newItem: {
+        name: data.name,
+        imgSrc: data.imgSrc || defaultImages,
+        tags: data.tags,
+      },
     });
   };
-
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+    }
+  }, [isSuccess]);
+  console.log(tagsData);
   return (
     <Drawer anchor="right" open onClose={onClose}>
       <List sx={{ width: "542px", padding: "12px 22px" }}>
@@ -61,41 +77,44 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
               label="Name"
               {...register("name", { required: true })}
             />
-            <Box sx={{ cursor: "pointer" }} component="label">
-              <input
-                hidden
-                accept="image/*"
-                multiple
-                type="file"
-                onChange={async ({ target: { files } }) => {
-                  const img = new FormData();
-                  img.append("file", files[0]);
-                  img.append("upload_preset", "course-prt");
-                  img.append("cloud_name", "djkill");
-                  const { url } = await fetch(
-                    "https://api.cloudinary.com/v1_1/djkill/image/upload",
-                    {
-                      method: "post",
-                      body: img,
-                    }
-                  ).then((resp) => resp.json());
-                  setValue("imgSrc", url);
-                }}
-              />
-              <Stack direction="column" alignItems="center">
-                {watch("imgSrc") ? (
-                  <CardMedia
-                    component="img"
-                    height="194"
-                    image={watch("imgSrc")}
-                    alt="Collection img"
-                  />
-                ) : (
-                  <CloudDownload />
-                )}
-                <Typography variant="body2">Download images</Typography>
-              </Stack>
-            </Box>
+
+            <TextField
+              fullWidth
+              size="small"
+              label="Name"
+              {...register("tags", { required: true })}
+            />
+
+            {/*<Controller*/}
+            {/*  render={({ field: { onChange, value, onBlur } }) => (*/}
+            {/*    <Autocomplete*/}
+            {/*      value={value}*/}
+            {/*      onBlur={onBlur}*/}
+            {/*      onChange={(event, item) => onChange(item)}*/}
+            {/*      multiple*/}
+            {/*      id="tags-filled"*/}
+            {/*      options={tagsData?.map((tag) => tag.tag)}*/}
+            {/*      freeSolo*/}
+            {/*      renderTags={(value: readonly string[], getTagProps) =>*/}
+            {/*        value.map((option: string, index: number) => (*/}
+            {/*          <Chip*/}
+            {/*            key={option.id}*/}
+            {/*            variant="contained"*/}
+            {/*            label={option}*/}
+            {/*            {...getTagProps({ index })}*/}
+            {/*          />*/}
+            {/*        ))*/}
+            {/*      }*/}
+            {/*      renderInput={(params) => (*/}
+            {/*        <TextField {...params} variant="filled" label="Tags" />*/}
+            {/*      )}*/}
+            {/*    />*/}
+            {/*  )}*/}
+            {/*  name="tags"*/}
+            {/*  control={control}*/}
+            {/*/>*/}
+
+            <UploadImages setValue={setValue} watch={watch} />
             <Button type="submit">Save</Button>
           </Stack>
         </Stack>

@@ -20,7 +20,6 @@ interface ILikes {
 
 export interface IItem {
   id: string;
-  collectionId: string;
   name: string;
   imgSrc: string;
   comments: IComments[];
@@ -57,15 +56,22 @@ export const itemApi = createApi({
       },
       providesTags: ["Item"],
     }),
+    getTags: build.query<ITags[], void>({
+      query() {
+        return {
+          url: "/items/tag/all",
+        };
+      },
+    }),
     createItem: build.mutation<
       void,
-      Omit<IItem, "id" | "comments" | "tags" | "likes">
+      { collectionId: string; newItem: Pick<IItem, "name" | "imgSrc" | "tags"> }
     >({
-      query(item) {
+      query({ collectionId, newItem }) {
         return {
-          url: `/items/${item.collectionId}`,
+          url: `/items/${collectionId}`,
           method: "PUT",
-          body: item,
+          body: newItem,
         };
       },
       invalidatesTags: ["Item"],
@@ -89,4 +95,6 @@ export const {
   useGetItemQuery,
   useGetAllItemsQuery,
   useLazyGetAllItemsQuery,
+  useGetTagsQuery,
+  useLazyGetTagsQuery,
 } = itemApi;

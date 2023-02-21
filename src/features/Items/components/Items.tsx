@@ -32,9 +32,9 @@ export const Items: FC = () => {
         <Typography color="text.primary">collectionName</Typography>
       </Breadcrumbs>
       <Grid container spacing={2}>
-        {data?.map(({ name, imgSrc, id }) => (
+        {data?.map(({ name, imgSrc, id, tags }) => (
           <Grid key={id} item xs={4}>
-            <ItemCard name={name} imgSrc={imgSrc} id={id} />
+            <ItemCard name={name} imgSrc={imgSrc} id={id} tags={tags} />
           </Grid>
         ))}
       </Grid>

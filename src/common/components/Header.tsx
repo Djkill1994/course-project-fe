@@ -23,7 +23,7 @@ export const Header: FC = () => {
   const navigate = useNavigate();
   const { data } = useAuthRefreshQuery(undefined, { skip: !token });
   const { t } = useTranslation();
-  console.log(data);
+
   return (
     <AppBar color="default" position="sticky">
       <Stack

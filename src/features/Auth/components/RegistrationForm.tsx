@@ -16,6 +16,7 @@ import { FormInputPassword } from "../../../common/components/FormInputPassword"
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { useRegistrationMutation } from "../api/auth.api";
+import { uploadImage } from "../../../common/utils/uploadImage";
 
 export interface IRegistrationForm {
   userName: string;
@@ -69,18 +70,7 @@ export const RegistrationForm: FC = () => {
             multiple
             type="file"
             onChange={async ({ target: { files } }) => {
-              const img = new FormData();
-              img.append("file", files[0]);
-              img.append("upload_preset", "course-prt");
-              img.append("cloud_name", "djkill");
-              const { url } = await fetch(
-                "https://api.cloudinary.com/v1_1/djkill/image/upload",
-                {
-                  method: "post",
-                  body: img,
-                }
-              ).then((resp) => resp.json());
-              setValue("avatarSrc", url);
+              setValue("avatarSrc", await uploadImage(files?.[0]));
             }}
           />
           <Stack direction="column" alignItems="center">

@@ -36,6 +36,14 @@ export const collectionApi = createApi({
       },
       providesTags: ["Collection"],
     }),
+    getAllCollections: build.query<ICollection[], void>({
+      query() {
+        return {
+          url: "/collections/all/collection",
+        };
+      },
+      providesTags: ["Collection"],
+    }),
     getCollection: build.query<ICollection, string>({
       query(id) {
         return {
@@ -44,7 +52,10 @@ export const collectionApi = createApi({
       },
       providesTags: ["Collection"],
     }),
-    createCollection: build.mutation<void, Omit<ICollection, "id" | "date">>({
+    createCollection: build.mutation<
+      void,
+      Pick<ICollection, "name" | "description" | "imgSrc" | "theme">
+    >({
       query(collection) {
         return {
           url: "/collections",
@@ -72,4 +83,5 @@ export const {
   useGetCollectionsQuery,
   useDeleteCollectionMutation,
   useGetCollectionQuery,
+  useGetAllCollectionsQuery,
 } = collectionApi;

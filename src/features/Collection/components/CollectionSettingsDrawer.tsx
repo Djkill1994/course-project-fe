@@ -7,13 +7,22 @@ import {
   Button,
   IconButton,
   Drawer,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
 } from "@mui/material";
 import { FC } from "react";
-import { Add, ChevronRight, DeleteForever } from "@mui/icons-material";
+import {
+  Add,
+  ChevronRight,
+  DeleteForever,
+  ExpandMore,
+} from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { CollectionFields, ICollectionFieldsForm } from "./CollectionFields";
-import { useGetCollectionQuery } from "../api/collections.api";
+import { CollectionFields } from "./CollectionFields";
+import { ICollection, useGetCollectionQuery } from "../api/collections.api";
 import { useParams } from "react-router-dom";
+import { UploadImages } from "../../../common/components/UploadImages";
 
 interface IProps {
   onClose: () => void;
@@ -21,24 +30,26 @@ interface IProps {
 
 // todo перевести, зарефачить код,
 
-interface ISettingsForm {
-  collectionName: string;
-  fields: ICollectionFieldsForm[];
-  optionalFields?: ICollectionFieldsForm[];
-}
+type SettingsForm = Pick<
+  ICollection,
+  "name" | "fields" | "optionFields" | "theme" | "description" | "imgSrc"
+>;
 
 export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
   const params = useParams();
   const { data } = useGetCollectionQuery(params.id as string);
-  const { register, handleSubmit, setValue, watch } = useForm<ISettingsForm>({
+  const { register, handleSubmit, setValue, watch } = useForm<SettingsForm>({
     defaultValues: {
-      collectionName: data?.name,
+      name: data?.name,
+      theme: data?.theme,
+      description: data?.description,
+      imgSrc: data?.imgSrc,
       fields: data?.fields,
-      optionalFields: data?.optionalFields,
+      optionFields: data?.optionFields,
     },
   });
 
-  const onSubmit: SubmitHandler<ISettingsForm> = (data) => {
+  const onSubmit: SubmitHandler<SettingsForm> = (data) => {
     console.log(data);
   };
 
@@ -56,46 +67,74 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
             </Typography>
           </IconButton>
         </Stack>
-        <Stack gap="18px">
-          <Typography>Edit collection</Typography>
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-            <TextField
-              label="Name"
-              {...register("collectionName", { required: true })}
-            />
-            <Typography>Fields</Typography>
-            <Stack gap="4px">
-              {watch("fields")?.map((field) => (
-                <CollectionFields
-                  key={field.name}
-                  defaultValue={field}
-                  onChange={(value) => setValue("fields", [value])}
-                />
-              ))}
-              {watch("optionalFields")?.map((optionalField) => (
-                <CollectionFields
-                  key={optionalField.name}
-                  defaultValue={optionalField}
-                  onChange={(value) => setValue("optionalFields", [value])}
-                />
-              ))}
-            </Stack>
-            <Button
-              variant="contained"
-              size="small"
-              sx={{ textTransform: "none" }}
-              fullWidth
-              //todo добавлять разные цифры то бы не повторялись
-              onClick={() =>
-                setValue("optionalFields", [
-                  { name: "new field 1", type: "string" },
-                ])
-              }
+        <Typography pb="22px">Edit collection</Typography>
+        <Stack
+          gap="18px"
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
+          <TextField
+            fullWidth
+            size="small"
+            label="Name"
+            {...register("name", { required: true })}
+          />
+          <TextField
+            fullWidth
+            size="small"
+            label="Theme"
+            {...register("theme", { required: true })}
+          />
+          <TextField
+            fullWidth
+            size="small"
+            label="Description"
+            {...register("description", { required: true })}
+          />
+          <UploadImages setValue={setValue} watch={watch} />
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
             >
-              <Add sx={{ width: "14px" }} /> New field
-            </Button>
-            <Button type="submit">Save</Button>
-          </Box>
+              <Typography>Fields</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Stack gap="8px">
+                {watch("fields")?.map((field) => (
+                  <CollectionFields
+                    key={field.name}
+                    defaultValue={field}
+                    onChange={(value) => setValue("fields", [value])}
+                  />
+                ))}
+                {watch("optionFields")?.map((optionField) => (
+                  <CollectionFields
+                    key={optionField.name}
+                    defaultValue={optionField}
+                    onChange={(value) => setValue("optionFields", [value])}
+                  />
+                ))}
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ textTransform: "none" }}
+                  fullWidth
+                  //todo добавлять разные цифры то бы не повторялись
+                  onClick={() =>
+                    setValue("optionFields", [
+                      { name: "new field 1", type: "string" },
+                    ])
+                  }
+                >
+                  <Add sx={{ width: "14px" }} /> New field
+                </Button>
+              </Stack>
+            </AccordionDetails>
+          </Accordion>
+          <Button type="submit">Save</Button>
         </Stack>
       </List>
     </Drawer>

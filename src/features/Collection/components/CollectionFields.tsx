@@ -31,7 +31,7 @@ export const CollectionFields: FC<IProps> = ({ defaultValue, onChange }) => {
     defaultValues: defaultValue,
   });
   watch((data) => onChange(data as ICollectionFieldsForm));
-
+  //todo задизейблить дефолтные поля имя и типа
   return (
     <Accordion>
       <AccordionSummary
@@ -42,10 +42,11 @@ export const CollectionFields: FC<IProps> = ({ defaultValue, onChange }) => {
         <Typography>{watch("name")}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Stack direction="row" flexWrap="wrap" gap="10px">
-          <FormControl sx={{ minWidth: "222px" }}>
+        <Stack direction="row" flexWrap="wrap" gap="8px">
+          <FormControl sx={{ minWidth: "213px" }}>
             <InputLabel>Type</InputLabel>
             <Select
+              size="small"
               {...register("type")}
               label="Type"
               value={defaultValue.type}
@@ -57,13 +58,28 @@ export const CollectionFields: FC<IProps> = ({ defaultValue, onChange }) => {
               <MenuItem value="text">Text</MenuItem>
             </Select>
           </FormControl>
-          <TextField label="Name" {...register("name")} />
-          {/*{select === "string" && (*/}
-          {/*  <Stack gap="10px" direction="row">*/}
-          {/*    <TextField label="Min length" {...register("minLength")} />*/}
-          {/*    <TextField label="Max length" {...register("maxLength")} />*/}
-          {/*  </Stack>*/}
-          {/*)}*/}
+          <TextField
+            sx={{ maxWidth: "213px" }}
+            size="small"
+            label="Name"
+            {...register("name")}
+          />
+          {defaultValue.type === "string" && (
+            <Stack gap="8px" direction="row">
+              <TextField
+                sx={{ maxWidth: "213px" }}
+                size="small"
+                label="Min length"
+                {...register("minLength")}
+              />
+              <TextField
+                sx={{ maxWidth: "213px" }}
+                size="small"
+                label="Max length"
+                {...register("maxLength")}
+              />
+            </Stack>
+          )}
         </Stack>
       </AccordionDetails>
     </Accordion>

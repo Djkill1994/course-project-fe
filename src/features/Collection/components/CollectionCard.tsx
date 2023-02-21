@@ -20,14 +20,9 @@ import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { useNavigate, generatePath } from "react-router-dom";
 
-export const CollectionCard: FC<ICollection> = ({
-  theme,
-  description,
-  date,
-  name,
-  imgSrc,
-  id,
-}) => {
+export const CollectionCard: FC<
+  Omit<ICollection, "optionFields" | "fields">
+> = ({ theme, description, date, name, imgSrc, id }) => {
   const [isOpened, setIsOpened] = useState<null | HTMLElement>(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
