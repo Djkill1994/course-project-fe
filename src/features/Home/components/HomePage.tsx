@@ -87,9 +87,15 @@ export const HomePage = () => {
                 },
               }}
             >
-              {dataItems?.map(({ id, name, imgSrc, tags }) => (
+              {dataItems?.map(({ id, name, imgSrc, tags, likes }) => (
                 <Box key={id} pl="12px">
-                  <ItemCard id={id} name={name} imgSrc={imgSrc} tags={tags} />
+                  <ItemCard
+                    id={id}
+                    name={name}
+                    imgSrc={imgSrc}
+                    tags={tags}
+                    likes={likes}
+                  />
                 </Box>
               ))}
             </Carousel>

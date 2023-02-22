@@ -1,14 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
 
-interface IComments {
+export interface IComment {
   id: string;
   sender: string;
   comment: string;
   date: string;
 }
 
-interface ITags {
+interface ITag {
   id: string;
   tag: string;
 }
@@ -22,9 +22,9 @@ export interface IItem {
   id: string;
   name: string;
   imgSrc: string;
-  comments: IComments[];
+  comments: IComment[];
   likes: ILikes[];
-  tags: ITags[];
+  tags: ITag[];
 }
 
 export const itemApi = createApi({
@@ -56,7 +56,7 @@ export const itemApi = createApi({
       },
       providesTags: ["Item"],
     }),
-    getTags: build.query<ITags[], void>({
+    getTags: build.query<ITag[], void>({
       query() {
         return {
           url: "/items/tag/all",
@@ -72,6 +72,19 @@ export const itemApi = createApi({
           url: `/items/${collectionId}`,
           method: "PUT",
           body: newItem,
+        };
+      },
+      invalidatesTags: ["Item"],
+    }),
+    createComment: build.mutation<
+      void,
+      { itemId: string; newComment: Pick<IComment, "sender" | "comment"> }
+    >({
+      query({ itemId, newComment }) {
+        return {
+          url: `/items/comment/${itemId}`,
+          method: "PUT",
+          body: newComment,
         };
       },
       invalidatesTags: ["Item"],
@@ -97,4 +110,5 @@ export const {
   useLazyGetAllItemsQuery,
   useGetTagsQuery,
   useLazyGetTagsQuery,
+  useCreateCommentMutation,
 } = itemApi;

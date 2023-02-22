@@ -11,21 +11,23 @@ import {
 import { FC } from "react";
 import { Item } from "./Item";
 import { useModal } from "../../../common/hooks/useModal";
-import { IItem } from "../api/item.api";
+import { IItem, useGetItemQuery } from "../api/item.api";
 
 // todo ошибки в консоле из за модал , зарефачть
-export const ItemCard: FC<Pick<IItem, "name" | "tags" | "imgSrc" | "id">> = ({
+export const ItemCard: FC<Omit<IItem, "comments">> = ({
   name,
   imgSrc,
   id,
   tags,
+  likes,
 }) => {
   const { isOpened, open, close } = useModal();
+  const { data } = useGetItemQuery(id);
   return (
     <Card>
       {isOpened && (
         <Modal open onClose={close} sx={{ display: "flex" }}>
-          <Item id={id} />
+          <Item id={id} name={name} imgSrc={imgSrc} tags={tags} likes={likes} />
         </Modal>
       )}
       <CardActionArea onClick={open}>
@@ -38,12 +40,9 @@ export const ItemCard: FC<Pick<IItem, "name" | "tags" | "imgSrc" | "id">> = ({
             Tags
           </Typography>
           <Stack direction="row" gap="4px" flexWrap="wrap">
-            <Chip
-              size="small"
-              label={tags}
-              variant="outlined"
-              color="primary"
-            />
+            {data?.tags.map(({ tag, id }) => (
+              <Chip key={id} label={tag} variant="outlined" color="primary" />
+            ))}
           </Stack>
         </CardContent>
         <Typography>Likes</Typography>

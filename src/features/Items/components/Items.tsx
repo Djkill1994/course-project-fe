@@ -14,7 +14,7 @@ export const Items: FC = () => {
   const { data } = useGetItemsQuery(params.id as string);
 
   return (
-    <Box p="0 22px">
+    <Box p="0 22px 22px 22px">
       <Breadcrumbs sx={{ pb: "12px" }}>
         <Link
           onClick={() => navigate(ROUTE_PATHS.Collection, { replace: true })}

@@ -11,14 +11,16 @@ import {
   MenuItem,
   CardActionArea,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { MoreVert } from "@mui/icons-material";
 import {
   ICollection,
   useDeleteCollectionMutation,
+  useGetCollectionsQuery,
 } from "../api/collections.api";
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { useNavigate, generatePath } from "react-router-dom";
+import { useAuthRefreshQuery } from "../../Profile/api/user.api";
 
 export const CollectionCard: FC<
   Omit<ICollection, "optionFields" | "fields">
@@ -27,17 +29,22 @@ export const CollectionCard: FC<
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [deleteCollection] = useDeleteCollectionMutation();
-
+  const { data: collectionsData } = useGetCollectionsQuery();
+  const { data: userData } = useAuthRefreshQuery();
+  //todo зарефать 2 вызова IconButton
   return (
     <Card>
       <CardHeader
-        action={
-          <IconButton
-            onClick={({ currentTarget }) => setIsOpened(currentTarget)}
-          >
-            <MoreVertIcon />
-          </IconButton>
-        }
+        action={collectionsData?.map((collection) =>
+          collection.id === id ? (
+            <IconButton
+              key={id}
+              onClick={({ currentTarget }) => setIsOpened(currentTarget)}
+            >
+              <MoreVert />
+            </IconButton>
+          ) : undefined
+        )}
         title={name}
         subheader={theme}
       />

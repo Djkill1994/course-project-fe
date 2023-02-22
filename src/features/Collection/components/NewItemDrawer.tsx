@@ -56,7 +56,7 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
       onClose();
     }
   }, [isSuccess]);
-  console.log(tagsData);
+
   return (
     <Drawer anchor="right" open onClose={onClose}>
       <List sx={{ width: "542px", padding: "12px 22px" }}>
@@ -78,43 +78,46 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
               {...register("name", { required: true })}
             />
 
-            <TextField
-              fullWidth
-              size="small"
-              label="Name"
-              {...register("tags", { required: true })}
-            />
-
-            {/*<Controller*/}
-            {/*  render={({ field: { onChange, value, onBlur } }) => (*/}
-            {/*    <Autocomplete*/}
-            {/*      value={value}*/}
-            {/*      onBlur={onBlur}*/}
-            {/*      onChange={(event, item) => onChange(item)}*/}
-            {/*      multiple*/}
-            {/*      id="tags-filled"*/}
-            {/*      options={tagsData?.map((tag) => tag.tag)}*/}
-            {/*      freeSolo*/}
-            {/*      renderTags={(value: readonly string[], getTagProps) =>*/}
-            {/*        value.map((option: string, index: number) => (*/}
-            {/*          <Chip*/}
-            {/*            key={option.id}*/}
-            {/*            variant="contained"*/}
-            {/*            label={option}*/}
-            {/*            {...getTagProps({ index })}*/}
-            {/*          />*/}
-            {/*        ))*/}
-            {/*      }*/}
-            {/*      renderInput={(params) => (*/}
-            {/*        <TextField {...params} variant="filled" label="Tags" />*/}
-            {/*      )}*/}
-            {/*    />*/}
-            {/*  )}*/}
-            {/*  name="tags"*/}
-            {/*  control={control}*/}
+            {/*<TextField*/}
+            {/*  fullWidth*/}
+            {/*  size="small"*/}
+            {/*  label="Tags"*/}
+            {/*  {...register("tags", { required: true })}*/}
             {/*/>*/}
 
-            <UploadImages setValue={setValue} watch={watch} />
+            <Controller
+              render={({ field: { onChange, value, onBlur } }) => (
+                <Autocomplete
+                  value={value?.map(({ tag }) => tag)}
+                  onBlur={onBlur}
+                  onChange={(event, item) => onChange(item)}
+                  multiple
+                  id="tags-filled"
+                  options={tagsData?.map((tag) => tag.tag) || []}
+                  freeSolo
+                  renderTags={(value: readonly string[], getTagProps) =>
+                    value?.map((option: string, index: number) => (
+                      <Chip
+                        key={option}
+                        // variant="contained"
+                        label={option}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} variant="filled" label="Tags" />
+                  )}
+                />
+              )}
+              name="tags"
+              control={control}
+            />
+            {/*//todo зарефачить везде так!!!*/}
+            <UploadImages
+              onChange={(imgSrc) => setValue("imgSrc", imgSrc)}
+              imgSrc={watch("imgSrc")}
+            />
             <Button type="submit">Save</Button>
           </Stack>
         </Stack>

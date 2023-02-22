@@ -4,11 +4,11 @@ import { FC } from "react";
 import { uploadImage } from "../utils/uploadImage";
 //todo типизировать setValue and watch
 interface IProps {
-  setValue: (name: string, value: string) => string;
-  watch: (value: string) => string;
+  onChange: (imgSrc: string) => void;
+  imgSrc?: string;
 }
 
-export const UploadImages: FC<IProps> = ({ setValue, watch }) => {
+export const UploadImages: FC<IProps> = ({ onChange, imgSrc }) => {
   return (
     <Box sx={{ cursor: "pointer" }} component="label">
       <input
@@ -17,15 +17,15 @@ export const UploadImages: FC<IProps> = ({ setValue, watch }) => {
         multiple
         type="file"
         onChange={async ({ target: { files } }) => {
-          setValue("imgSrc", await uploadImage(files?.[0]));
+          onChange(await uploadImage(files?.[0]));
         }}
       />
       <Stack direction="column" alignItems="center">
-        {watch("imgSrc") ? (
+        {imgSrc ? (
           <CardMedia
             component="img"
             height="194"
-            image={watch("imgSrc")}
+            image={imgSrc}
             alt="Collection img"
           />
         ) : (
