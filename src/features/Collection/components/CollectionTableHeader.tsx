@@ -44,6 +44,9 @@ export const CollectionTableHeader: FC<ICollectionTableHeaderProps> = ({
         <TableCell>
           {t("features.CollectionPage.CollectionTableHeader.likes")}
         </TableCell>
+        <TableCell>
+          {t("features.CollectionPage.CollectionTableHeader.edit")}
+        </TableCell>
       </TableRow>
     </TableHead>
   );

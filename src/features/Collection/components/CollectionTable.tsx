@@ -12,20 +12,25 @@ import {
   InputAdornment,
   Button,
   Avatar,
+  IconButton,
 } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import { Search, Settings } from "@mui/icons-material";
 import { CollectionTableToolbar } from "./CollectionTableToolbar";
 import { CollectionTableHeader } from "./CollectionTableHeader";
 import { useTranslation } from "react-i18next";
 import { useGetCollectionQuery } from "../api/collections.api";
 import { useParams } from "react-router-dom";
+import { useDeleteItemMutation } from "../../Items/api/item.api";
+import { ItemSettingsDrawer } from "./ItemSettingsDrawer";
 
 // todo зарефачить кнопку Delete, зарефачить id и в apicollection
 
 export const CollectionTable: FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
+  const [openId, setOpenId] = useState<string>("");
   const params = useParams();
   const { data } = useGetCollectionQuery(params.id as string);
+  const [deleteItem] = useDeleteItemMutation();
   const { t } = useTranslation();
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -84,29 +89,16 @@ export const CollectionTable: FC = () => {
           <TableBody>
             {data?.items?.map(({ name, imgSrc, comments, tags, likes, id }) => {
               const isItemSelected = selected.indexOf(id) !== -1;
-              const labelId = `enhanced-table-checkbox-${id}`;
               return (
-                <TableRow
-                  hover
-                  onClick={(event) => handleClick(event, id)}
-                  role="checkbox"
-                  aria-checked={isItemSelected}
-                  tabIndex={-1}
-                  key={id}
-                  selected={isItemSelected}
-                >
+                <TableRow key={id}>
                   <TableCell padding="checkbox">
                     <Checkbox
+                      onClick={(event) => handleClick(event, id)}
                       color="primary"
                       checked={isItemSelected}
-                      inputProps={{
-                        "aria-labelledby": labelId,
-                      }}
                     />
                   </TableCell>
-                  <TableCell id={labelId} scope="row">
-                    {id}
-                  </TableCell>
+                  <TableCell scope="row">{id}</TableCell>
                   <TableCell>{name}</TableCell>
                   <TableCell>
                     <Avatar src={imgSrc} />
@@ -114,12 +106,28 @@ export const CollectionTable: FC = () => {
                   <TableCell>{comments}</TableCell>
                   <TableCell>{tags}</TableCell>
                   <TableCell>{likes}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => {
+                        setOpenId(id);
+                      }}
+                    >
+                      <Settings />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
+          {openId && (
+            <ItemSettingsDrawer id={openId} onClose={() => setOpenId("")} />
+          )}
         </Table>
-        {!!selected.length && <Button>{t("general.delete")}</Button>}
+        {!!selected.length && (
+          <Button onClick={() => deleteItem(selected)}>
+            {t("general.delete")}
+          </Button>
+        )}
       </TableContainer>
     </Paper>
   );

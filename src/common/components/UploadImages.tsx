@@ -2,7 +2,7 @@ import { CloudDownload } from "@mui/icons-material";
 import { Box, CardMedia, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import { uploadImage } from "../utils/uploadImage";
-//todo типизировать setValue and watch
+
 interface IProps {
   onChange: (imgSrc: string) => void;
   imgSrc?: string;

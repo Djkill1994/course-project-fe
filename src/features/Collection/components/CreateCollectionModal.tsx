@@ -120,7 +120,10 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
             )}
             fullWidth
           />
-          <UploadImages setValue={setValue} watch={watch} />
+          <UploadImages
+            onChange={(imgSrc) => setValue("imgSrc", imgSrc)}
+            imgSrc={watch("imgSrc")}
+          />
           <Stack direction="row" justifyContent="space-between">
             <Button onClick={onClose}>
               {t("features.CollectionPage.CreateCollectionModal.button.close")}

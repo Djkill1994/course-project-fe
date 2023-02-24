@@ -113,7 +113,6 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
               name="tags"
               control={control}
             />
-            {/*//todo зарефачить везде так!!!*/}
             <UploadImages
               onChange={(imgSrc) => setValue("imgSrc", imgSrc)}
               imgSrc={watch("imgSrc")}

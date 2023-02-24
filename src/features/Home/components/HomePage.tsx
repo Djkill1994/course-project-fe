@@ -87,7 +87,7 @@ export const HomePage = () => {
                 },
               }}
             >
-              {dataItems?.map(({ id, name, imgSrc, tags, likes }) => (
+              {dataItems?.map(({ id, name, imgSrc, tags, likes, date }) => (
                 <Box key={id} pl="12px">
                   <ItemCard
                     id={id}
@@ -95,6 +95,7 @@ export const HomePage = () => {
                     imgSrc={imgSrc}
                     tags={tags}
                     likes={likes}
+                    date={date}
                   />
                 </Box>
               ))}

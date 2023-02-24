@@ -36,7 +36,8 @@
         "img": "Изображение",
         "comments": "Комментарии",
         "tags": "Тэги",
-        "likes": "Лайки"
+        "likes": "Лайки",
+        "edit": "Редактировать"
       },
       "MyCollectionsPage": {
         "titleFirstCollection": "Создать первую коллекцию",

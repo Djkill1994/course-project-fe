@@ -10,16 +10,20 @@ import {
   IconButton,
   Chip,
 } from "@mui/material";
-import { FC } from "react";
-import { FavoriteBorder, Send } from "@mui/icons-material";
+import { FC, useEffect } from "react";
+import { Favorite, Send } from "@mui/icons-material";
 import {
   IComment,
   IItem,
   useCreateCommentMutation,
   useGetItemQuery,
+  useLikeMutation,
+  useUnLikeMutation,
 } from "../api/item.api";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
+import { useChatScroll } from "../../../common/hooks/useChatScroll";
+
 // todo перевести i18n реализовать запросы на бэк и рендеринг компонентов, переделать немного по аналогии с pinterest комментарии добавить в Collapse, разобратся с получением данных из пропсов и запросом , какой-то возможно убрать
 
 type CommentForm = Pick<IComment, "sender" | "comment">;
@@ -31,10 +35,14 @@ export const Item: FC<Omit<IItem, "comments">> = ({
   tags,
   likes,
 }) => {
-  const { register, handleSubmit } = useForm<CommentForm>();
+  const { register, handleSubmit, reset } = useForm<CommentForm>();
+
   const { data: userData } = useAuthRefreshQuery();
   const { data: itemData } = useGetItemQuery(id);
-  const [createComment] = useCreateCommentMutation();
+  const [like] = useLikeMutation();
+  const [unLike] = useUnLikeMutation();
+  const [createComment, { isSuccess }] = useCreateCommentMutation();
+  const ref = useChatScroll(itemData?.comments || []);
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
     createComment({
       itemId: id,
@@ -44,9 +52,14 @@ export const Item: FC<Omit<IItem, "comments">> = ({
       },
     });
   };
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+    }
+  }, [isSuccess]);
 
   return (
-    <Card sx={{ display: "flex", width: "80%", height: "480px", m: "auto" }}>
+    <Card sx={{ display: "flex", width: "80vw", height: "80vh", m: "auto" }}>
       <CardMedia
         component="img"
         sx={{ maxWidth: "55%" }}
@@ -54,7 +67,9 @@ export const Item: FC<Omit<IItem, "comments">> = ({
         alt="Item images"
       />
       <Box display="flex" flexDirection="column" width="100%">
-        <CardContent sx={{ height: "100%" }}>
+        <CardContent
+          sx={{ height: "100%", "&:last-child": { p: "12px 12px 6px" } }}
+        >
           <Stack height="100%" justifyContent="space-between">
             <Stack direction="column" alignItems="space-between" gap="22px">
               <Stack direction="row" alignItems="center" gap="8px">
@@ -75,33 +90,68 @@ export const Item: FC<Omit<IItem, "comments">> = ({
                 </Stack>
                 <Box>
                   Comments
-                  <Box
+                  <Stack
+                    ref={ref}
                     maxHeight="200px"
                     sx={{ overflow: "auto" }}
                     border="1px solid #dbdbdb"
                     borderRadius="5px"
-                    p="0 4px"
+                    p="4px"
+                    gap="4px"
                   >
-                    {itemData?.comments.map(({ sender, comment, id }) => (
-                      <Stack key={id}>
-                        <Box>{sender}</Box>
-                        <Box>{comment}</Box>
-                        {/*<Box>{date}</Box>*/}
+                    {itemData?.comments.map((comment) => (
+                      <Stack
+                        sx={{ wordWrap: "break-word", overflow: "x:hidden" }}
+                        direction="column"
+                        key={id}
+                        p="6px"
+                        border="1px solid #dbdbdb"
+                        borderRadius="14px"
+                        gap="4px"
+                      >
+                        <Stack direction="row" alignItems="center" gap="8px">
+                          <Avatar src={comment.sender.avatarSrc} />
+                          <Typography>{comment.sender.userName}</Typography>
+                        </Stack>
+                        <Typography>{comment.comment}</Typography>
+                        <Box>
+                          <Typography variant="body2" color="text.secondary">
+                            {comment.date}
+                          </Typography>
+                        </Box>
                       </Stack>
                     ))}
-                  </Box>
+                  </Stack>
                 </Box>
               </Stack>
             </Stack>
-
             <Stack
+              alignItems="center"
               component="form"
               flexDirection="row"
+              gap="6px"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <IconButton>
-                <FavoriteBorder />
-              </IconButton>
+              <Stack alignItems="center">
+                {itemData?.likes.sender.includes(userData?.id) ? (
+                  <IconButton
+                    onClick={() =>
+                      unLike({ itemId: id, like: { sender: userData?.id } })
+                    }
+                  >
+                    <Favorite color="error" />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    onClick={() =>
+                      like({ itemId: id, like: { sender: userData?.id } })
+                    }
+                  >
+                    <Favorite />
+                  </IconButton>
+                )}
+                <Typography>{itemData?.likes.count}</Typography>
+              </Stack>
               <TextField
                 fullWidth
                 size="small"

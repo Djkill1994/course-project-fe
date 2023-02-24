@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { FC } from "react";
+import { Favorite } from "@mui/icons-material";
 import { Item } from "./Item";
 import { useModal } from "../../../common/hooks/useModal";
 import { IItem, useGetItemQuery } from "../api/item.api";
@@ -20,14 +21,23 @@ export const ItemCard: FC<Omit<IItem, "comments">> = ({
   id,
   tags,
   likes,
+  date,
 }) => {
   const { isOpened, open, close } = useModal();
   const { data } = useGetItemQuery(id);
+  console.log(date);
   return (
     <Card>
       {isOpened && (
         <Modal open onClose={close} sx={{ display: "flex" }}>
-          <Item id={id} name={name} imgSrc={imgSrc} tags={tags} likes={likes} />
+          <Item
+            date={date}
+            id={id}
+            name={name}
+            imgSrc={imgSrc}
+            tags={tags}
+            likes={likes}
+          />
         </Modal>
       )}
       <CardActionArea onClick={open}>
@@ -45,7 +55,19 @@ export const ItemCard: FC<Omit<IItem, "comments">> = ({
             ))}
           </Stack>
         </CardContent>
-        <Typography>Likes</Typography>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          p="0 8px"
+          alignItems="center"
+        >
+          <Typography>
+            <Favorite color="error" /> {likes?.count}
+          </Typography>
+          <Typography fontSize="10px" color="text.secondary">
+            {date}
+          </Typography>
+        </Stack>
       </CardActionArea>
     </Card>
   );

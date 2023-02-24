@@ -63,11 +63,11 @@ export const CollectionCard: FC<
           >
             {t("features.CollectionPage.CollectionCard.buttons.edit")}
           </MenuItem>
+          {/*todo сделать модалку на удаление*/}
           <MenuItem onClick={() => deleteCollection(id)}>
             {t("general.delete")}
           </MenuItem>
         </Menu>
-        {/*todo переход к станице айтемов коллекции*/}
         <Box
           onClick={() =>
             navigate(generatePath(ROUTE_PATHS.Items, { id: id }), {

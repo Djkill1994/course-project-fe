@@ -36,7 +36,8 @@
         "img": "Images",
         "comments": "Comments",
         "tags": "Tags",
-        "likes": "Likes"
+        "likes": "Likes",
+        "edit": "Edit"
       },
       "MyCollectionsPage": {
         "titleFirstCollection": "Create first collection",

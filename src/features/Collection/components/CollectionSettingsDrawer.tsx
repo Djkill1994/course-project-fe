@@ -1,5 +1,4 @@
 import {
-  Box,
   Typography,
   List,
   TextField,
@@ -11,7 +10,7 @@ import {
   AccordionDetails,
   AccordionSummary,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import {
   Add,
   ChevronRight,
@@ -20,9 +19,14 @@ import {
 } from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CollectionFields } from "./CollectionFields";
-import { ICollection, useGetCollectionQuery } from "../api/collections.api";
+import {
+  ICollection,
+  useGetCollectionQuery,
+  useSettingsCollectionMutation,
+} from "../api/collections.api";
 import { useParams } from "react-router-dom";
 import { UploadImages } from "../../../common/components/UploadImages";
+import { LoadingButton } from "@mui/lab";
 
 interface IProps {
   onClose: () => void;
@@ -38,6 +42,8 @@ type SettingsForm = Pick<
 export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
   const params = useParams();
   const { data } = useGetCollectionQuery(params.id as string);
+  const [settingsCollection, { isLoading, isSuccess }] =
+    useSettingsCollectionMutation();
   const { register, handleSubmit, setValue, watch } = useForm<SettingsForm>({
     defaultValues: {
       name: data?.name,
@@ -50,8 +56,24 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
   });
 
   const onSubmit: SubmitHandler<SettingsForm> = (data) => {
-    console.log(data);
+    settingsCollection({
+      collectionId: params?.id,
+      settingsCollectionForm: {
+        name: data.name,
+        theme: data.theme,
+        description: data.description,
+        imgSrc: data.imgSrc,
+        fields: data.fields,
+        optionFields: data.optionFields,
+      },
+    });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+    }
+  }, [isSuccess]);
 
   return (
     <Drawer anchor="right" open onClose={onClose}>
@@ -92,7 +114,10 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
             label="Description"
             {...register("description", { required: true })}
           />
-          <UploadImages setValue={setValue} watch={watch} />
+          <UploadImages
+            onChange={(imgSrc) => setValue("imgSrc", imgSrc)}
+            imgSrc={watch("imgSrc")}
+          />
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMore />}
@@ -134,7 +159,9 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
               </Stack>
             </AccordionDetails>
           </Accordion>
-          <Button type="submit">Save</Button>
+          <LoadingButton variant="contained" loading={isLoading} type="submit">
+            Send
+          </LoadingButton>
         </Stack>
       </List>
     </Drawer>

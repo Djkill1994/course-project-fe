@@ -65,6 +65,22 @@ export const collectionApi = createApi({
       },
       invalidatesTags: ["Collection"],
     }),
+    settingsCollection: build.mutation<
+      void,
+      {
+        collectionId: string;
+        settingsCollectionForm: Omit<ICollection, "id" | "date" | "items">;
+      }
+    >({
+      query({ collectionId, settingsCollectionForm }) {
+        return {
+          url: `/collections/settings/${collectionId}`,
+          method: "PUT",
+          body: settingsCollectionForm,
+        };
+      },
+      invalidatesTags: ["Collection"],
+    }),
     deleteCollection: build.mutation<void, string>({
       query(id) {
         return {
@@ -84,4 +100,5 @@ export const {
   useDeleteCollectionMutation,
   useGetCollectionQuery,
   useGetAllCollectionsQuery,
+  useSettingsCollectionMutation,
 } = collectionApi;
