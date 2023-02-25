@@ -13,6 +13,11 @@ export interface IComment {
   date: string;
 }
 
+interface IAuthor {
+  userName: string;
+  avatarSrc: string;
+}
+
 interface ITag {
   id: string;
   tag: string;
@@ -26,6 +31,7 @@ interface ILike {
 
 export interface IItem {
   id: string;
+  author: IAuthor;
   name: string;
   imgSrc: string;
   date: string;

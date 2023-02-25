@@ -68,12 +68,9 @@ export const CollectionCard: FC<
             {t("general.delete")}
           </MenuItem>
         </Menu>
+        {/*//todo протестить нужен ли replace в navigate*/}
         <Box
-          onClick={() =>
-            navigate(generatePath(ROUTE_PATHS.Items, { id: id }), {
-              replace: true,
-            })
-          }
+          onClick={() => navigate(generatePath(ROUTE_PATHS.Items, { id: id }))}
         >
           <CardMedia
             component="img"
@@ -85,7 +82,7 @@ export const CollectionCard: FC<
             <Typography variant="body1">{description}</Typography>
           </CardContent>
           <Box display="flex" justifyContent="flex-end" p="5px 15px">
-            <Typography variant="body2" color="text.secondary">
+            <Typography fontSize="10px" color="text.secondary">
               {date}
             </Typography>
           </Box>

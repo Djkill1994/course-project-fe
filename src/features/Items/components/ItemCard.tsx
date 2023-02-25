@@ -25,7 +25,7 @@ export const ItemCard: FC<Omit<IItem, "comments">> = ({
 }) => {
   const { isOpened, open, close } = useModal();
   const { data } = useGetItemQuery(id);
-  console.log(date);
+
   return (
     <Card>
       {isOpened && (
@@ -58,10 +58,10 @@ export const ItemCard: FC<Omit<IItem, "comments">> = ({
         <Stack
           direction="row"
           justifyContent="space-between"
-          p="0 8px"
+          p="0 8px 4px 8px"
           alignItems="center"
         >
-          <Typography>
+          <Typography display="flex" gap="4px">
             <Favorite color="error" /> {likes?.count}
           </Typography>
           <Typography fontSize="10px" color="text.secondary">

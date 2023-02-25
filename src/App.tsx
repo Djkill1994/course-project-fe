@@ -13,6 +13,7 @@ import { ProfilePage } from "./features/Profile/components/ProfilePage";
 import { Item } from "./features/Items/components/Item";
 import { Items } from "./features/Items/components/Items";
 import { LoginPage } from "./features/Auth/components/LoginPage";
+import { RequireAdmin } from "./common/components/RequireAdmin";
 
 export const ROUTE_PATHS = {
   Home: "/",
@@ -68,13 +69,13 @@ export const App: FC = () => {
           <Route
             path={ROUTE_PATHS.Admin}
             element={
-              <RequireAuth>
+              <RequireAdmin>
                 <UserListPage />
-              </RequireAuth>
+              </RequireAdmin>
             }
           />
           <Route path={ROUTE_PATHS.Items} element={<Items />} />
-          <Route path={ROUTE_PATHS.Item} element={<Item />} />
+          {/*<Route path={ROUTE_PATHS.Item} element={<Item />} />*/}
         </Routes>
       </Box>
     </Box>

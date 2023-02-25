@@ -17,7 +17,8 @@ export const Items: FC = () => {
     <Box p="0 22px 22px 22px">
       <Breadcrumbs sx={{ pb: "12px" }}>
         <Link
-          onClick={() => navigate(ROUTE_PATHS.Collection, { replace: true })}
+          // todo протестить navigate
+          onClick={() => navigate(-1)}
           underline="hover"
           color="inherit"
           sx={{ cursor: "pointer" }}

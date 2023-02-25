@@ -9,6 +9,7 @@ import {
   CardMedia,
   IconButton,
   Chip,
+  Modal,
 } from "@mui/material";
 import { FC, useEffect } from "react";
 import { Favorite, Send } from "@mui/icons-material";
@@ -23,26 +24,24 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
 import { useChatScroll } from "../../../common/hooks/useChatScroll";
+import { useModal } from "../../../common/hooks/useModal";
 
 // todo перевести i18n реализовать запросы на бэк и рендеринг компонентов, переделать немного по аналогии с pinterest комментарии добавить в Collapse, разобратся с получением данных из пропсов и запросом , какой-то возможно убрать
 
 type CommentForm = Pick<IComment, "sender" | "comment">;
 
-export const Item: FC<Omit<IItem, "comments">> = ({
-  name,
-  imgSrc,
-  id,
-  tags,
-  likes,
-}) => {
+export const Item: FC<Omit<IItem, "comments">> = ({ name, imgSrc, id }) => {
   const { register, handleSubmit, reset } = useForm<CommentForm>();
-
   const { data: userData } = useAuthRefreshQuery();
-  const { data: itemData } = useGetItemQuery(id);
+  const { data: itemData } = useGetItemQuery(id, {
+    pollingInterval: 2000,
+  });
   const [like] = useLikeMutation();
   const [unLike] = useUnLikeMutation();
   const [createComment, { isSuccess }] = useCreateCommentMutation();
   const ref = useChatScroll(itemData?.comments || []);
+  const { isOpened, open, close } = useModal();
+
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
     createComment({
       itemId: id,
@@ -60,9 +59,23 @@ export const Item: FC<Omit<IItem, "comments">> = ({
 
   return (
     <Card sx={{ display: "flex", width: "80vw", height: "80vh", m: "auto" }}>
+      {isOpened && (
+        <Modal open>
+          <Stack alignItems="center">
+            <CardMedia
+              sx={{ height: "100vh", width: "auto", cursor: "zoom-out" }}
+              onClick={close}
+              component="img"
+              image={imgSrc}
+              alt="Item images"
+            />
+          </Stack>
+        </Modal>
+      )}
       <CardMedia
+        onClick={open}
         component="img"
-        sx={{ maxWidth: "55%" }}
+        sx={{ cursor: "zoom-in" }}
         image={imgSrc}
         alt="Item images"
       />
@@ -73,8 +86,8 @@ export const Item: FC<Omit<IItem, "comments">> = ({
           <Stack height="100%" justifyContent="space-between">
             <Stack direction="column" alignItems="space-between" gap="22px">
               <Stack direction="row" alignItems="center" gap="8px">
-                <Avatar />
-                <Typography>UserName</Typography>
+                <Avatar src={itemData?.author.avatarSrc} />
+                <Typography>{itemData?.author.userName}</Typography>
               </Stack>
               <Stack gap="22px">
                 <Typography variant="h5">{name}</Typography>
@@ -109,16 +122,24 @@ export const Item: FC<Omit<IItem, "comments">> = ({
                         borderRadius="14px"
                         gap="4px"
                       >
-                        <Stack direction="row" alignItems="center" gap="8px">
-                          <Avatar src={comment.sender.avatarSrc} />
-                          <Typography>{comment.sender.userName}</Typography>
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Stack direction="row" alignItems="center" gap="8px">
+                            <Avatar src={comment.sender.avatarSrc} />
+                            <Typography fontWeight="bolder">
+                              {comment.sender.userName}
+                            </Typography>
+                          </Stack>
+                          <Box>
+                            <Typography fontSize="10px" color="text.secondary">
+                              {comment.date}
+                            </Typography>
+                          </Box>
                         </Stack>
                         <Typography>{comment.comment}</Typography>
-                        <Box>
-                          <Typography variant="body2" color="text.secondary">
-                            {comment.date}
-                          </Typography>
-                        </Box>
                       </Stack>
                     ))}
                   </Stack>
