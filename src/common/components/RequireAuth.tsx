@@ -6,7 +6,7 @@ import { Box, CircularProgress } from "@mui/material";
 interface IRequireAuthProps {
   children: JSX.Element;
 }
-
+//todo зарефачить доступ аутентифицированным пользователям и админу
 export const RequireAuth: FC<IRequireAuthProps> = ({ children }) => {
   const { isError, isSuccess } = useAuthRefreshQuery();
 

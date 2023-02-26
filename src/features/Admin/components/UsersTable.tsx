@@ -13,9 +13,11 @@ import { UserActions } from "./UserActions";
 import { useGetUsersQuery } from "../api/users.api";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
+import { useAuthRefreshQuery } from "../../Profile/api/user.api";
 
 export const UsersTable: FC = () => {
   const { data } = useGetUsersQuery();
+  const { data: authData } = useAuthRefreshQuery();
   const { t } = useTranslation();
 
   return (
@@ -45,7 +47,9 @@ export const UsersTable: FC = () => {
                       : t("features.Admin.UsersTable.role.user")}
                   </TableCell>
                   <TableCell>
-                    <UserActions userId={id} role={role} banned={banned} />
+                    {authData?.id !== id && (
+                      <UserActions userId={id} role={role} banned={banned} />
+                    )}
                   </TableCell>
                 </TableRow>
               );

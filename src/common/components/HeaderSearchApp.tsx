@@ -2,8 +2,10 @@ import {
   InputAdornment,
   Box,
   TextField,
+  Typography,
   Autocomplete,
   Button,
+  Avatar,
   Stack,
 } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -17,9 +19,13 @@ import {
 import { ItemCard } from "../../features/Items/components/ItemCard";
 import { Item } from "../../features/Items/components/Item";
 import { authApi } from "../../features/Auth/api/auth.api";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "../../App";
+import { useModal } from "../hooks/useModal";
 
 export const HeaderSearchApp: FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { data } = useGetAllItemsQuery();
   //todo разобраться с поиском и переходом на коллекцию
 
@@ -45,9 +51,17 @@ export const HeaderSearchApp: FC = () => {
         )}
         getOptionLabel={(option) => option.name || ""}
         options={data || []}
-        renderOption={(_, { name, id, imgSrc }) => (
-          <Stack key={id} pt="8px">
-            <ItemCard id={id} name={name} imgSrc={imgSrc} />
+        renderOption={(_, { name, id }) => (
+          <Stack
+            sx={{ cursor: "pointer", "&:hover": { background: "#dbdbdb" } }}
+            key={id}
+            p="4px 8px 4px 8px"
+            direction="row"
+            gap="8px"
+            alignItems="center"
+          >
+            <Search />
+            <Typography>{name}</Typography>
           </Stack>
         )}
       />

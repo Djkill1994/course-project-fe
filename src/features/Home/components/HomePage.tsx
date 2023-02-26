@@ -42,7 +42,7 @@ export const HomePage = () => {
   } = useGetAllCollectionsQuery();
 
   return (
-    <Stack gap="60px" p="0 22px">
+    <Stack gap="60px">
       <Box>
         <Typography
           flexDirection="column"
@@ -166,8 +166,7 @@ export const HomePage = () => {
           </Box>
         )}
       </Box>
-
-      <Box>
+      <Box p="0 22px">
         <TagCloud
           //todo Добавить курсор поинтер
           minSize={12}

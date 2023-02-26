@@ -24,7 +24,7 @@ export const UserActions: FC<IUserActions> = ({ userId, role, banned }) => {
   const [unBanUser] = useUnBanUserMutation();
   const [appointAdmin] = useAppointAdminMutation();
   const [removeAdmin] = useRemoveAdminMutation();
-  // todo при удалении себя редирект
+
   return (
     <Box>
       <IconButton onClick={({ currentTarget }) => setIsOpened(currentTarget)}>

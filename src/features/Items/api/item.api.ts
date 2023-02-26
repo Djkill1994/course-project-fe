@@ -23,7 +23,7 @@ interface ITag {
   tag: string;
 }
 
-interface ILike {
+export interface ILike {
   id: string;
   sender: string;
   count: number;
@@ -31,11 +31,11 @@ interface ILike {
 
 export interface IItem {
   id: string;
-  author: IAuthor;
+  author?: IAuthor;
   name: string;
   imgSrc: string;
   date: string;
-  comments: IComment[];
+  comments?: IComment[];
   likes: ILike;
   tags: ITag[];
 }

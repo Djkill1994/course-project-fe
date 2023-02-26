@@ -106,6 +106,10 @@
       },
       "name": "Name",
       "email": "Email"
+    },
+    "Item": {
+      "comments": "Comments",
+      "comment": "Comment"
     }
   }
 }

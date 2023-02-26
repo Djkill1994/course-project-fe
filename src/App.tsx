@@ -75,7 +75,6 @@ export const App: FC = () => {
             }
           />
           <Route path={ROUTE_PATHS.Items} element={<Items />} />
-          {/*<Route path={ROUTE_PATHS.Item} element={<Item />} />*/}
         </Routes>
       </Box>
     </Box>

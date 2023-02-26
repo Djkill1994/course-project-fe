@@ -4,7 +4,6 @@ import {
   CardContent,
   CardMedia,
   Chip,
-  Modal,
   Stack,
   Typography,
 } from "@mui/material";
@@ -28,18 +27,7 @@ export const ItemCard: FC<Omit<IItem, "comments">> = ({
 
   return (
     <Card>
-      {isOpened && (
-        <Modal open onClose={close} sx={{ display: "flex" }}>
-          <Item
-            date={date}
-            id={id}
-            name={name}
-            imgSrc={imgSrc}
-            tags={tags}
-            likes={likes}
-          />
-        </Modal>
-      )}
+      {isOpened && <Item id={id} onClose={close} />}
       <CardActionArea onClick={open}>
         <CardMedia component="img" height="194" image={imgSrc} alt="Image" />
         <CardContent>
