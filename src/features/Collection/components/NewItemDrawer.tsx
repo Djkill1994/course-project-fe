@@ -3,7 +3,6 @@ import {
   List,
   TextField,
   Stack,
-  Button,
   IconButton,
   Drawer,
   Autocomplete,
@@ -18,28 +17,32 @@ import {
   useGetTagsQuery,
   useLazyGetTagsQuery,
 } from "../../Items/api/item.api";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import defaultImages from "../../../../public/defaulImg.jpg";
 import { UploadImages } from "../../../common/components/UploadImages";
-import { useGetCollectionQuery } from "../api/collections.api";
+import { collectionApi } from "../api/collections.api";
+import { useTranslation } from "react-i18next";
+import { LoadingButton } from "@mui/lab";
 
 interface IProps {
   onClose: () => void;
 }
 
-// todo перевести, зарефачить код, добавление полей доработать
+// todo зарефачить код, добавление полей доработать
 
 type NewItemForm = Pick<IItem, "name" | "imgSrc" | "tags">;
 
 export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
   const { register, handleSubmit, setValue, watch, control } =
     useForm<NewItemForm>();
-  // todo доработать компонент , на загрузку и успешное создание реализовать логику
   const [createItem, { isSuccess, isLoading }] = useCreateItemMutation();
   const params = useParams();
   // const { data } = useGetCollectionQuery(params.id as string);
   const { data: tagsData } = useGetTagsQuery();
   const [refetchTags] = useLazyGetTagsQuery();
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<NewItemForm> = (data) => {
     createItem({
@@ -51,9 +54,12 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
       },
     });
   };
+
+  //todo переделать везде вызов dispatch
   useEffect(() => {
     if (isSuccess) {
       onClose();
+      dispatch(collectionApi.util.invalidateTags(["Collection"]));
     }
   }, [isSuccess]);
 
@@ -64,7 +70,9 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
           <ChevronRight />
         </IconButton>
         <Stack gap="18px">
-          <Typography>New item</Typography>
+          <Typography>
+            {t("features.CollectionPage.NewItemDrawer.newItem")}
+          </Typography>
           <Stack
             component="form"
             onSubmit={handleSubmit(onSubmit)}
@@ -74,24 +82,16 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
             <TextField
               fullWidth
               size="small"
-              label="Name"
+              label={t("features.CollectionPage.NewItemDrawer.labels.name")}
               {...register("name", { required: true })}
             />
-
-            {/*<TextField*/}
-            {/*  fullWidth*/}
-            {/*  size="small"*/}
-            {/*  label="Tags"*/}
-            {/*  {...register("tags", { required: true })}*/}
-            {/*/>*/}
-
             <Controller
               render={({ field: { onChange, value, onBlur } }) => (
                 <Autocomplete
+                  multiple
                   value={value?.map(({ tag }) => tag)}
                   onBlur={onBlur}
                   onChange={(event, item) => onChange(item)}
-                  multiple
                   id="tags-filled"
                   options={tagsData?.map((tag) => tag.tag) || []}
                   freeSolo
@@ -99,14 +99,19 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
                     value?.map((option: string, index: number) => (
                       <Chip
                         key={option}
-                        // variant="contained"
                         label={option}
                         {...getTagProps({ index })}
                       />
                     ))
                   }
                   renderInput={(params) => (
-                    <TextField {...params} variant="filled" label="Tags" />
+                    <TextField
+                      {...params}
+                      variant="filled"
+                      label={t(
+                        "features.CollectionPage.NewItemDrawer.labels.tags"
+                      )}
+                    />
                   )}
                 />
               )}
@@ -117,7 +122,13 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
               onChange={(imgSrc) => setValue("imgSrc", imgSrc)}
               imgSrc={watch("imgSrc")}
             />
-            <Button type="submit">Save</Button>
+            <LoadingButton
+              loading={isLoading}
+              type="submit"
+              variant="contained"
+            >
+              {t("features.CollectionPage.NewItemDrawer.buttons.create")}
+            </LoadingButton>
           </Stack>
         </Stack>
       </List>

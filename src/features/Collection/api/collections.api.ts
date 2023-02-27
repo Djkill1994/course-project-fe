@@ -42,7 +42,6 @@ export const collectionApi = createApi({
           url: "/collections/all/collection",
         };
       },
-      providesTags: ["Collection"],
     }),
     getCollection: build.query<ICollection, string>({
       query(id) {
@@ -91,6 +90,16 @@ export const collectionApi = createApi({
       },
       invalidatesTags: ["Collection"],
     }),
+    deleteItem: build.mutation<void, string[]>({
+      query(id) {
+        return {
+          url: "/items",
+          method: "DELETE",
+          body: { id },
+        };
+      },
+      invalidatesTags: ["Collection"],
+    }),
   }),
 });
 
@@ -101,4 +110,5 @@ export const {
   useGetCollectionQuery,
   useGetAllCollectionsQuery,
   useSettingsCollectionMutation,
+  useDeleteItemMutation,
 } = collectionApi;

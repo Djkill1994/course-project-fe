@@ -4,7 +4,7 @@ import { CollectionTable } from "./CollectionTable";
 
 export const CollectionPage: FC = () => {
   return (
-    <Box m="0 50px">
+    <Box m="auto" maxWidth="1000px">
       <CollectionTable />
     </Box>
   );

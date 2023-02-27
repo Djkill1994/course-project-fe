@@ -6,7 +6,8 @@
     "delete": "Удалить",
     "collections": "Коллекции",
     "home": "Главная",
-    "adminArea": "Админ"
+    "adminArea": "Админ",
+    "uploadImages": "Загрузить изображение"
   },
   "features": {
     "Auth": {
@@ -67,6 +68,41 @@
         "buttons": {
           "edit": "Редактировать"
         }
+      },
+      "NewItemDrawer": {
+        "labels": {
+          "name": "Имя",
+          "tags": "Тэги"
+        },
+        "buttons": {
+          "create": "Создать"
+        },
+        "newItem": "Новый элемент"
+      },
+      "ItemSettingsDrawer": {
+        "labels": {
+          "name": "Имя",
+          "tags": "Тэги"
+        },
+        "buttons": {
+          "send": "Отправить"
+        },
+        "itemSettings": "Настройки элемента"
+      },
+      "CollectionSettingsDrawer": {
+        "editCollection": "Редактирование коллекции",
+        "fields": "Поля",
+        "newField": "Новое поле 1",
+        "labels": {
+          "name": "Имя",
+          "theme": "Тема",
+          "description": "Описание"
+        },
+        "buttons": {
+          "send": "Отправить",
+          "delete": "Удалить",
+          "newField": "Новое поле"
+        }
       }
     },
     "Admin": {
@@ -110,6 +146,10 @@
     "Item": {
       "comments": "Комментарии",
       "comment": "Комментарий"
+    },
+    "HomePage": {
+      "lastAddedItem": "Последние добавленные элементы",
+      "mostBiggestCollection": "Самые большие коллекции"
     }
   }
 }

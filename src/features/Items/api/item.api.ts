@@ -18,9 +18,10 @@ interface IAuthor {
   avatarSrc: string;
 }
 
-interface ITag {
+export interface ITag {
   id: string;
   tag: string;
+  count: number;
 }
 
 export interface ILike {
@@ -45,7 +46,7 @@ export const itemApi = createApi({
   baseQuery: authFetchBaseQuery,
   tagTypes: ["Item"],
   endpoints: (build) => ({
-    getItems: build.query<IItem[], string>({
+    getCollectionItems: build.query<IItem[], string>({
       query(id) {
         return {
           url: `/items/all/${id}`,
@@ -57,6 +58,14 @@ export const itemApi = createApi({
       query() {
         return {
           url: "/items/all",
+        };
+      },
+      providesTags: ["Item"],
+    }),
+    getItemsPortion: build.query<IItem[], void>({
+      query() {
+        return {
+          url: "/items/portion",
         };
       },
       providesTags: ["Item"],
@@ -73,6 +82,13 @@ export const itemApi = createApi({
       query() {
         return {
           url: "/items/tag/all",
+        };
+      },
+    }),
+    getFoundTags: build.query<IItem[], string>({
+      query(tagId) {
+        return {
+          url: `/items/tag/${tagId}`,
         };
       },
     }),
@@ -143,31 +159,21 @@ export const itemApi = createApi({
       },
       invalidatesTags: ["Item"],
     }),
-
-    deleteItem: build.mutation<void, string[]>({
-      query(id) {
-        return {
-          url: "/items",
-          method: "DELETE",
-          body: { id },
-        };
-      },
-      invalidatesTags: ["Item"],
-    }),
   }),
 });
 
 export const {
   useCreateItemMutation,
-  useGetItemsQuery,
+  useGetCollectionItemsQuery,
   useGetItemQuery,
   useGetAllItemsQuery,
   useLazyGetAllItemsQuery,
   useGetTagsQuery,
   useLazyGetTagsQuery,
   useCreateCommentMutation,
-  useDeleteItemMutation,
   useSettingsItemMutation,
   useLikeMutation,
   useUnLikeMutation,
+  useGetFoundTagsQuery,
+  useGetItemsPortionQuery,
 } = itemApi;

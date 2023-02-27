@@ -13,7 +13,6 @@ import { Item } from "./Item";
 import { useModal } from "../../../common/hooks/useModal";
 import { IItem, useGetItemQuery } from "../api/item.api";
 
-// todo ошибки в консоле из за модал , зарефачть
 export const ItemCard: FC<Omit<IItem, "comments">> = ({
   name,
   imgSrc,

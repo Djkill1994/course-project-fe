@@ -7,7 +7,7 @@ import { IComment } from "../api/item.api";
 export const Comments: FC<IComment[]> = ({ comments }) => {
   const { t } = useTranslation();
   const ref = useChatScroll(comments || []);
-  console.log(comments);
+
   return (
     <Box>
       {t("features.Item.comments")}

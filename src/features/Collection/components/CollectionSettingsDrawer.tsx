@@ -27,12 +27,13 @@ import {
 import { useParams } from "react-router-dom";
 import { UploadImages } from "../../../common/components/UploadImages";
 import { LoadingButton } from "@mui/lab";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   onClose: () => void;
 }
 
-// todo перевести, зарефачить код,
+// todo перевести поля????, зарефачить код,
 
 type SettingsForm = Pick<
   ICollection,
@@ -54,6 +55,7 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
       optionFields: data?.optionFields,
     },
   });
+  const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<SettingsForm> = (data) => {
     settingsCollection({
@@ -85,11 +87,15 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
           <IconButton size="small" sx={{ textTransform: "none" }}>
             <DeleteForever color="error" />
             <Typography fontSize="14px" color="error">
-              Delete
+              {t(
+                "features.CollectionPage.CollectionSettingsDrawer.buttons.delete"
+              )}
             </Typography>
           </IconButton>
         </Stack>
-        <Typography pb="22px">Edit collection</Typography>
+        <Typography pb="22px">
+          {t("features.CollectionPage.CollectionSettingsDrawer.editCollection")}
+        </Typography>
         <Stack
           gap="18px"
           component="form"
@@ -99,19 +105,25 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
           <TextField
             fullWidth
             size="small"
-            label="Name"
+            label={t(
+              "features.CollectionPage.CollectionSettingsDrawer.labels.name"
+            )}
             {...register("name", { required: true })}
           />
           <TextField
             fullWidth
             size="small"
-            label="Theme"
+            label={t(
+              "features.CollectionPage.CollectionSettingsDrawer.labels.theme"
+            )}
             {...register("theme", { required: true })}
           />
           <TextField
             fullWidth
             size="small"
-            label="Description"
+            label={t(
+              "features.CollectionPage.CollectionSettingsDrawer.labels.description"
+            )}
             {...register("description", { required: true })}
           />
           <UploadImages
@@ -124,7 +136,9 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
               aria-controls="panel1a-content"
               id="panel1a-header"
             >
-              <Typography>Fields</Typography>
+              <Typography>
+                {t("features.CollectionPage.CollectionSettingsDrawer.fields")}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Stack gap="8px">
@@ -150,17 +164,25 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
                   //todo добавлять разные цифры то бы не повторялись
                   onClick={() =>
                     setValue("optionFields", [
-                      { name: "new field 1", type: "string" },
+                      {
+                        name: t(
+                          "features.CollectionPage.CollectionSettingsDrawer.newField"
+                        ),
+                        type: "string",
+                      },
                     ])
                   }
                 >
-                  <Add sx={{ width: "14px" }} /> New field
+                  <Add sx={{ width: "14px" }} />{" "}
+                  {t(
+                    "features.CollectionPage.CollectionSettingsDrawer.buttons.newField"
+                  )}
                 </Button>
               </Stack>
             </AccordionDetails>
           </Accordion>
           <LoadingButton variant="contained" loading={isLoading} type="submit">
-            Send
+            {t("features.CollectionPage.CollectionSettingsDrawer.buttons.send")}
           </LoadingButton>
         </Stack>
       </List>

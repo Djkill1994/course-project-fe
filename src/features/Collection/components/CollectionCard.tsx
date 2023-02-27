@@ -29,16 +29,17 @@ export const CollectionCard: FC<
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [deleteCollection] = useDeleteCollectionMutation();
-  const { data: collectionsData } = useGetCollectionsQuery();
+  // const { data: collectionsData } = useGetCollectionsQuery();
   const { data: userData } = useAuthRefreshQuery();
-  //todo зарефать 2 вызова IconButton
+  //todo зарефать 2 вызова IconButton, много вызовов auth отрисовывает много компонентов, зарефачить
+
   return (
     <Card>
       <CardHeader
-        action={collectionsData?.map((collection) =>
-          collection.id === id ? (
+        action={userData?.collections.map((collectionId) =>
+          collectionId === id ? (
             <IconButton
-              key={id}
+              key={collectionId}
               onClick={({ currentTarget }) => setIsOpened(currentTarget)}
             >
               <MoreVert />
@@ -51,7 +52,7 @@ export const CollectionCard: FC<
       <CardActionArea>
         <Menu
           anchorEl={isOpened}
-          open={Boolean(isOpened)}
+          open={!!isOpened}
           onClose={() => setIsOpened(null)}
         >
           <MenuItem

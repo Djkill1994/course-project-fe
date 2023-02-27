@@ -1,17 +1,16 @@
-import { Box, Grid, Breadcrumbs, Link, Typography, Stack } from "@mui/material";
+import { KeyboardArrowLeft } from "@mui/icons-material";
+import { Box, Breadcrumbs, Grid, Stack, Typography, Link } from "@mui/material";
 import { FC } from "react";
-import { ItemCard } from "./ItemCard";
-import { ROUTE_PATHS } from "../../../App";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { KeyboardArrowLeft } from "@mui/icons-material";
-import { useGetCollectionItemsQuery } from "../api/item.api";
+import { useGetFoundTagsQuery } from "../../Items/api/item.api";
+import { ItemCard } from "../../Items/components/ItemCard";
 
-export const Items: FC = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
+export const FoundTags: FC = () => {
   const params = useParams();
-  const { data } = useGetCollectionItemsQuery(params.id as string);
+  const { data } = useGetFoundTagsQuery(params.id as string);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <Box p="0 22px 22px 22px">

@@ -14,6 +14,7 @@ import { Item } from "./features/Items/components/Item";
 import { Items } from "./features/Items/components/Items";
 import { LoginPage } from "./features/Auth/components/LoginPage";
 import { RequireAdmin } from "./common/components/RequireAdmin";
+import { FoundTags } from "./features/Home/components/FoundTags";
 
 export const ROUTE_PATHS = {
   Home: "/",
@@ -25,6 +26,7 @@ export const ROUTE_PATHS = {
   MyProfile: "/me/:id",
   Items: "/collection/:id/items",
   Item: "/item",
+  FoundTags: "/tag/:id",
 };
 
 // todo добавить Collapse на карточки коллекции и айтема, защитить роут Admin, spinner на загрузку картинки , проверку на удаление коллекции и айтемов (защита от случайного удаления)
@@ -75,6 +77,7 @@ export const App: FC = () => {
             }
           />
           <Route path={ROUTE_PATHS.Items} element={<Items />} />
+          <Route path={ROUTE_PATHS.FoundTags} element={<FoundTags />} />
         </Routes>
       </Box>
     </Box>

@@ -12,23 +12,20 @@ import {
   Modal,
 } from "@mui/material";
 import { FC, useEffect } from "react";
-import { Favorite, Send } from "@mui/icons-material";
+import { Send } from "@mui/icons-material";
 import {
   IComment,
   IItem,
   useCreateCommentMutation,
   useGetItemQuery,
-  useLikeMutation,
-  useUnLikeMutation,
 } from "../api/item.api";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
-import { useChatScroll } from "../../../common/hooks/useChatScroll";
 import { useModal } from "../../../common/hooks/useModal";
 import { useTranslation } from "react-i18next";
 import { Comments } from "./Comments";
 import { Likes } from "./Likes";
-//todo разбить на компоненты
+
 type CommentForm = Pick<IComment, "sender" | "comment">;
 interface IProps {
   onClose: () => void;
@@ -79,6 +76,7 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
         <CardMedia
           onClick={open}
           component="img"
+          width="55%"
           sx={{ cursor: "zoom-in" }}
           image={itemData?.imgSrc}
           alt="Item images"

@@ -1,7 +1,14 @@
 import { CloudDownload } from "@mui/icons-material";
-import { Box, CardMedia, Stack, Typography } from "@mui/material";
-import { FC } from "react";
-import { uploadImage } from "../utils/uploadImage";
+import {
+  Box,
+  CardMedia,
+  Stack,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
+import { FC, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useUploadImage } from "../hooks/useUploadImage";
 
 interface IProps {
   onChange: (imgSrc: string) => void;
@@ -9,6 +16,15 @@ interface IProps {
 }
 
 export const UploadImages: FC<IProps> = ({ onChange, imgSrc }) => {
+  const { isLoading, url, uploadImage } = useUploadImage();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (url) {
+      onChange(url);
+    }
+  }, [url]);
+
   return (
     <Box sx={{ cursor: "pointer" }} component="label">
       <input
@@ -16,23 +32,25 @@ export const UploadImages: FC<IProps> = ({ onChange, imgSrc }) => {
         accept="image/*"
         multiple
         type="file"
-        onChange={async ({ target: { files } }) => {
-          onChange(await uploadImage(files?.[0]));
-        }}
+        onChange={({ target: { files } }) => uploadImage(files?.[0])}
       />
-      <Stack direction="column" alignItems="center">
-        {imgSrc ? (
-          <CardMedia
-            component="img"
-            height="194"
-            image={imgSrc}
-            alt="Collection img"
-          />
-        ) : (
-          <CloudDownload />
-        )}
-        <Typography variant="body2">Upload images</Typography>
-      </Stack>
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <Stack direction="column" alignItems="center">
+          {imgSrc ? (
+            <CardMedia
+              component="img"
+              height="194"
+              image={imgSrc}
+              alt="Collection img"
+            />
+          ) : (
+            <CloudDownload />
+          )}
+          <Typography variant="body2">{t("general.uploadImages")}</Typography>
+        </Stack>
+      )}
     </Box>
   );
 };

@@ -6,7 +6,8 @@
     "delete": "Delete",
     "collections": "Collections",
     "home": "Home",
-    "adminArea": "Admin"
+    "adminArea": "Admin",
+    "uploadImages": "Upload images"
   },
   "features": {
     "Auth": {
@@ -67,6 +68,41 @@
         "buttons": {
           "edit": "Edit"
         }
+      },
+      "NewItemDrawer": {
+        "labels": {
+          "name": "Name",
+          "tags": "Tags"
+        },
+        "buttons": {
+          "create": "Create"
+        },
+        "newItem": "New item"
+      },
+      "ItemSettingsDrawer": {
+        "labels": {
+          "name": "Name",
+          "tags": "Tags"
+        },
+        "buttons": {
+          "send": "Send"
+        },
+        "itemSettings": "Item settings"
+      },
+      "CollectionSettingsDrawer": {
+        "editCollection": "Edit collection",
+        "fields": "Fields",
+        "newField": "New field 1",
+        "labels": {
+          "name": "Name",
+          "theme": "Theme",
+          "description": "Description"
+        },
+        "buttons": {
+          "send": "Send",
+          "delete": "Delete",
+          "newField": "New field"
+        }
       }
     },
     "Admin": {
@@ -110,6 +146,10 @@
     "Item": {
       "comments": "Comments",
       "comment": "Comment"
+    },
+    "HomePage": {
+      "lastAddedItem": "Last added Items",
+      "mostBiggestCollection": "The most biggest collections"
     }
   }
 }

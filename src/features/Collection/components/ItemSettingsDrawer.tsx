@@ -21,13 +21,16 @@ import {
 } from "../../Items/api/item.api";
 import { UploadImages } from "../../../common/components/UploadImages";
 import { LoadingButton } from "@mui/lab";
+import { useTranslation } from "react-i18next";
+import { collectionApi } from "../api/collections.api";
+import { useDispatch } from "react-redux";
 
 interface IProps {
   onClose: () => void;
   id: string;
 }
 
-// todo перевести, зарефачить код, добавление полей доработать
+// todo зарефачить код, добавление полей доработать
 
 type NewItemForm = Pick<IItem, "name" | "imgSrc" | "tags">;
 
@@ -45,14 +48,8 @@ export const ItemSettingsDrawer: FC<IProps> = ({ onClose, id }) => {
   ] = useSettingsItemMutation();
   const { register, handleSubmit, setValue, watch, control } =
     useForm<NewItemForm>();
-  useEffect(() => {
-    if (getItemSuccess) {
-      setValue("name", itemData?.name);
-      setValue("imgSrc", itemData?.imgSrc);
-      setValue("tags", itemData?.tags);
-    }
-  }, [getItemSuccess]);
-  // todo доработать компонент , на загрузку и успешное создание реализовать логику
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<NewItemForm> = (data) => {
     settingsItem({
@@ -64,11 +61,22 @@ export const ItemSettingsDrawer: FC<IProps> = ({ onClose, id }) => {
       },
     });
   };
+
+  useEffect(() => {
+    if (getItemSuccess) {
+      setValue("name", itemData?.name);
+      setValue("imgSrc", itemData?.imgSrc);
+      setValue("tags", itemData?.tags);
+    }
+  }, [getItemSuccess]);
+
   useEffect(() => {
     if (settingItemSuccess) {
       onClose();
+      dispatch(collectionApi.util.invalidateTags(["Collection"]));
     }
   }, [settingItemSuccess]);
+
   return (
     <Drawer anchor="right" open onClose={onClose}>
       <List sx={{ width: "542px", padding: "12px 22px" }}>
@@ -76,7 +84,9 @@ export const ItemSettingsDrawer: FC<IProps> = ({ onClose, id }) => {
           <ChevronRight />
         </IconButton>
         <Stack gap="18px">
-          <Typography>Item settings</Typography>
+          <Typography>
+            {t("features.CollectionPage.ItemSettingsDrawer.itemSettings")}
+          </Typography>
           {getItemLoading ? (
             <CircularProgress />
           ) : (
@@ -89,7 +99,9 @@ export const ItemSettingsDrawer: FC<IProps> = ({ onClose, id }) => {
               <TextField
                 fullWidth
                 size="small"
-                label="Name"
+                label={t(
+                  "features.CollectionPage.ItemSettingsDrawer.labels.name"
+                )}
                 {...register("name", { required: true })}
               />
               <Controller
@@ -113,7 +125,13 @@ export const ItemSettingsDrawer: FC<IProps> = ({ onClose, id }) => {
                       ))
                     }
                     renderInput={(params) => (
-                      <TextField {...params} variant="filled" label="Tags" />
+                      <TextField
+                        {...params}
+                        variant="filled"
+                        label={t(
+                          "features.CollectionPage.ItemSettingsDrawer.labels.tags"
+                        )}
+                      />
                     )}
                   />
                 )}
@@ -129,7 +147,7 @@ export const ItemSettingsDrawer: FC<IProps> = ({ onClose, id }) => {
                 loading={settingItemLoading}
                 type="submit"
               >
-                Send
+                {t("features.CollectionPage.ItemSettingsDrawer.buttons.send")}
               </LoadingButton>
             </Stack>
           )}

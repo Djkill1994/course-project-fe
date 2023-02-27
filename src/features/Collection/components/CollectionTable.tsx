@@ -10,17 +10,19 @@ import {
   TextField,
   Box,
   InputAdornment,
-  Button,
   Avatar,
   IconButton,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { Search, Settings } from "@mui/icons-material";
 import { CollectionTableToolbar } from "./CollectionTableToolbar";
 import { CollectionTableHeader } from "./CollectionTableHeader";
 import { useTranslation } from "react-i18next";
-import { useGetCollectionQuery } from "../api/collections.api";
+import {
+  useDeleteItemMutation,
+  useGetCollectionQuery,
+} from "../api/collections.api";
 import { useParams } from "react-router-dom";
-import { useDeleteItemMutation } from "../../Items/api/item.api";
 import { ItemSettingsDrawer } from "./ItemSettingsDrawer";
 
 // todo зарефачить кнопку Delete, зарефачить id и в apicollection
@@ -30,7 +32,7 @@ export const CollectionTable: FC = () => {
   const [openId, setOpenId] = useState<string>("");
   const params = useParams();
   const { data } = useGetCollectionQuery(params.id as string);
-  const [deleteItem] = useDeleteItemMutation();
+  const [deleteItem, { isLoading }] = useDeleteItemMutation();
   const { t } = useTranslation();
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -63,7 +65,7 @@ export const CollectionTable: FC = () => {
   };
 
   return (
-    <Paper sx={{ width: "100%" }}>
+    <Paper sx={{ width: "100%", mb: 2 }}>
       <CollectionTableToolbar collectionName={data?.name} />
       <Box p="5px 20px">
         <TextField
@@ -124,9 +126,15 @@ export const CollectionTable: FC = () => {
           )}
         </Table>
         {!!selected.length && (
-          <Button onClick={() => deleteItem(selected)}>
-            {t("general.delete")}
-          </Button>
+          <Box p="8px">
+            <LoadingButton
+              variant="contained"
+              loading={isLoading}
+              onClick={() => deleteItem(selected)}
+            >
+              {t("general.delete")}
+            </LoadingButton>
+          </Box>
         )}
       </TableContainer>
     </Paper>
