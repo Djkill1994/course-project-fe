@@ -30,12 +30,18 @@ export interface ILike {
   count: number;
 }
 
+export interface IOptionalFieldsItem {
+  name: string;
+  value: string | number | boolean;
+}
+
 export interface IItem {
   id: string;
   author?: IAuthor;
   name: string;
   imgSrc: string;
   date: string;
+  optionalFields: IOptionalFieldsItem[];
   comments?: IComment[];
   likes: ILike;
   tags: ITag[];
@@ -94,7 +100,10 @@ export const itemApi = createApi({
     }),
     createItem: build.mutation<
       void,
-      { collectionId: string; newItem: Pick<IItem, "name" | "imgSrc" | "tags"> }
+      {
+        collectionId: string;
+        newItem: Pick<IItem, "name" | "imgSrc" | "tags" | "optionalFields">;
+      }
     >({
       query({ collectionId, newItem }) {
         return {

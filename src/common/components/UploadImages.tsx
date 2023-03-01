@@ -5,6 +5,7 @@ import {
   Stack,
   Typography,
   CircularProgress,
+  Avatar,
 } from "@mui/material";
 import { FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,9 +14,16 @@ import { useUploadImage } from "../hooks/useUploadImage";
 interface IProps {
   onChange: (imgSrc: string) => void;
   imgSrc?: string;
+  avatar?: boolean;
+  avatarSize?: string;
 }
 
-export const UploadImages: FC<IProps> = ({ onChange, imgSrc }) => {
+export const UploadImages: FC<IProps> = ({
+  onChange,
+  imgSrc,
+  avatar,
+  avatarSize,
+}) => {
   const { isLoading, url, uploadImage } = useUploadImage();
   const { t } = useTranslation();
 
@@ -26,7 +34,12 @@ export const UploadImages: FC<IProps> = ({ onChange, imgSrc }) => {
   }, [url]);
 
   return (
-    <Box sx={{ cursor: "pointer" }} component="label">
+    <Stack
+      sx={{ cursor: "pointer" }}
+      component="label"
+      alignItems="center"
+      gap="8px"
+    >
       <input
         hidden
         accept="image/*"
@@ -35,7 +48,11 @@ export const UploadImages: FC<IProps> = ({ onChange, imgSrc }) => {
         onChange={({ target: { files } }) => uploadImage(files?.[0])}
       />
       {isLoading ? (
-        <CircularProgress />
+        <Box display="flex" justifyContent="space-evenly">
+          <CircularProgress />
+        </Box>
+      ) : avatar ? (
+        <Avatar src={imgSrc} sx={{ width: avatarSize, height: avatarSize }} />
       ) : (
         <Stack direction="column" alignItems="center">
           {imgSrc ? (
@@ -51,6 +68,11 @@ export const UploadImages: FC<IProps> = ({ onChange, imgSrc }) => {
           <Typography variant="body2">{t("general.uploadImages")}</Typography>
         </Stack>
       )}
-    </Box>
+      {avatar && (
+        <Typography variant="body2">
+          {t("features.Auth.downloadAvatar")}
+        </Typography>
+      )}
+    </Stack>
   );
 };

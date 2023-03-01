@@ -11,6 +11,7 @@
   },
   "features": {
     "Auth": {
+      "downloadAvatar": "Загрузите аватар",
       "form": {
         "errors": {
           "email": "Введите свою почту",

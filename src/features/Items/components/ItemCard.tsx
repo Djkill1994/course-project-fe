@@ -13,14 +13,9 @@ import { Item } from "./Item";
 import { useModal } from "../../../common/hooks/useModal";
 import { IItem, useGetItemQuery } from "../api/item.api";
 
-export const ItemCard: FC<Omit<IItem, "comments">> = ({
-  name,
-  imgSrc,
-  id,
-  tags,
-  likes,
-  date,
-}) => {
+export const ItemCard: FC<
+  Omit<IItem, "comments" | "tags" | "optionalFields">
+> = ({ name, imgSrc, id, likes, date }) => {
   const { isOpened, open, close } = useModal();
   const { data } = useGetItemQuery(id);
 
@@ -32,9 +27,6 @@ export const ItemCard: FC<Omit<IItem, "comments">> = ({
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {name}
-          </Typography>
-          <Typography gutterBottom variant="body2" color="text.secondary">
-            Tags
           </Typography>
           <Stack direction="row" gap="4px" flexWrap="wrap">
             {data?.tags.map(({ tag, id }) => (

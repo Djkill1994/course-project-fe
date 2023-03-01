@@ -11,6 +11,7 @@
   },
   "features": {
     "Auth": {
+      "downloadAvatar": "Download avatar",
       "form": {
         "errors": {
           "email": "Enter email",

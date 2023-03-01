@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import defaultImages from "../../../../public/defaulImg.jpg";
 import { UploadImages } from "../../../common/components/UploadImages";
-import { collectionApi } from "../api/collections.api";
+import { collectionApi, useGetCollectionQuery } from "../api/collections.api";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
 
@@ -31,16 +31,17 @@ interface IProps {
 
 // todo зарефачить код, добавление полей доработать
 
-type NewItemForm = Pick<IItem, "name" | "imgSrc" | "tags">;
+type NewItemForm = Pick<IItem, "name" | "imgSrc" | "tags" | "optionalFields">;
 
 export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
-  const { register, handleSubmit, setValue, watch, control } =
-    useForm<NewItemForm>();
   const [createItem, { isSuccess, isLoading }] = useCreateItemMutation();
-  const params = useParams();
-  // const { data } = useGetCollectionQuery(params.id as string);
   const { data: tagsData } = useGetTagsQuery();
-  const [refetchTags] = useLazyGetTagsQuery();
+  const params = useParams();
+  const { data: collectionData } = useGetCollectionQuery(params.id as string);
+  const { register, handleSubmit, setValue, watch, control, getValues } =
+    useForm<NewItemForm>({
+      defaultValues: { optionalFields: collectionData?.optionalFields },
+    });
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -48,6 +49,7 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
     createItem({
       collectionId: params.id as string,
       newItem: {
+        optionalFields: data.optionalFields,
         name: data.name,
         imgSrc: data.imgSrc || defaultImages,
         tags: data.tags,
@@ -118,6 +120,23 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
               name="tags"
               control={control}
             />
+            {collectionData?.optionalFields.map((optionalField, index) => (
+              <TextField
+                key={index}
+                fullWidth
+                onChange={({ target: { value } }) =>
+                  setValue("optionalFields", [
+                    ...watch("optionalFields").map((optionField, newIndex) =>
+                      index === newIndex
+                        ? { ...optionField, value }
+                        : optionField
+                    ),
+                  ])
+                }
+                size="small"
+                label={optionalField.name}
+              />
+            ))}
             <UploadImages
               onChange={(imgSrc) => setValue("imgSrc", imgSrc)}
               imgSrc={watch("imgSrc")}

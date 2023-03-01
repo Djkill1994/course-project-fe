@@ -1,17 +1,20 @@
 import { TableHead, TableRow, TableCell, Checkbox } from "@mui/material";
 import { ChangeEvent, FC } from "react";
 import { useTranslation } from "react-i18next";
+import { IOptionalFields } from "../api/collections.api";
 
 interface ICollectionTableHeaderProps {
   numSelected: number;
   onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
   rowCount: number;
+  optionalFields?: IOptionalFields[];
 }
 
 export const CollectionTableHeader: FC<ICollectionTableHeaderProps> = ({
   numSelected,
   onSelectAllClick,
   rowCount,
+  optionalFields,
 }) => {
   const { t } = useTranslation();
 
@@ -36,14 +39,11 @@ export const CollectionTableHeader: FC<ICollectionTableHeaderProps> = ({
           {t("features.CollectionPage.CollectionTableHeader.img")}
         </TableCell>
         <TableCell>
-          {t("features.CollectionPage.CollectionTableHeader.comments")}
-        </TableCell>
-        <TableCell>
           {t("features.CollectionPage.CollectionTableHeader.tags")}
         </TableCell>
-        <TableCell>
-          {t("features.CollectionPage.CollectionTableHeader.likes")}
-        </TableCell>
+        {optionalFields?.map(({ name }) => (
+          <TableCell key={name}>{name}</TableCell>
+        ))}
         <TableCell>
           {t("features.CollectionPage.CollectionTableHeader.edit")}
         </TableCell>

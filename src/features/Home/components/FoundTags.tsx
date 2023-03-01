@@ -32,13 +32,12 @@ export const FoundTags: FC = () => {
         <Typography color="text.primary">collectionName</Typography>
       </Breadcrumbs>
       <Grid container spacing={2}>
-        {data?.map(({ name, imgSrc, id, tags, likes, date }) => (
+        {data?.map(({ name, imgSrc, id, likes, date }) => (
           <Grid key={id} item xs={4}>
             <ItemCard
               id={id}
               name={name}
               imgSrc={imgSrc}
-              tags={tags}
               likes={likes}
               date={date}
             />

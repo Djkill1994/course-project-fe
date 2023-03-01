@@ -10,7 +10,7 @@ import {
   AccordionDetails,
   AccordionSummary,
 } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Add,
   ChevronRight,
@@ -18,16 +18,21 @@ import {
   ExpandMore,
 } from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { CollectionFields } from "./CollectionFields";
 import {
   ICollection,
+  useDeleteCollectionMutation,
   useGetCollectionQuery,
   useSettingsCollectionMutation,
 } from "../api/collections.api";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { UploadImages } from "../../../common/components/UploadImages";
 import { LoadingButton } from "@mui/lab";
 import { useTranslation } from "react-i18next";
+import { incrementString } from "../../../common/utils/incrementString";
+import { ROUTE_PATHS } from "../../../App";
+import { AddedNewField } from "./AddedNewField";
+import ReactMde from "react-mde";
+import * as Showdown from "showdown";
 
 interface IProps {
   onClose: () => void;
@@ -37,45 +42,49 @@ interface IProps {
 
 type SettingsForm = Pick<
   ICollection,
-  "name" | "fields" | "optionFields" | "theme" | "description" | "imgSrc"
+  "name" | "optionalFields" | "theme" | "description" | "imgSrc"
 >;
 
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+});
+
 export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
+  const [selectedTab, setSelectedTab] = useState("write");
   const params = useParams();
   const { data } = useGetCollectionQuery(params.id as string);
-  const [settingsCollection, { isLoading, isSuccess }] =
+  const [deleteCollection, { isSuccess: deleteIsSuccess }] =
+    useDeleteCollectionMutation();
+  const [settingsCollection, { isLoading, isSuccess: settingsIsSuccess }] =
     useSettingsCollectionMutation();
-  const { register, handleSubmit, setValue, watch } = useForm<SettingsForm>({
-    defaultValues: {
-      name: data?.name,
-      theme: data?.theme,
-      description: data?.description,
-      imgSrc: data?.imgSrc,
-      fields: data?.fields,
-      optionFields: data?.optionFields,
-    },
-  });
+  const { register, handleSubmit, setValue, watch, getValues } =
+    useForm<SettingsForm>({
+      defaultValues: data,
+    });
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<SettingsForm> = (data) => {
     settingsCollection({
-      collectionId: params?.id,
-      settingsCollectionForm: {
-        name: data.name,
-        theme: data.theme,
-        description: data.description,
-        imgSrc: data.imgSrc,
-        fields: data.fields,
-        optionFields: data.optionFields,
-      },
+      collectionId: params.id as string,
+      settingsCollectionForm: data,
     });
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (settingsIsSuccess) {
       onClose();
     }
-  }, [isSuccess]);
+  }, [settingsIsSuccess]);
+
+  useEffect(() => {
+    if (deleteIsSuccess) {
+      navigate(ROUTE_PATHS.Collection, { replace: true });
+    }
+  }, [deleteIsSuccess]);
 
   return (
     <Drawer anchor="right" open onClose={onClose}>
@@ -84,7 +93,11 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
           <IconButton onClick={onClose}>
             <ChevronRight />
           </IconButton>
-          <IconButton size="small" sx={{ textTransform: "none" }}>
+          <IconButton
+            onClick={() => deleteCollection(data?.id)}
+            size="small"
+            sx={{ textTransform: "none" }}
+          >
             <DeleteForever color="error" />
             <Typography fontSize="14px" color="error">
               {t(
@@ -118,69 +131,26 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
             )}
             {...register("theme", { required: true })}
           />
-          <TextField
-            fullWidth
-            size="small"
-            label={t(
-              "features.CollectionPage.CollectionSettingsDrawer.labels.description"
-            )}
-            {...register("description", { required: true })}
+
+          <ReactMde
+            value={watch("description")}
+            onChange={(value) => setValue("description", value)}
+            selectedTab={selectedTab}
+            onTabChange={setSelectedTab}
+            generateMarkdownPreview={(markdown) =>
+              Promise.resolve(converter.makeHtml(markdown))
+            }
           />
           <UploadImages
             onChange={(imgSrc) => setValue("imgSrc", imgSrc)}
             imgSrc={watch("imgSrc")}
           />
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMore />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>
-                {t("features.CollectionPage.CollectionSettingsDrawer.fields")}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Stack gap="8px">
-                {watch("fields")?.map((field) => (
-                  <CollectionFields
-                    key={field.name}
-                    defaultValue={field}
-                    onChange={(value) => setValue("fields", [value])}
-                  />
-                ))}
-                {watch("optionFields")?.map((optionField) => (
-                  <CollectionFields
-                    key={optionField.name}
-                    defaultValue={optionField}
-                    onChange={(value) => setValue("optionFields", [value])}
-                  />
-                ))}
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ textTransform: "none" }}
-                  fullWidth
-                  //todo добавлять разные цифры то бы не повторялись
-                  onClick={() =>
-                    setValue("optionFields", [
-                      {
-                        name: t(
-                          "features.CollectionPage.CollectionSettingsDrawer.newField"
-                        ),
-                        type: "string",
-                      },
-                    ])
-                  }
-                >
-                  <Add sx={{ width: "14px" }} />{" "}
-                  {t(
-                    "features.CollectionPage.CollectionSettingsDrawer.buttons.newField"
-                  )}
-                </Button>
-              </Stack>
-            </AccordionDetails>
-          </Accordion>
+          <AddedNewField
+            onChange={(optionalFields) =>
+              setValue("optionalFields", optionalFields)
+            }
+            optionalFields={watch("optionalFields")}
+          />
           <LoadingButton variant="contained" loading={isLoading} type="submit">
             {t("features.CollectionPage.CollectionSettingsDrawer.buttons.send")}
           </LoadingButton>

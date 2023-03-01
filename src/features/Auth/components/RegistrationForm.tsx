@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { useRegistrationMutation } from "../api/auth.api";
 import { uploadImage } from "../../../common/utils/uploadImage";
+import { UploadImages } from "../../../common/components/UploadImages";
 
 export interface IRegistrationForm {
   userName: string;
@@ -63,24 +64,12 @@ export const RegistrationForm: FC = () => {
         alignItems="center"
         flexDirection="column"
       >
-        <IconButton component="label">
-          <input
-            hidden
-            accept="image/*"
-            multiple
-            type="file"
-            onChange={async ({ target: { files } }) => {
-              setValue("avatarSrc", await uploadImage(files?.[0]));
-            }}
-          />
-          <Stack direction="column" alignItems="center">
-            <Avatar
-              src={watch("avatarSrc")}
-              sx={{ width: "66px", height: "66px" }}
-            />
-            <Typography variant="body2">Download avatar</Typography>
-          </Stack>
-        </IconButton>
+        <UploadImages
+          onChange={(imgSrc) => setValue("avatarSrc", imgSrc)}
+          imgSrc={watch("avatarSrc")}
+          avatar={true}
+          avatarSize="66px"
+        />
         <Grid item xs={12} width="100%">
           <TextField
             {...register("email", { required: true, pattern: EMAIL_REGEX })}

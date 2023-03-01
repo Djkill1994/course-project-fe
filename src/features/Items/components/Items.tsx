@@ -17,7 +17,6 @@ export const Items: FC = () => {
     <Box p="0 22px 22px 22px">
       <Breadcrumbs sx={{ pb: "12px" }}>
         <Link
-          // todo протестить navigate
           onClick={() => navigate(-1)}
           underline="hover"
           color="inherit"
@@ -33,13 +32,12 @@ export const Items: FC = () => {
         <Typography color="text.primary">collectionName</Typography>
       </Breadcrumbs>
       <Grid container spacing={2}>
-        {data?.map(({ name, imgSrc, id, tags, likes, date }) => (
+        {data?.map(({ name, imgSrc, id, likes, date }) => (
           <Grid key={id} item xs={4}>
             <ItemCard
               id={id}
               name={name}
               imgSrc={imgSrc}
-              tags={tags}
               likes={likes}
               date={date}
             />

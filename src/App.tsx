@@ -10,7 +10,6 @@ import { MyCollectionsPage } from "./features/Collection/components/MyCollection
 import { CollectionPage } from "./features/Collection/components/CollectionPage";
 import { Header } from "./common/components/Header";
 import { ProfilePage } from "./features/Profile/components/ProfilePage";
-import { Item } from "./features/Items/components/Item";
 import { Items } from "./features/Items/components/Items";
 import { LoginPage } from "./features/Auth/components/LoginPage";
 import { RequireAdmin } from "./common/components/RequireAdmin";
@@ -29,7 +28,7 @@ export const ROUTE_PATHS = {
   FoundTags: "/tag/:id",
 };
 
-// todo добавить Collapse на карточки коллекции и айтема, защитить роут Admin, spinner на загрузку картинки , проверку на удаление коллекции и айтемов (защита от случайного удаления)
+// todo добавить Collapse на карточки коллекции и айтема, защитить роут Admin , проверку на удаление коллекции и айтемов (защита от случайного удаления)
 
 export const App: FC = () => {
   return (

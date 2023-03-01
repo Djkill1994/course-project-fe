@@ -21,20 +21,34 @@ import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { useNavigate, generatePath } from "react-router-dom";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
+import ReactMde from "react-mde";
+import * as Showdown from "showdown";
 
-export const CollectionCard: FC<
-  Omit<ICollection, "optionFields" | "fields">
-> = ({ theme, description, date, name, imgSrc, id }) => {
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+});
+
+export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
+  theme,
+  description,
+  date,
+  name,
+  imgSrc,
+  id,
+}) => {
   const [isOpened, setIsOpened] = useState<null | HTMLElement>(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [deleteCollection] = useDeleteCollectionMutation();
   // const { data: collectionsData } = useGetCollectionsQuery();
   const { data: userData } = useAuthRefreshQuery();
-  //todo зарефать 2 вызова IconButton, много вызовов auth отрисовывает много компонентов, зарефачить
+  //todo зарефать 2 вызова IconButton, много вызовов auth отрисовывает много компонентов, зарефачить при создании коллекции не рендерится меню с выбором и удлением
 
   return (
-    <Card>
+    <Card sx={{ height: "400px" }}>
       <CardHeader
         action={userData?.collections.map((collectionId) =>
           collectionId === id ? (
@@ -69,7 +83,6 @@ export const CollectionCard: FC<
             {t("general.delete")}
           </MenuItem>
         </Menu>
-        {/*//todo протестить нужен ли replace в navigate*/}
         <Box
           onClick={() => navigate(generatePath(ROUTE_PATHS.Items, { id: id }))}
         >
@@ -80,7 +93,11 @@ export const CollectionCard: FC<
             alt="Collection img"
           />
           <CardContent>
-            <Typography variant="body1">{description}</Typography>
+            <Typography
+              dangerouslySetInnerHTML={{
+                __html: converter.makeHtml(description),
+              }}
+            />
           </CardContent>
           <Box display="flex" justifyContent="flex-end" p="5px 15px">
             <Typography fontSize="10px" color="text.secondary">

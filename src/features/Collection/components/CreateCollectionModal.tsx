@@ -5,10 +5,8 @@ import {
   TextField,
   Typography,
   Paper,
-  CardMedia,
-  Box,
 } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   ICollection,
   useCreateCollectionMutation,
@@ -17,27 +15,44 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
 import defaultImages from "../../../../public/defaulImg.jpg";
-import { uploadImage } from "../../../common/utils/uploadImage";
-import { CloudDownload } from "@mui/icons-material";
 import { UploadImages } from "../../../common/components/UploadImages";
+import { AddedNewField } from "./AddedNewField";
+import ReactMde from "react-mde";
+import * as Showdown from "showdown";
 
 interface IProps {
   onClose: () => void;
 }
 
 interface ICreateCollectionForm
-  extends Pick<ICollection, "name" | "theme" | "description" | "imgSrc"> {
+  extends Pick<
+    ICollection,
+    "name" | "theme" | "description" | "imgSrc" | "optionalFields"
+  > {
   file: File[];
 }
 
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+});
+
 export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
+  const [selectedTab, setSelectedTab] = useState("write");
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    getValues,
     formState: { errors },
-  } = useForm<ICreateCollectionForm>();
+  } = useForm<ICreateCollectionForm>({
+    defaultValues: {
+      optionalFields: [],
+    },
+  });
   const [createCollection, { isLoading, isSuccess }] =
     useCreateCollectionMutation();
   const { t } = useTranslation();
@@ -45,6 +60,7 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
   const onSubmit: SubmitHandler<ICreateCollectionForm> = async (data) => {
     createCollection({
       name: data.name,
+      optionalFields: data.optionalFields,
       imgSrc: data.imgSrc || defaultImages,
       description: data.description,
       theme: data.theme,
@@ -63,7 +79,7 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
       onClose={onClose}
       sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
     >
-      <Paper>
+      <Paper sx={{ overflow: "auto", maxHeight: "100%" }}>
         <Stack
           component="form"
           onSubmit={handleSubmit(onSubmit)}
@@ -104,25 +120,41 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
             )}
             fullWidth
           />
-          <TextField
-            {...register("description", { required: true })}
-            error={!!errors.name}
-            helperText={
-              !!errors.name &&
-              t(
-                "features.CollectionPage.CreateCollectionModal.errors.description"
-              )
+          {/*todo MARKDOWN*/}
+          <ReactMde
+            value={watch("description")}
+            onChange={(value) => setValue("description", value)}
+            selectedTab={selectedTab}
+            onTabChange={setSelectedTab}
+            generateMarkdownPreview={(markdown) =>
+              Promise.resolve(converter.makeHtml(markdown))
             }
-            size="small"
-            autoComplete="description"
-            label={t(
-              "features.CollectionPage.CreateCollectionModal.labels.description"
-            )}
-            fullWidth
           />
+          {/*<TextField*/}
+          {/*  {...register("description", { required: true })}*/}
+          {/*  error={!!errors.name}*/}
+          {/*  helperText={*/}
+          {/*    !!errors.name &&*/}
+          {/*    t(*/}
+          {/*      "features.CollectionPage.CreateCollectionModal.errors.description"*/}
+          {/*    )*/}
+          {/*  }*/}
+          {/*  size="small"*/}
+          {/*  autoComplete="description"*/}
+          {/*  label={t(*/}
+          {/*    "features.CollectionPage.CreateCollectionModal.labels.description"*/}
+          {/*  )}*/}
+          {/*  fullWidth*/}
+          {/*/>*/}
           <UploadImages
             onChange={(imgSrc) => setValue("imgSrc", imgSrc)}
             imgSrc={watch("imgSrc")}
+          />
+          <AddedNewField
+            onChange={(optionalFields) =>
+              setValue("optionalFields", optionalFields)
+            }
+            optionalFields={watch("optionalFields")}
           />
           <Stack direction="row" justifyContent="space-between">
             <Button onClick={onClose}>

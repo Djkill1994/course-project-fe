@@ -13,7 +13,7 @@ import { CollectionCard } from "../../Collection/components/CollectionCard";
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { generatePath, useNavigate } from "react-router-dom";
-
+//todo подкрутить карусель
 export const HomePage = () => {
   const {
     data: dataItems,
@@ -54,7 +54,7 @@ export const HomePage = () => {
           <Box p="0 22px 30px" position="relative">
             <Carousel
               autoPlay
-              autoPlaySpeed={3000}
+              autoPlaySpeed={4000}
               containerClass="container"
               showDots
               infinite
@@ -67,25 +67,24 @@ export const HomePage = () => {
                     min: 1024,
                   },
                   items: 4,
-                  partialVisibilityGutter: 40,
+                  partialVisibilityGutter: 10,
                 },
                 tablet: {
                   breakpoint: {
-                    max: 1024,
+                    max: 624,
                     min: 464,
                   },
-                  items: 2,
-                  partialVisibilityGutter: 30,
+                  items: 1,
+                  partialVisibilityGutter: 10,
                 },
               }}
             >
-              {dataItems?.map(({ id, name, imgSrc, tags, likes, date }) => (
+              {dataItems?.map(({ id, name, imgSrc, likes, date }) => (
                 <Box key={id} pl="12px">
                   <ItemCard
                     id={id}
                     name={name}
                     imgSrc={imgSrc}
-                    tags={tags}
                     likes={likes}
                     date={date}
                   />
@@ -115,7 +114,7 @@ export const HomePage = () => {
           <Box p="0 22px 30px" position="relative">
             <Carousel
               autoPlay
-              autoPlaySpeed={3500}
+              autoPlaySpeed={5000}
               containerClass="container"
               showDots
               infinite
@@ -128,15 +127,15 @@ export const HomePage = () => {
                     min: 1024,
                   },
                   items: 3,
-                  partialVisibilityGutter: 40,
+                  partialVisibilityGutter: 10,
                 },
                 tablet: {
                   breakpoint: {
-                    max: 1024,
+                    max: 624,
                     min: 464,
                   },
-                  items: 2,
-                  partialVisibilityGutter: 30,
+                  items: 1,
+                  partialVisibilityGutter: 10,
                 },
               }}
             >

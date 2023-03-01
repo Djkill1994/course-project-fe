@@ -13,25 +13,19 @@ import {
 import { ExpandMore } from "@mui/icons-material";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
-
-export interface ICollectionFieldsForm {
-  name: string;
-  type: string;
-  minLength?: number;
-  maxLength?: number;
-}
+import { IOptionalFields } from "../api/collections.api";
 
 interface IProps {
-  defaultValue: ICollectionFieldsForm;
-  onChange: (values: ICollectionFieldsForm) => void;
+  defaultValue: IOptionalFields;
+  onChange: (values: IOptionalFields) => void;
 }
 
 export const CollectionFields: FC<IProps> = ({ defaultValue, onChange }) => {
-  const { register, watch } = useForm<ICollectionFieldsForm>({
+  const { register, watch } = useForm<IOptionalFields>({
     defaultValues: defaultValue,
   });
-  watch((data) => onChange(data as ICollectionFieldsForm));
-  //todo задизейблить дефолтные поля имя и типа
+  watch((data) => onChange(data as IOptionalFields));
+
   return (
     <Accordion>
       <AccordionSummary
@@ -64,22 +58,6 @@ export const CollectionFields: FC<IProps> = ({ defaultValue, onChange }) => {
             label="Name"
             {...register("name")}
           />
-          {defaultValue.type === "string" && (
-            <Stack gap="8px" direction="row">
-              <TextField
-                sx={{ maxWidth: "213px" }}
-                size="small"
-                label="Min length"
-                {...register("minLength")}
-              />
-              <TextField
-                sx={{ maxWidth: "213px" }}
-                size="small"
-                label="Max length"
-                {...register("maxLength")}
-              />
-            </Stack>
-          )}
         </Stack>
       </AccordionDetails>
     </Accordion>

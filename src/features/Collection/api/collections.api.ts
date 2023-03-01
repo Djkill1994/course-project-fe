@@ -1,20 +1,15 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
-import { ICollectionFieldsForm } from "../components/CollectionFields";
+import { IItem } from "../../Items/api/item.api";
 
-export interface IItem {
-  id: string;
+export interface IOptionalFields {
   name: string;
-  imgSrc: string;
-  comments: [];
-  likes: [];
-  tags: [];
+  type: string;
 }
 
 export interface ICollection {
   id: string;
-  fields: ICollectionFieldsForm[];
-  optionFields: ICollectionFieldsForm[];
+  optionalFields: IOptionalFields[];
   name: string;
   description: string;
   theme: string;
@@ -42,6 +37,7 @@ export const collectionApi = createApi({
           url: "/collections/all/collection",
         };
       },
+      providesTags: ["Collection"],
     }),
     getCollection: build.query<ICollection, string>({
       query(id) {
