@@ -1,58 +1,48 @@
 import {
-  InputAdornment,
+  Autocomplete,
+  Avatar,
   Box,
+  Stack,
   TextField,
   Typography,
-  Autocomplete,
-  Button,
-  Avatar,
-  Stack,
 } from "@mui/material";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Search } from "@mui/icons-material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   useGetAllItemsQuery,
   useLazyGetAllItemsQuery,
 } from "../../features/Items/api/item.api";
-import { ItemCard } from "../../features/Items/components/ItemCard";
 import { Item } from "../../features/Items/components/Item";
-import { authApi } from "../../features/Auth/api/auth.api";
-import { useNavigate } from "react-router-dom";
-import { ROUTE_PATHS } from "../../App";
-import { useModal } from "../hooks/useModal";
 
 export const HeaderSearchApp: FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { data } = useGetAllItemsQuery();
-  //todo разобраться с поиском и переходом на коллекцию
+  const [search, setSearch] = useState("");
+  const { data } = useGetAllItemsQuery(search);
+  const [refetchItems] = useLazyGetAllItemsQuery();
+  const [itemId, setItemId] = useState("");
 
   return (
-    <Box p="0 22px" width="100%" borderRadius="20px">
+    <Box p="0 22px" width="70%" borderRadius="20px">
+      {itemId && <Item id={itemId} onClose={() => setItemId("")} />}
       <Autocomplete
+        onOpen={() => refetchItems("")}
         onChange={(event, item) => console.log(item)}
         renderInput={(params) => (
           <TextField
             {...params}
+            onChange={({ target: { value } }) => {
+              setSearch(value);
+            }}
             fullWidth
             size="small"
             placeholder={t("general.search")}
-            // InputProps={{
-            //   sx: { borderRadius: "20px" },
-            //   startAdornment: (
-            //     <InputAdornment position="start">
-            //       <Search />
-            //     </InputAdornment>
-            //   ),
-            // }}
           />
         )}
         getOptionLabel={(option) => option.name || ""}
         options={data || []}
-        renderOption={(_, { name, id }) => (
+        renderOption={(_, { name, id, imgSrc }) => (
           <Stack
+            onClick={() => setItemId(id)}
             sx={{ cursor: "pointer", "&:hover": { background: "#dbdbdb" } }}
             key={id}
             p="4px 8px 4px 8px"
@@ -60,7 +50,7 @@ export const HeaderSearchApp: FC = () => {
             gap="8px"
             alignItems="center"
           >
-            <Search />
+            <Avatar src={imgSrc} />
             <Typography>{name}</Typography>
           </Stack>
         )}

@@ -14,7 +14,7 @@ export const Likes: FC<IProps> = ({ likes, userId, itemId }) => {
   const [unLike] = useUnLikeMutation();
   return (
     <Stack alignItems="center">
-      {likes.sender.includes(userId) ? (
+      {likes?.sender?.includes(userId) ? (
         <IconButton
           onClick={() => unLike({ itemId: itemId, like: { sender: userId } })}
         >
@@ -27,7 +27,7 @@ export const Likes: FC<IProps> = ({ likes, userId, itemId }) => {
           <Favorite />
         </IconButton>
       )}
-      <Typography>{likes.count}</Typography>
+      <Typography>{likes?.count}</Typography>
     </Stack>
   );
 };

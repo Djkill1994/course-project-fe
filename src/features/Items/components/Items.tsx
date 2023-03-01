@@ -1,7 +1,6 @@
 import { Box, Grid, Breadcrumbs, Link, Typography, Stack } from "@mui/material";
 import { FC } from "react";
 import { ItemCard } from "./ItemCard";
-import { ROUTE_PATHS } from "../../../App";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { KeyboardArrowLeft } from "@mui/icons-material";

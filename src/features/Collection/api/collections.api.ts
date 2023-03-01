@@ -23,10 +23,10 @@ export const collectionApi = createApi({
   baseQuery: authFetchBaseQuery,
   tagTypes: ["Collection"],
   endpoints: (build) => ({
-    getCollections: build.query<ICollection[], void>({
-      query() {
+    getCollections: build.query<ICollection[], string>({
+      query(userId) {
         return {
-          url: "/collections",
+          url: `/collections/${userId}`,
         };
       },
       providesTags: ["Collection"],
@@ -42,7 +42,7 @@ export const collectionApi = createApi({
     getCollection: build.query<ICollection, string>({
       query(id) {
         return {
-          url: `/collections/${id}`,
+          url: `/collections/one/${id}`,
         };
       },
       providesTags: ["Collection"],

@@ -60,10 +60,10 @@ export const itemApi = createApi({
       },
       providesTags: ["Item"],
     }),
-    getAllItems: build.query<IItem[], void>({
-      query() {
+    getAllItems: build.query<IItem[], string>({
+      query(search) {
         return {
-          url: "/items/all",
+          url: `/items/all?search=${search}`,
         };
       },
       providesTags: ["Item"],

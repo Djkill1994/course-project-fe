@@ -1,27 +1,26 @@
 import { LoadingButton } from "@mui/lab";
 import {
+  Avatar,
   Box,
+  Button,
+  IconButton,
   Stack,
   TextField,
-  IconButton,
   Typography,
-  Avatar,
-  Button,
 } from "@mui/material";
-import { FC, useState, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import {
   useAuthRefreshQuery,
-  useEditingProfileUserMutation,
   useDeleteUserMutation,
+  useEditingProfileUserMutation,
 } from "../api/user.api";
 import { DeleteForever, Edit } from "@mui/icons-material";
 import { ROUTE_PATHS } from "../../../App";
-import { useNavigate } from "react-router-dom";
+import { generatePath, useNavigate } from "react-router-dom";
 import { logOutUser } from "../../../common/utils/logOutUser";
 import { EMAIL_REGEX } from "../../../common/constans/regex";
-import { uploadImage } from "../../../common/utils/uploadImage";
 import { UploadImages } from "../../../common/components/UploadImages";
 
 interface IProfileEditingForm {
@@ -164,7 +163,14 @@ export const ProfilePage: FC = () => {
           )}
           <Button
             variant="contained"
-            onClick={() => navigate(ROUTE_PATHS.Collection, { replace: true })}
+            onClick={() =>
+              navigate(
+                generatePath(ROUTE_PATHS.Collection, { userId: data?.id }),
+                {
+                  replace: true,
+                }
+              )
+            }
           >
             {t("features.ProfilePage.buttons.myCollections")}
           </Button>

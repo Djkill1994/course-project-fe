@@ -1,11 +1,11 @@
 import {
-  IconButton,
-  Button,
-  Stack,
-  Grid,
-  Typography,
-  CircularProgress,
   Box,
+  Button,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { FC } from "react";
 import { CreateCollectionModal } from "./CreateCollectionModal";
@@ -14,10 +14,12 @@ import { useGetCollectionsQuery } from "../api/collections.api";
 import { CollectionCard } from "./CollectionCard";
 import { Add, AddBox } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 
 export const MyCollectionsPage: FC = () => {
+  const { userId } = useParams();
+  const { data, isLoading } = useGetCollectionsQuery(userId || "");
   const { isOpened, open, close } = useModal();
-  const { data, isLoading } = useGetCollectionsQuery();
   const { t } = useTranslation();
 
   return (

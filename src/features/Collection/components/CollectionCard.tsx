@@ -1,28 +1,26 @@
 import { FC, useState } from "react";
 import {
+  Box,
   Card,
+  CardActionArea,
+  CardContent,
   CardHeader,
   CardMedia,
-  CardContent,
   IconButton,
-  Typography,
-  Box,
   Menu,
   MenuItem,
-  CardActionArea,
+  Typography,
 } from "@mui/material";
-import { MoreVert } from "@mui/icons-material";
 import {
   ICollection,
   useDeleteCollectionMutation,
-  useGetCollectionsQuery,
 } from "../api/collections.api";
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
-import { useNavigate, generatePath } from "react-router-dom";
+import { generatePath, useNavigate } from "react-router-dom";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
-import ReactMde from "react-mde";
 import * as Showdown from "showdown";
+import { MoreVert } from "@mui/icons-material";
 
 const converter = new Showdown.Converter({
   tables: true,
@@ -43,23 +41,22 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [deleteCollection] = useDeleteCollectionMutation();
-  // const { data: collectionsData } = useGetCollectionsQuery();
   const { data: userData } = useAuthRefreshQuery();
-  //todo зарефать 2 вызова IconButton, много вызовов auth отрисовывает много компонентов, зарефачить при создании коллекции не рендерится меню с выбором и удлением
 
   return (
     <Card sx={{ height: "400px" }}>
       <CardHeader
-        action={userData?.collections.map((collectionId) =>
-          collectionId === id ? (
+        action={
+          userData?.collections?.some(
+            (collectionId) => collectionId === id || userData.role === "admin"
+          ) ? (
             <IconButton
-              key={collectionId}
               onClick={({ currentTarget }) => setIsOpened(currentTarget)}
             >
               <MoreVert />
             </IconButton>
           ) : undefined
-        )}
+        }
         title={name}
         subheader={theme}
       />

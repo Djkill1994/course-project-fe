@@ -1,12 +1,4 @@
-import {
-  Box,
-  Grid,
-  TextField,
-  Avatar,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, TextField } from "@mui/material";
 import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +8,6 @@ import { FormInputPassword } from "../../../common/components/FormInputPassword"
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { useRegistrationMutation } from "../api/auth.api";
-import { uploadImage } from "../../../common/utils/uploadImage";
 import { UploadImages } from "../../../common/components/UploadImages";
 
 export interface IRegistrationForm {

@@ -1,38 +1,30 @@
 import {
-  Typography,
-  List,
-  TextField,
-  Stack,
-  Button,
-  IconButton,
   Drawer,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
+  IconButton,
+  List,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { FC, useEffect, useState } from "react";
-import {
-  Add,
-  ChevronRight,
-  DeleteForever,
-  ExpandMore,
-} from "@mui/icons-material";
+import { ChevronRight, DeleteForever } from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
+
 import {
   ICollection,
   useDeleteCollectionMutation,
   useGetCollectionQuery,
   useSettingsCollectionMutation,
 } from "../api/collections.api";
-import { useParams, useNavigate } from "react-router-dom";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { UploadImages } from "../../../common/components/UploadImages";
 import { LoadingButton } from "@mui/lab";
 import { useTranslation } from "react-i18next";
-import { incrementString } from "../../../common/utils/incrementString";
 import { ROUTE_PATHS } from "../../../App";
 import { AddedNewField } from "./AddedNewField";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
+import { useAuthRefreshQuery } from "../../Profile/api/user.api";
 
 interface IProps {
   onClose: () => void;
@@ -60,10 +52,10 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
     useDeleteCollectionMutation();
   const [settingsCollection, { isLoading, isSuccess: settingsIsSuccess }] =
     useSettingsCollectionMutation();
-  const { register, handleSubmit, setValue, watch, getValues } =
-    useForm<SettingsForm>({
-      defaultValues: data,
-    });
+  const { register, handleSubmit, setValue, watch } = useForm<SettingsForm>({
+    defaultValues: data,
+  });
+  const { data: authData } = useAuthRefreshQuery();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -82,7 +74,9 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
 
   useEffect(() => {
     if (deleteIsSuccess) {
-      navigate(ROUTE_PATHS.Collection, { replace: true });
+      navigate(generatePath(ROUTE_PATHS.Collection, { userId: authData?.id }), {
+        replace: true,
+      });
     }
   }, [deleteIsSuccess]);
 

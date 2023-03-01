@@ -2,11 +2,11 @@ import {
   AppBar,
   Avatar,
   Button,
-  Stack,
   IconButton,
+  Stack,
   Typography,
 } from "@mui/material";
-import { useNavigate, generatePath } from "react-router-dom";
+import { generatePath, useNavigate } from "react-router-dom";
 import { FC } from "react";
 import { Logout } from "@mui/icons-material";
 import { useAuthRefreshQuery } from "../../features/Profile/api/user.api";
@@ -61,7 +61,12 @@ export const Header: FC = () => {
               <Typography
                 sx={{ cursor: "pointer" }}
                 onClick={() =>
-                  navigate(ROUTE_PATHS.Collection, { replace: true })
+                  navigate(
+                    generatePath(ROUTE_PATHS.Collection, { userId: data.id }),
+                    {
+                      replace: true,
+                    }
+                  )
                 }
                 fontWeight="bold"
               >

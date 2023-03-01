@@ -1,10 +1,10 @@
 import {
   Button,
   Modal,
+  Paper,
   Stack,
   TextField,
   Typography,
-  Paper,
 } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import {
@@ -46,7 +46,6 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
     handleSubmit,
     setValue,
     watch,
-    getValues,
     formState: { errors },
   } = useForm<ICreateCollectionForm>({
     defaultValues: {

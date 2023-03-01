@@ -1,19 +1,6 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Button,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Accordion, AccordionDetails, Button, Stack } from "@mui/material";
 import { FC } from "react";
-import {
-  Add,
-  ChevronRight,
-  DeleteForever,
-  ExpandMore,
-} from "@mui/icons-material";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Add } from "@mui/icons-material";
 import { CollectionFields } from "./CollectionFields";
 import { incrementString } from "../../../common/utils/incrementString";
 import { useTranslation } from "react-i18next";
@@ -29,7 +16,7 @@ const generateOptionFieldName = (optionalFields: IOptionalFields[]): string => {
 
 interface IProps {
   optionalFields: IOptionalFields[];
-  onChange: (optionalFields: IOptionalFields[], []) => void;
+  onChange: (optionalFields: IOptionalFields[]) => void;
 }
 //todo rename component поправить компонент , не работает
 export const AddedNewField: FC<IProps> = ({ optionalFields, onChange }) => {
@@ -43,7 +30,7 @@ export const AddedNewField: FC<IProps> = ({ optionalFields, onChange }) => {
               key={index}
               defaultValue={optionField}
               onChange={(value) =>
-                onChange(optionalFields, [
+                onChange([
                   ...optionalFields.map((optionField, newIndex) =>
                     index === newIndex ? value : optionField
                   ),
@@ -57,7 +44,7 @@ export const AddedNewField: FC<IProps> = ({ optionalFields, onChange }) => {
             sx={{ textTransform: "none" }}
             fullWidth
             onClick={() =>
-              onChange(optionalFields, [
+              onChange([
                 ...optionalFields,
                 {
                   name: generateOptionFieldName(optionalFields),

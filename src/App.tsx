@@ -20,7 +20,7 @@ export const ROUTE_PATHS = {
   Login: "/login",
   Registration: "/registration",
   Admin: "/admin",
-  Collection: "/collections",
+  Collection: "/collections/:userId",
   CollectionId: "/collection/:id",
   MyProfile: "/me/:id",
   Items: "/collection/:id/items",

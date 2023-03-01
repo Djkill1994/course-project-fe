@@ -1,18 +1,17 @@
 import {
-  Typography,
-  List,
-  TextField,
-  Stack,
-  Button,
-  IconButton,
-  Drawer,
   Autocomplete,
   Chip,
   CircularProgress,
+  Drawer,
+  IconButton,
+  List,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { FC, useEffect } from "react";
 import { ChevronRight } from "@mui/icons-material";
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   IItem,
   useGetItemQuery,
@@ -41,7 +40,6 @@ export const ItemSettingsDrawer: FC<IProps> = ({ onClose, id }) => {
     isSuccess: getItemSuccess,
   } = useGetItemQuery(id);
   const { data: tagsData } = useGetTagsQuery();
-  // const [refetchTags] = useLazyGetTagsQuery();
   const [
     settingsItem,
     { isSuccess: settingItemSuccess, isLoading: settingItemLoading },

@@ -4,7 +4,11 @@ import { useTranslation } from "react-i18next";
 import { useChatScroll } from "../../../common/hooks/useChatScroll";
 import { IComment } from "../api/item.api";
 
-export const Comments: FC<IComment[]> = ({ comments }) => {
+interface IProps {
+  comments?: IComment[];
+}
+
+export const Comments: FC<IProps> = ({ comments }) => {
   const { t } = useTranslation();
   const ref = useChatScroll(comments || []);
 
@@ -13,14 +17,15 @@ export const Comments: FC<IComment[]> = ({ comments }) => {
       {t("features.Item.comments")}
       <Stack
         ref={ref}
-        maxHeight="200px"
+        maxHeight="300px"
+        minHeight="300px"
         sx={{ overflow: "auto" }}
         border="1px solid #dbdbdb"
         borderRadius="5px"
         p="4px"
         gap="4px"
       >
-        {comments.map((comment) => (
+        {comments?.map((comment) => (
           <Stack
             sx={{ wordWrap: "break-word", overflow: "x:hidden" }}
             direction="column"

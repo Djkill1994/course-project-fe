@@ -1,21 +1,20 @@
 import {
-  Typography,
-  List,
-  TextField,
-  Stack,
-  IconButton,
-  Drawer,
   Autocomplete,
   Chip,
+  Drawer,
+  IconButton,
+  List,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { FC, useEffect } from "react";
 import { ChevronRight } from "@mui/icons-material";
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
   IItem,
   useCreateItemMutation,
   useGetTagsQuery,
-  useLazyGetTagsQuery,
 } from "../../Items/api/item.api";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -38,7 +37,7 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
   const { data: tagsData } = useGetTagsQuery();
   const params = useParams();
   const { data: collectionData } = useGetCollectionQuery(params.id as string);
-  const { register, handleSubmit, setValue, watch, control, getValues } =
+  const { register, handleSubmit, setValue, watch, control } =
     useForm<NewItemForm>({
       defaultValues: { optionalFields: collectionData?.optionalFields },
     });

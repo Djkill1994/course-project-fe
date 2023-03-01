@@ -2,14 +2,15 @@ import {
   Avatar,
   Box,
   Card,
+  CardContent,
+  CardMedia,
+  Chip,
+  CircularProgress,
+  IconButton,
+  Modal,
   Stack,
   TextField,
   Typography,
-  CardContent,
-  CardMedia,
-  IconButton,
-  Chip,
-  Modal,
 } from "@mui/material";
 import { FC, useEffect } from "react";
 import { Send } from "@mui/icons-material";
@@ -21,7 +22,6 @@ import {
 } from "../api/item.api";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
-import { useModal } from "../../../common/hooks/useModal";
 import { useTranslation } from "react-i18next";
 import { Comments } from "./Comments";
 import { Likes } from "./Likes";
@@ -34,12 +34,10 @@ interface IProps {
 export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
   const { register, handleSubmit, reset } = useForm<CommentForm>();
   const { data: userData } = useAuthRefreshQuery();
-  const { data: itemData } = useGetItemQuery(id, {
+  const { data: itemData, isLoading } = useGetItemQuery(id, {
     pollingInterval: 2000,
   });
-
   const [createComment, { isSuccess }] = useCreateCommentMutation();
-  const { isOpened, open, close } = useModal();
   const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
@@ -57,29 +55,22 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
     }
   }, [isSuccess]);
 
+  if (isLoading) {
+    return (
+      <Box position="absolute" top="50%" left="50%">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Modal open onClose={onClose} sx={{ display: "flex" }}>
-      <Card sx={{ display: "flex", width: "80vw", height: "80vh", m: "auto" }}>
-        {isOpened && (
-          <Modal open>
-            <Stack alignItems="center">
-              <CardMedia
-                sx={{ height: "100vh", width: "auto", cursor: "zoom-out" }}
-                onClick={close}
-                component="img"
-                image={itemData?.imgSrc}
-                alt="Item images"
-              />
-            </Stack>
-          </Modal>
-        )}
+      <Card sx={{ display: "flex", m: "auto" }}>
         <CardMedia
-          onClick={open}
+          width="50%"
           component="img"
-          width="55%"
-          sx={{ cursor: "zoom-in" }}
           image={itemData?.imgSrc}
-          alt="Item images"
+          alt="Image"
         />
         <Box display="flex" flexDirection="column" width="100%">
           <CardContent
@@ -88,8 +79,8 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
             <Stack height="100%" justifyContent="space-between">
               <Stack direction="column" alignItems="space-between" gap="22px">
                 <Stack direction="row" alignItems="center" gap="8px">
-                  <Avatar src={itemData?.author.avatarSrc} />
-                  <Typography>{itemData?.author.userName}</Typography>
+                  <Avatar src={itemData?.author?.avatarSrc} />
+                  <Typography>{itemData?.author?.userName}</Typography>
                 </Stack>
                 <Stack gap="22px">
                   <Typography variant="h5">{itemData?.name}</Typography>

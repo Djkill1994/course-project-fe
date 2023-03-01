@@ -1,43 +1,36 @@
-import { ChangeEvent, FC, useState } from "react";
+import { FC, useState } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  Paper,
-  Checkbox,
-  TextField,
-  Box,
-  InputAdornment,
   Avatar,
-  Typography,
   Button,
-  Stack,
-  IconButton,
   Chip,
+  ListItemIcon,
+  MenuItem,
+  Paper,
+  Stack,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { Settings, Add, FileDownload } from "@mui/icons-material";
-import { CollectionTableToolbar } from "./CollectionTableToolbar";
-import { CollectionTableHeader } from "./CollectionTableHeader";
+import { Add, FileDownload, Settings } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import {
-  ICollection,
   useDeleteItemMutation,
   useGetCollectionQuery,
 } from "../api/collections.api";
-import { useParams } from "react-router-dom";
-import { ItemSettingsDrawer } from "./ItemSettingsDrawer";
 import MaterialReactTable from "material-react-table";
 import { CollectionSettingsDrawer } from "./CollectionSettingsDrawer";
 import { useModal } from "../../../common/hooks/useModal";
 import { NewItemDrawer } from "./NewItemDrawer";
 import csvDownload from "json-to-csv-export";
+import { useParams } from "react-router-dom";
+import { ItemSettingsDrawer } from "./ItemSettingsDrawer";
+import i18n from "../../../common/i18n";
+import { MRT_Localization_EN } from "material-react-table/locales/en";
+import { MRT_Localization_RU } from "material-react-table/locales/ru";
 
-export const CollectionTable: FC<ICollection> = ({ collectionData }) => {
-  // const [selected, setSelected] = useState<string[]>([]);
-  const [openId, setOpenId] = useState<string>("");
+export const CollectionTable: FC = () => {
+  const params = useParams();
+  const { data: collectionData, isLoading: isCollectionLoading } =
+    useGetCollectionQuery(params.id as string);
+  const [rowSelection, setRowSelection] = useState({});
   const [deleteItem, { isLoading }] = useDeleteItemMutation();
   const {
     isOpened: isOpenedSettings,
@@ -50,103 +43,113 @@ export const CollectionTable: FC<ICollection> = ({ collectionData }) => {
     close: closeNewItem,
   } = useModal();
   const { t } = useTranslation();
+  const [openId, setOpenId] = useState<string>("");
 
-  const [rowSelection, setRowSelection] = useState({});
-
-  // const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>): void => {
-  //   if (event.target.checked) {
-  //     const newSelected = collectionData?.items?.map((item) => item.id);
-  //     setSelected(newSelected || []);
-  //   } else {
-  //     setSelected([]);
-  //   }
-  // };
-
-  // const handleClick = (event: React.MouseEvent, name: string): void => {
-  //   const selectedIndex = selected.indexOf(name);
-  //   let newSelected: string[] = [];
-  //
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, name);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //
-  //   setSelected(newSelected);
-  // };
   return (
     <Paper sx={{ width: "100%" }}>
       {isOpenedSettings && <CollectionSettingsDrawer onClose={closeSettings} />}
       {isOpenedNewItem && <NewItemDrawer onClose={closeNewItem} />}
+      {openId && (
+        <ItemSettingsDrawer id={openId} onClose={() => setOpenId("")} />
+      )}
       <MaterialReactTable
         enableColumnFilters={false}
-        data={collectionData?.items || []}
-        renderTopToolbarCustomActions={({ table }) => {
-          const deleteSelected = () => {
-            table.getSelectedRowModel().flatRows.map((row) => {
-              deleteItem(row.getValue("id"));
-            });
-          };
-          return (
-            <Stack direction="row" gap="12px" alignItems="space-between">
-              <Button
-                variant="contained"
-                size="small"
-                startIcon={<Settings />}
-                sx={{ textTransform: "none" }}
-                onClick={openSettings}
-              >
-                Collection settings
-              </Button>
-              <Button
-                onClick={openNewItem}
-                variant="contained"
-                size="small"
-                startIcon={<Add />}
-                sx={{ textTransform: "none" }}
-              >
-                {t("features.CollectionPage.CollectionTableToolbar.newItem")}
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                startIcon={<FileDownload />}
-                sx={{ textTransform: "none" }}
-                onClick={() =>
-                  csvDownload({
-                    data: collectionData,
-                    filename: "csvFile",
-                    delimiter: ",",
-                    headers: collectionData?.items,
-                  })
-                }
-              >
-                Export All Data
-              </Button>
-              <LoadingButton
-                variant="contained"
-                loading={isLoading}
-                onClick={deleteSelected}
-              >
-                {t("general.delete")}
-              </LoadingButton>
-            </Stack>
-          );
-        }}
+        data={
+          collectionData?.items?.map((item) =>
+            item.optionalFields.reduce(
+              (item, field) => ({ ...item, [field.name]: field.value }),
+              item
+            )
+          ) || []
+        }
+        localization={
+          i18n.language === "en" ? MRT_Localization_EN : MRT_Localization_RU
+        }
+        renderTopToolbarCustomActions={({ table }) => (
+          <Stack direction="row" gap="12px" alignItems="space-between">
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<Settings />}
+              sx={{ textTransform: "none" }}
+              onClick={openSettings}
+            >
+              Collection settings
+            </Button>
+            <Button
+              onClick={openNewItem}
+              variant="contained"
+              size="small"
+              startIcon={<Add />}
+              sx={{ textTransform: "none" }}
+            >
+              {t("features.CollectionPage.CollectionTableToolbar.newItem")}
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<FileDownload />}
+              sx={{ textTransform: "none" }}
+              onClick={() =>
+                csvDownload({
+                  data: collectionData?.items?.map((item) => ({
+                    ...item,
+                    tags: item.tags?.map(({ tag }) => tag).join(","),
+                    optionalFields: item.optionalFields
+                      ?.map(({ name, value }) => `${name}: ${value}`)
+                      .join(","),
+                  })),
+                  filename: "csvFile",
+                  delimiter: ",",
+                  headers: [
+                    t("features.CollectionPage.CollectionTableHeader.id"),
+                    t("features.CollectionPage.CollectionTableHeader.name"),
+                    "Optional fields",
+                    t("features.CollectionPage.CollectionTableHeader.img"),
+                    t("features.CollectionPage.CollectionTableHeader.tags"),
+                  ],
+                })
+              }
+            >
+              Export All Data
+            </Button>
+            <LoadingButton
+              variant="contained"
+              loading={isLoading}
+              onClick={() =>
+                table.getSelectedRowModel().flatRows.map((row) => {
+                  deleteItem(row.getValue("id"));
+                })
+              }
+            >
+              {t("general.delete")}
+            </LoadingButton>
+          </Stack>
+        )}
         muiSearchTextFieldProps={{
-          placeholder: "I18n translite",
           variant: "outlined",
         }}
         enableRowSelection
         onRowSelectionChange={setRowSelection}
-        state={{ rowSelection }}
+        state={{
+          rowSelection,
+          isLoading: isCollectionLoading,
+        }}
+        enableRowActions
+        renderRowActionMenuItems={({ closeMenu, row: { original } }) => [
+          <MenuItem
+            key={0}
+            onClick={() => {
+              setOpenId(original.id);
+              closeMenu();
+            }}
+          >
+            <ListItemIcon>
+              <Settings />
+            </ListItemIcon>
+            {t("features.CollectionPage.CollectionTableHeader.edit")}
+          </MenuItem>,
+        ]}
         columns={[
           {
             accessorKey: "id",
@@ -164,130 +167,24 @@ export const CollectionTable: FC<ICollection> = ({ collectionData }) => {
             Cell: ({ renderedCellValue }) => <Avatar src={renderedCellValue} />,
           },
           {
-            accessorKey: "tags",
+            accessorFn: (row) => row.tags.map(({ tag }) => tag).join(" "),
             header: t("features.CollectionPage.CollectionTableHeader.tags"),
-            Cell: ({ renderedCellValue }) =>
-              renderedCellValue.map(({ tag, id }) => (
-                <Chip key={id} label={tag} variant="outlined" color="primary" />
-              )),
-          },
-
-          // {
-          //   accessorKey: "optionalFields.name",
-          //   header: "optionalFields.name",
-          // Cell: ({ renderedCellValue }) =>
-          //   renderedCellValue.map(({ tag, _id }) => (
-          //     <Chip
-          //       key={_id}
-          //       label={tag}
-          //       variant="outlined"
-          //       color="primary"
-          //     />
-          //   )),
-          // },
-
-          {
-            enableColumnActions: false,
-            enableSorting: false,
-            accessorKey: "edit",
-            header: t("features.CollectionPage.CollectionTableHeader.edit"),
-            Cell: ({ renderedCellValue }) => (
-              <IconButton
-              // onClick={() => {
-              //   setOpenId(id);
-              // }}
-              >
-                <Settings />
-              </IconButton>
+            Cell: ({ row: { original } }) => (
+              <Stack direction="row" gap="4px">
+                {original.tags?.map(({ id, tag }) => (
+                  <Chip key={id} label={tag} variant="outlined" color="primary">
+                    {tag}
+                  </Chip>
+                ))}
+              </Stack>
             ),
           },
+          ...(collectionData?.optionalFields || [])?.map(({ name }) => ({
+            accessorKey: name,
+            header: name.charAt(0).toUpperCase() + name.slice(1),
+          })),
         ]}
       />
     </Paper>
-
-    // <Paper sx={{ width: "100%", mb: 2 }}>
-    //   <CollectionTableToolbar collectionName={data?.name} />
-    //   <Box p="5px 20px">
-    //     <TextField
-    //       size="small"
-    //       fullWidth
-    //       placeholder={t("general.search")}
-    //       InputProps={{
-    //         startAdornment: (
-    //           <InputAdornment position="start">
-    //             <Search />
-    //           </InputAdornment>
-    //         ),
-    //       }}
-    //     />
-    //   </Box>
-    //   <TableContainer>
-    //     <Table aria-labelledby="tableTitle">
-    //       <CollectionTableHeader
-    //         numSelected={selected.length}
-    //         onSelectAllClick={handleSelectAllClick}
-    //         rowCount={data?.items?.length || 0}
-    //         optionalFields={data?.optionalFields}
-    //       />
-    //       <TableBody>
-    //         {data?.items?.map(({ name, imgSrc, tags, optionalFields, id }) => {
-    //           const isItemSelected = selected.indexOf(id) !== -1;
-    //           return (
-    //             <TableRow key={id}>
-    //               <TableCell padding="checkbox">
-    //                 <Checkbox
-    //                   onClick={(event) => handleClick(event, id)}
-    //                   color="primary"
-    //                   checked={isItemSelected}
-    //                 />
-    //               </TableCell>
-    //               <TableCell scope="row">{id}</TableCell>
-    //               <TableCell>{name}</TableCell>
-    //               <TableCell>
-    //                 <Avatar src={imgSrc} />
-    //               </TableCell>
-    //               <TableCell>
-    //                 {tags.map(({ tag, id }) => (
-    //                   <Chip
-    //                     key={id}
-    //                     label={tag}
-    //                     variant="outlined"
-    //                     color="primary"
-    //                   />
-    //                 ))}
-    //               </TableCell>
-    //               {optionalFields?.map(({ value, name }) => (
-    //                 <TableCell key={name}>{value}</TableCell>
-    //               ))}
-    //               <TableCell>
-    //                 <IconButton
-    //                   onClick={() => {
-    //                     setOpenId(id);
-    //                   }}
-    //                 >
-    //                   <Settings />
-    //                 </IconButton>
-    //               </TableCell>
-    //             </TableRow>
-    //           );
-    //         })}
-    //       </TableBody>
-    //       {openId && (
-    //         <ItemSettingsDrawer id={openId} onClose={() => setOpenId("")} />
-    //       )}
-    //     </Table>
-    //     {!!selected.length && (
-    //       <Box p="8px">
-    //         <LoadingButton
-    //           variant="contained"
-    //           loading={isLoading}
-    //           onClick={() => deleteItem(selected)}
-    //         >
-    //           {t("general.delete")}
-    //         </LoadingButton>
-    //       </Box>
-    //     )}
-    //   </TableContainer>
-    // </Paper>
   );
 };
