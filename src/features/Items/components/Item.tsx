@@ -67,7 +67,7 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
     <Modal open onClose={onClose} sx={{ display: "flex" }}>
       <Card sx={{ display: "flex", m: "auto" }}>
         <CardMedia
-          width="50%"
+          sx={{ width: "50%" }}
           component="img"
           image={itemData?.imgSrc}
           alt="Image"

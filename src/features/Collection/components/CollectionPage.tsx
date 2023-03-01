@@ -13,20 +13,12 @@ export const CollectionPage: FC = () => {
   const { data } = useGetCollectionQuery(params.id as string);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { data: authData } = useAuthRefreshQuery();
 
   return (
     <Stack m="auto" maxWidth="1200px" gap="12px">
       <Breadcrumbs>
         <Link
-          onClick={() =>
-            navigate(
-              generatePath(ROUTE_PATHS.Collection, { userId: authData?.id }),
-              {
-                replace: true,
-              }
-            )
-          }
+          onClick={() => navigate(-1)}
           underline="hover"
           color="inherit"
           sx={{ cursor: "pointer" }}

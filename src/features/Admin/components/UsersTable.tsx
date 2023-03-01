@@ -31,6 +31,7 @@ export const UsersTable: FC = () => {
           <TableBody>
             {data?.map(({ userName, id, avatarSrc, banned, role }) => (
               <TableRow
+                hover={true}
                 key={id}
                 onClick={() =>
                   navigate(
@@ -58,7 +59,7 @@ export const UsersTable: FC = () => {
                     ? t("features.Admin.UsersTable.role.admin")
                     : t("features.Admin.UsersTable.role.user")}
                 </TableCell>
-                <TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
                   {authData?.id !== id && (
                     <UserActions userId={id} role={role} banned={banned} />
                   )}

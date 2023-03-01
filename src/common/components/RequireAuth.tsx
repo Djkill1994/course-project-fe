@@ -1,21 +1,23 @@
 import { FC } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useAuthRefreshQuery } from "../../features/Profile/api/user.api";
 import { Box, CircularProgress } from "@mui/material";
 
 interface IRequireAuthProps {
   children: JSX.Element;
 }
-//todo зарефачить доступ аутентифицированным пользователям и админу
-export const RequireAuth: FC<IRequireAuthProps> = ({ children }) => {
-  const { isError, isSuccess } = useAuthRefreshQuery();
 
-  if (isError) {
-    return <Navigate to="/" replace />;
+export const RequireAuth: FC<IRequireAuthProps> = ({ children }) => {
+  const { data } = useAuthRefreshQuery();
+  const params = useParams();
+
+  if (data?.id === params.userId || data?.role === "admin") {
+    return children;
   }
 
-  if (isSuccess) {
-    return children;
+  console.log(data?.id !== params.userId || data?.role !== "admin");
+  if (data?.id !== params.userId) {
+    return <Navigate to="/" replace />;
   }
 
   return (

@@ -68,9 +68,12 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
         >
           <MenuItem
             onClick={() =>
-              navigate(generatePath(ROUTE_PATHS.CollectionId, { id: id }), {
-                replace: true,
-              })
+              navigate(
+                generatePath(ROUTE_PATHS.CollectionId, {
+                  id: id,
+                  userId: userData?.id,
+                })
+              )
             }
           >
             {t("features.CollectionPage.CollectionCard.buttons.edit")}
@@ -81,7 +84,14 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
           </MenuItem>
         </Menu>
         <Box
-          onClick={() => navigate(generatePath(ROUTE_PATHS.Items, { id: id }))}
+          onClick={() =>
+            navigate(
+              generatePath(ROUTE_PATHS.Items, {
+                collectionId: id,
+                collectionName: name,
+              })
+            )
+          }
         >
           <CardMedia
             component="img"

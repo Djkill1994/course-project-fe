@@ -21,9 +21,9 @@ export const ROUTE_PATHS = {
   Registration: "/registration",
   Admin: "/admin",
   Collection: "/collections/:userId",
-  CollectionId: "/collection/:id",
+  CollectionId: "/collection/:userId/:id",
   MyProfile: "/me/:id",
-  Items: "/collection/:id/items",
+  Items: "/collection/:collectionId/:collectionName/items",
   Item: "/item",
   FoundTags: "/tag/:id",
 };

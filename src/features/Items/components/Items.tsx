@@ -10,8 +10,8 @@ export const Items: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const params = useParams();
-  const { data } = useGetCollectionItemsQuery(params.id as string);
-
+  const { data } = useGetCollectionItemsQuery(params.collectionId as string);
+  console.log(data);
   return (
     <Box p="0 22px 22px 22px">
       <Breadcrumbs sx={{ pb: "12px" }}>
@@ -28,7 +28,7 @@ export const Items: FC = () => {
             )}
           </Stack>
         </Link>
-        <Typography color="text.primary">collectionName</Typography>
+        <Typography color="text.primary">{params.collectionName}</Typography>
       </Breadcrumbs>
       <Grid container spacing={2}>
         {data?.map(({ name, imgSrc, id, likes, date }) => (
