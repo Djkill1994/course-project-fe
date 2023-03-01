@@ -25,7 +25,11 @@ export const HeaderSearchApp: FC = () => {
     <Box p="0 22px" width="70%" borderRadius="20px">
       {itemId && <Item id={itemId} onClose={() => setItemId("")} />}
       <Autocomplete
-        onOpen={() => refetchItems("")}
+        filterOptions={(options) => options}
+        onOpen={() => {
+          setSearch("");
+          refetchItems("");
+        }}
         onChange={(event, item) => console.log(item)}
         renderInput={(params) => (
           <TextField

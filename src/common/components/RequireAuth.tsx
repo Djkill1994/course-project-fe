@@ -8,21 +8,20 @@ interface IRequireAuthProps {
 }
 
 export const RequireAuth: FC<IRequireAuthProps> = ({ children }) => {
-  const { data } = useAuthRefreshQuery();
+  const { data, isLoading } = useAuthRefreshQuery();
   const params = useParams();
 
-  if (data?.id === params.userId || data?.role === "admin") {
-    return children;
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="space-evenly">
+        <CircularProgress />
+      </Box>
+    );
   }
 
-  console.log(data?.id !== params.userId || data?.role !== "admin");
-  if (data?.id !== params.userId) {
+  if (data?.id !== params.userId && data?.role !== "admin") {
     return <Navigate to="/" replace />;
   }
 
-  return (
-    <Box display="flex" justifyContent="space-evenly">
-      <CircularProgress />
-    </Box>
-  );
+  return children;
 };

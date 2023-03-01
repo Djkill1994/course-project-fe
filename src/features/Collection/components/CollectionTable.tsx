@@ -18,18 +18,32 @@ import {
 import MaterialReactTable from "material-react-table";
 import { CollectionSettingsDrawer } from "./CollectionSettingsDrawer";
 import { useModal } from "../../../common/hooks/useModal";
-import { NewItemDrawer } from "./NewItemDrawer";
+import { ItemDrawer } from "./ItemDrawer";
 import csvDownload from "json-to-csv-export";
 import { useParams } from "react-router-dom";
-import { ItemSettingsDrawer } from "./ItemSettingsDrawer";
 import i18n from "../../../common/i18n";
 import { MRT_Localization_EN } from "material-react-table/locales/en";
 import { MRT_Localization_RU } from "material-react-table/locales/ru";
+import {
+  useCreateItemMutation,
+  useGetItemQuery,
+  useSettingsItemMutation,
+} from "../../Items/api/item.api";
+import defaultImages from "../../../../public/defaulImg.jpg";
 
 export const CollectionTable: FC = () => {
+  const { t } = useTranslation();
   const params = useParams();
+  const [openId, setOpenId] = useState<string>("");
+  const [createItem, { isLoading: isCreateItemLoading }] =
+    useCreateItemMutation();
   const { data: collectionData, isLoading: isCollectionLoading } =
     useGetCollectionQuery(params.id as string);
+  const [settingsItem, { isLoading: settingItemLoading }] =
+    useSettingsItemMutation();
+  const { data: itemData, isLoading: isItemLoading } = useGetItemQuery(openId, {
+    skip: !openId,
+  });
   const [rowSelection, setRowSelection] = useState({});
   const [deleteItem, { isLoading }] = useDeleteItemMutation();
   const {
@@ -42,15 +56,45 @@ export const CollectionTable: FC = () => {
     open: openNewItem,
     close: closeNewItem,
   } = useModal();
-  const { t } = useTranslation();
-  const [openId, setOpenId] = useState<string>("");
 
   return (
     <Paper sx={{ width: "100%" }}>
       {isOpenedSettings && <CollectionSettingsDrawer onClose={closeSettings} />}
-      {isOpenedNewItem && <NewItemDrawer onClose={closeNewItem} />}
-      {openId && (
-        <ItemSettingsDrawer id={openId} onClose={() => setOpenId("")} />
+      {isOpenedNewItem && (
+        <ItemDrawer
+          defaultValues={{ optionalFields: collectionData?.optionalFields }}
+          isLoading={isCreateItemLoading}
+          onClose={closeNewItem}
+          onSubmit={(data) =>
+            createItem({
+              collectionId: params.id as string,
+              newItem: {
+                optionalFields: data.optionalFields,
+                name: data.name,
+                imgSrc: data.imgSrc || defaultImages,
+                tags: data.tags,
+              },
+            })
+          }
+        />
+      )}
+      {openId && !isItemLoading && (
+        <ItemDrawer
+          isEditMode
+          defaultValues={itemData}
+          isLoading={settingItemLoading}
+          onClose={() => setOpenId("")}
+          onSubmit={(data) =>
+            settingsItem({
+              itemId: openId,
+              settingsItem: {
+                name: data.name,
+                imgSrc: data.imgSrc,
+                tags: data.tags,
+              },
+            })
+          }
+        />
       )}
       <MaterialReactTable
         enableColumnFilters={false}

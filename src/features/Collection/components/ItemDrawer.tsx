@@ -8,61 +8,41 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { ChevronRight } from "@mui/icons-material";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import {
-  IItem,
-  useCreateItemMutation,
-  useGetTagsQuery,
-} from "../../Items/api/item.api";
+import { Controller, useForm } from "react-hook-form";
+import { IItem, useGetTagsQuery } from "../../Items/api/item.api";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import defaultImages from "../../../../public/defaulImg.jpg";
 import { UploadImages } from "../../../common/components/UploadImages";
-import { collectionApi, useGetCollectionQuery } from "../api/collections.api";
+import { collectionApi } from "../api/collections.api";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
+import { OptionalField } from "./OptionalField";
 
 interface IProps {
   onClose: () => void;
+  onSubmit: (data: NewItemForm) => Promise<void>;
+  isLoading?: boolean;
+  defaultValues?: NewItemForm;
+  isEditMode?: boolean;
 }
-
-// todo зарефачить код, добавление полей доработать
 
 type NewItemForm = Pick<IItem, "name" | "imgSrc" | "tags" | "optionalFields">;
 
-export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
-  const [createItem, { isSuccess, isLoading }] = useCreateItemMutation();
+export const ItemDrawer: FC<IProps> = ({
+  onClose,
+  onSubmit,
+  isLoading,
+  defaultValues,
+  isEditMode,
+}) => {
   const { data: tagsData } = useGetTagsQuery();
-  const params = useParams();
-  const { data: collectionData } = useGetCollectionQuery(params.id as string);
   const { register, handleSubmit, setValue, watch, control } =
     useForm<NewItemForm>({
-      defaultValues: { optionalFields: collectionData?.optionalFields },
+      defaultValues,
     });
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  const onSubmit: SubmitHandler<NewItemForm> = (data) => {
-    createItem({
-      collectionId: params.id as string,
-      newItem: {
-        optionalFields: data.optionalFields,
-        name: data.name,
-        imgSrc: data.imgSrc || defaultImages,
-        tags: data.tags,
-      },
-    });
-  };
-
-  //todo переделать везде вызов dispatch
-  useEffect(() => {
-    if (isSuccess) {
-      onClose();
-      dispatch(collectionApi.util.invalidateTags(["Collection"]));
-    }
-  }, [isSuccess]);
 
   return (
     <Drawer anchor="right" open onClose={onClose}>
@@ -72,11 +52,17 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
         </IconButton>
         <Stack gap="18px">
           <Typography>
-            {t("features.CollectionPage.NewItemDrawer.newItem")}
+            {isEditMode
+              ? t("features.CollectionPage.ItemSettingsDrawer.itemSettings")
+              : t("features.CollectionPage.NewItemDrawer.newItem")}
           </Typography>
           <Stack
             component="form"
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(async (data) => {
+              await onSubmit(data);
+              dispatch(collectionApi.util.invalidateTags(["Collection"]));
+              onClose();
+            })}
             noValidate
             gap="18px"
           >
@@ -93,16 +79,10 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
                   value={value?.map(({ tag }) => tag)}
                   onBlur={onBlur}
                   onChange={(event, item) => onChange(item)}
-                  id="tags-filled"
                   options={tagsData?.map((tag) => tag.tag) || []}
-                  freeSolo
                   renderTags={(value: readonly string[], getTagProps) =>
                     value?.map((option: string, index: number) => (
-                      <Chip
-                        key={option}
-                        label={option}
-                        {...getTagProps({ index })}
-                      />
+                      <Chip {...getTagProps({ index })} label={option} />
                     ))
                   }
                   renderInput={(params) => (
@@ -119,21 +99,15 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
               name="tags"
               control={control}
             />
-            {collectionData?.optionalFields.map((optionalField, index) => (
-              <TextField
+            {watch("optionalFields")?.map((optionalField, index) => (
+              <OptionalField
                 key={index}
-                fullWidth
-                onChange={({ target: { value } }) =>
-                  setValue("optionalFields", [
-                    ...watch("optionalFields").map((optionField, newIndex) =>
-                      index === newIndex
-                        ? { ...optionField, value }
-                        : optionField
-                    ),
-                  ])
+                optionalField={optionalField}
+                index={index}
+                optionalFields={watch("optionalFields")}
+                onChange={(newOptionalFields) =>
+                  setValue("optionalFields", newOptionalFields)
                 }
-                size="small"
-                label={optionalField.name}
               />
             ))}
             <UploadImages
@@ -145,7 +119,9 @@ export const NewItemDrawer: FC<IProps> = ({ onClose }) => {
               type="submit"
               variant="contained"
             >
-              {t("features.CollectionPage.NewItemDrawer.buttons.create")}
+              {isEditMode
+                ? t("features.CollectionPage.ItemSettingsDrawer.buttons.send")
+                : t("features.CollectionPage.NewItemDrawer.buttons.create")}
             </LoadingButton>
           </Stack>
         </Stack>

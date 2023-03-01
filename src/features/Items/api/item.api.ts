@@ -31,6 +31,7 @@ export interface ILike {
 }
 
 export interface IOptionalFieldsItem {
+  type: string;
   name: string;
   value: string | number | boolean;
 }

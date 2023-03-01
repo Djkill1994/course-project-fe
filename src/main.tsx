@@ -9,16 +9,20 @@ import { Provider } from "react-redux";
 import { Experimental_CssVarsProvider as CssVarsProvider } from "@mui/material/styles";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import "./common/i18n";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssVarsProvider>
-          <CssBaseline />
-          <App />
-        </CssVarsProvider>
-      </ThemeProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ThemeProvider theme={theme}>
+          <CssVarsProvider>
+            <CssBaseline />
+            <App />
+          </CssVarsProvider>
+        </ThemeProvider>
+      </LocalizationProvider>
     </Provider>
   </BrowserRouter>
 );
