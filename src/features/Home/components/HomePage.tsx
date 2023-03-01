@@ -71,10 +71,10 @@ export const HomePage = () => {
                 },
                 tablet: {
                   breakpoint: {
-                    max: 624,
+                    max: 1024,
                     min: 464,
                   },
-                  items: 1,
+                  items: 2,
                   partialVisibilityGutter: 10,
                 },
               }}
@@ -131,10 +131,10 @@ export const HomePage = () => {
                 },
                 tablet: {
                   breakpoint: {
-                    max: 624,
+                    max: 1024,
                     min: 464,
                   },
-                  items: 1,
+                  items: 2,
                   partialVisibilityGutter: 10,
                 },
               }}
