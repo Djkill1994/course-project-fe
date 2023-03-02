@@ -41,18 +41,18 @@ export const Comments: FC<IProps> = ({ comments }) => {
               justifyContent="space-between"
             >
               <Stack direction="row" alignItems="center" gap="8px">
-                <Avatar src={comment.sender.avatarSrc} />
+                <Avatar src={comment?.sender?.avatarSrc} />
                 <Typography fontWeight="bolder">
-                  {comment.sender.userName}
+                  {comment?.sender?.userName}
                 </Typography>
               </Stack>
               <Box>
                 <Typography fontSize="10px" color="text.secondary">
-                  {comment.date}
+                  {comment?.date}
                 </Typography>
               </Box>
             </Stack>
-            <Typography>{comment.comment}</Typography>
+            <Typography>{comment?.comment}</Typography>
           </Stack>
         ))}
       </Stack>

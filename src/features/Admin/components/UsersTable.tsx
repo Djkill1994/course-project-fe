@@ -31,6 +31,7 @@ export const UsersTable: FC = () => {
           <TableBody>
             {data?.map(({ userName, id, avatarSrc, banned, role }) => (
               <TableRow
+                sx={{ cursor: "pointer" }}
                 hover={true}
                 key={id}
                 onClick={() =>

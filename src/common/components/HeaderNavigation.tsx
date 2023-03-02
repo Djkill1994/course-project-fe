@@ -19,7 +19,7 @@ export const HeaderNavigation: FC<IHeaderNavigationProps> = ({
   const { t } = useTranslation();
 
   return (
-    <Stack gap="18px" direction="row" alignItems="center">
+    <Stack gap="8px" direction="row" alignItems="center">
       {id && (
         <Stack gap="8px" direction="row" alignItems="center">
           <IconButton

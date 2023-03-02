@@ -28,8 +28,6 @@ export const ROUTE_PATHS = {
   FoundTags: "/tag/:id",
 };
 
-// todo добавить Collapse на карточки коллекции и айтема, защитить роут Admin , проверку на удаление коллекции и айтемов (защита от случайного удаления)
-
 export const App: FC = () => {
   return (
     <Box height="100vh">

@@ -1,16 +1,11 @@
 import {
   AppBar,
-  Avatar,
   Button,
   IconButton,
   Stack,
-  Typography,
   useMediaQuery,
-  Box,
-  Menu,
-  MenuItem,
 } from "@mui/material";
-import { generatePath, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FC } from "react";
 import { Logout } from "@mui/icons-material";
 import { useAuthRefreshQuery } from "../../features/Profile/api/user.api";
@@ -55,24 +50,22 @@ export const Header: FC = () => {
           />
         )}
         <HeaderSearchApp />
-        <Stack direction="row" alignItems="center" gap="10px">
+        <Stack direction="row" alignItems="center" gap="8px" minWidth="190px">
           <HeaderSelectLeague />
           <HeaderThemeSwitcher />
-          <Stack>
-            {data ? (
-              <IconButton onClick={logOutUser}>
-                <Logout />
-              </IconButton>
-            ) : (
-              <Button
-                size="small"
-                onClick={() => navigate(ROUTE_PATHS.Login, { replace: true })}
-                variant="contained"
-              >
-                {t("general.logIn")}
-              </Button>
-            )}
-          </Stack>
+          {data ? (
+            <IconButton onClick={logOutUser}>
+              <Logout />
+            </IconButton>
+          ) : (
+            <Button
+              size="small"
+              onClick={() => navigate(ROUTE_PATHS.Login, { replace: true })}
+              variant="contained"
+            >
+              {t("general.logIn")}
+            </Button>
+          )}
         </Stack>
       </Stack>
     </AppBar>

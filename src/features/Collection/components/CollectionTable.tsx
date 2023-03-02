@@ -29,7 +29,6 @@ import {
   useGetItemQuery,
   useSettingsItemMutation,
 } from "../../Items/api/item.api";
-import defaultImages from "../../../../public/defaulImg.jpg";
 
 export const CollectionTable: FC = () => {
   const { t } = useTranslation();
@@ -73,7 +72,7 @@ export const CollectionTable: FC = () => {
                 name: data.name,
                 imgSrc:
                   data.imgSrc ||
-                  "https://res.cloudinary.com/djkill/image/upload/v1677697696/images_2_djj1rw.png",
+                  "https://res.cloudinary.com/djkill/image/upload/c_limit,h_200,w_200/v1677759119/default-item-logo_r09x9c.jpg",
                 tags: data.tags,
               },
             })
@@ -89,11 +88,7 @@ export const CollectionTable: FC = () => {
           onSubmit={(data) =>
             settingsItem({
               itemId: openId,
-              settingsItem: {
-                name: data.name,
-                imgSrc: data.imgSrc,
-                tags: data.tags,
-              },
+              settingsItem: data,
             })
           }
         />

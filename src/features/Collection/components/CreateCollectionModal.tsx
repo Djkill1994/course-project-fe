@@ -68,7 +68,7 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
       optionalFields: data.optionalFields,
       imgSrc:
         data.imgSrc ||
-        "https://res.cloudinary.com/djkill/image/upload/v1677695986/defaulImg_i0onot.jpg",
+        "https://res.cloudinary.com/djkill/image/upload/v1677759112/default-collection-logo_tt9c8r.png",
       description: data.description,
       theme: data.theme,
     });

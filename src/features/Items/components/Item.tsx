@@ -10,14 +10,13 @@ import {
   IconButton,
   Modal,
   Popover,
-  Popper,
   Stack,
   TextField,
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
-import { Send, Close } from "@mui/icons-material";
+import { FC, useEffect } from "react";
+import { Close, Send } from "@mui/icons-material";
 import {
   IComment,
   IItem,
@@ -30,9 +29,9 @@ import { useTranslation } from "react-i18next";
 import { Comments } from "./Comments";
 import { Likes } from "./Likes";
 import {
-  usePopupState,
-  bindTrigger,
   bindPopover,
+  bindTrigger,
+  usePopupState,
 } from "material-ui-popup-state/hooks";
 
 type CommentForm = Pick<IComment, "sender" | "comment">;
@@ -48,7 +47,6 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
   });
   const [createComment, { isSuccess }] = useCreateCommentMutation();
   const { t } = useTranslation();
-  const [isOpened, setIsOpened] = useState<null | HTMLElement>(null);
   const deviceMediaQuery = useMediaQuery("(min-width:600px)");
 
   const popupState = usePopupState({
@@ -176,15 +174,19 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
                   userId={userData?.id}
                   itemId={id}
                 />
-                <TextField
-                  fullWidth
-                  size="small"
-                  label={t("features.Item.comment")}
-                  {...register("comment", { required: true })}
-                />
-                <IconButton type="submit">
-                  <Send />
-                </IconButton>
+                {userData && (
+                  <>
+                    <TextField
+                      fullWidth
+                      size="small"
+                      label={t("features.Item.comment")}
+                      {...register("comment", { required: true })}
+                    />
+                    <IconButton type="submit">
+                      <Send />
+                    </IconButton>
+                  </>
+                )}
               </Stack>
             </Stack>
           </CardContent>

@@ -1,14 +1,24 @@
 import { KeyboardArrowLeft } from "@mui/icons-material";
-import { Box, Breadcrumbs, Grid, Link, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  CircularProgress,
+  Grid,
+  Link,
+  Stack,
+} from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetFoundTagsQuery } from "../../Items/api/item.api";
 import { ItemCard } from "../../Items/components/ItemCard";
+import { ReactComponent as NoData } from "../../../../public/no-data.svg";
 
 export const FoundTags: FC = () => {
   const params = useParams();
-  const { data } = useGetFoundTagsQuery(params.id as string);
+  const { data, isLoading, isSuccess } = useGetFoundTagsQuery(
+    params.id as string
+  );
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -28,20 +38,25 @@ export const FoundTags: FC = () => {
             )}
           </Stack>
         </Link>
-        <Typography color="text.primary">collectionName</Typography>
       </Breadcrumbs>
-      <Grid container spacing={2}>
-        {data?.map(({ name, imgSrc, id, likes, date }) => (
-          <Grid key={id} item xs={4}>
-            <ItemCard
-              id={id}
-              name={name}
-              imgSrc={imgSrc}
-              likes={likes}
-              date={date}
-            />
-          </Grid>
-        ))}
+      <Grid container spacing={2} justifyContent="center">
+        {isLoading ? (
+          <CircularProgress />
+        ) : isSuccess && data?.length ? (
+          data?.map(({ name, imgSrc, id, likes, date }) => (
+            <Grid key={id} item xs={4}>
+              <ItemCard
+                id={id}
+                name={name}
+                imgSrc={imgSrc}
+                likes={likes}
+                date={date}
+              />
+            </Grid>
+          ))
+        ) : (
+          <NoData />
+        )}
       </Grid>
     </Box>
   );

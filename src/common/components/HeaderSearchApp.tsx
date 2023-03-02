@@ -22,7 +22,7 @@ export const HeaderSearchApp: FC = () => {
   const [itemId, setItemId] = useState("");
 
   return (
-    <Box p="0 22px" width="70%" borderRadius="20px">
+    <Box p="0 22px" width="600px" borderRadius="20px">
       {itemId && <Item id={itemId} onClose={() => setItemId("")} />}
       <Autocomplete
         filterOptions={(options) => options}
