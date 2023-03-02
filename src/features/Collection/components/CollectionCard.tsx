@@ -21,7 +21,6 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
 import * as Showdown from "showdown";
 import { MoreVert } from "@mui/icons-material";
-import { THEME_TRANSLATIONS_KEYS } from "../constants/theme";
 
 const converter = new Showdown.Converter({
   tables: true,
@@ -49,7 +48,7 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
       <CardHeader
         action={
           userData?.collections?.some(
-            (collectionId) => collectionId === id || userData.role === "admin"
+            (collectionId) => collectionId === id || userData?.role === "admin"
           ) ? (
             <IconButton
               onClick={({ currentTarget }) => setIsOpened(currentTarget)}
@@ -79,7 +78,6 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
           >
             {t("features.CollectionPage.CollectionCard.buttons.edit")}
           </MenuItem>
-          {/*todo сделать модалку на удаление*/}
           <MenuItem onClick={() => deleteCollection(id)}>
             {t("general.delete")}
           </MenuItem>

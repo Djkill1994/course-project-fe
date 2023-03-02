@@ -1,12 +1,10 @@
 import { Breadcrumbs, Link, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import { CollectionTable } from "./CollectionTable";
-import { ROUTE_PATHS } from "../../../App";
 import { KeyboardArrowLeft } from "@mui/icons-material";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useGetCollectionQuery } from "../api/collections.api";
-import { useAuthRefreshQuery } from "../../Profile/api/user.api";
 
 export const CollectionPage: FC = () => {
   const params = useParams();

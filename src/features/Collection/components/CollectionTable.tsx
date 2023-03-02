@@ -10,7 +10,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { Add, FileDownload, Settings, Delete } from "@mui/icons-material";
+import { Add, Delete, FileDownload, Settings } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import {
   useDeleteItemMutation,
@@ -30,7 +30,6 @@ import {
   useGetItemQuery,
   useSettingsItemMutation,
 } from "../../Items/api/item.api";
-import { logOutUser } from "../../../common/utils/logOutUser";
 
 export const CollectionTable: FC = () => {
   const { t } = useTranslation();
@@ -57,7 +56,7 @@ export const CollectionTable: FC = () => {
     open: openNewItem,
     close: closeNewItem,
   } = useModal();
-  const deviceMediaQuery = useMediaQuery("(min-width:600px)");
+  const deviceMediaQuery = useMediaQuery("(min-width:850px)");
 
   return (
     <Paper sx={{ width: "100%" }}>
@@ -110,32 +109,45 @@ export const CollectionTable: FC = () => {
           i18n.language === "en" ? MRT_Localization_EN : MRT_Localization_RU
         }
         renderTopToolbarCustomActions={({ table }) => (
-          <Stack direction="row" gap="12px" alignItems="space-between">
+          <Stack direction="row" gap="12px" alignItems="space-between" mt="4px">
             <Button
               variant="contained"
               size="small"
               startIcon={<Settings />}
-              sx={{ textTransform: "none" }}
+              sx={{
+                textTransform: "none",
+                "& .MuiButton-startIcon": { margin: { xs: 0 } },
+              }}
               onClick={openSettings}
             >
-              {t(
-                "features.CollectionPage.CollectionTableToolbar.collectionSettings"
-              )}
+              {deviceMediaQuery
+                ? t(
+                    "features.CollectionPage.CollectionTableToolbar.collectionSettings"
+                  )
+                : undefined}
             </Button>
             <Button
               onClick={openNewItem}
               variant="contained"
               size="small"
               startIcon={<Add />}
-              sx={{ textTransform: "none" }}
+              sx={{
+                textTransform: "none",
+                "& .MuiButton-startIcon": { margin: { xs: 0 } },
+              }}
             >
-              {t("features.CollectionPage.CollectionTableToolbar.newItem")}
+              {deviceMediaQuery
+                ? t("features.CollectionPage.CollectionTableToolbar.newItem")
+                : undefined}
             </Button>
             <Button
               variant="contained"
               size="small"
               startIcon={<FileDownload />}
-              sx={{ textTransform: "none" }}
+              sx={{
+                textTransform: "none",
+                "& .MuiButton-startIcon": { margin: { xs: 0 } },
+              }}
               onClick={() =>
                 csvDownload({
                   data: collectionData?.items?.map((item) => ({
@@ -150,6 +162,7 @@ export const CollectionTable: FC = () => {
                   headers: [
                     t("features.CollectionPage.CollectionTableHeader.id"),
                     t("features.CollectionPage.CollectionTableHeader.name"),
+                    // todo i18n
                     "Optional fields",
                     t("features.CollectionPage.CollectionTableHeader.img"),
                     t("features.CollectionPage.CollectionTableHeader.tags"),
@@ -157,14 +170,19 @@ export const CollectionTable: FC = () => {
                 })
               }
             >
-              {t("features.CollectionPage.CollectionTableToolbar.exportData")}
+              {deviceMediaQuery
+                ? t("features.CollectionPage.CollectionTableToolbar.exportData")
+                : undefined}
             </Button>
             {!!Object.keys(rowSelection).length && (
               <LoadingButton
                 variant="contained"
                 size="small"
                 startIcon={<Delete />}
-                sx={{ textTransform: "none" }}
+                sx={{
+                  textTransform: "none",
+                  "& .MuiButton-startIcon": { margin: { xs: 0 } },
+                }}
                 loading={isLoading}
                 onClick={() =>
                   table.getSelectedRowModel().flatRows.map((row) => {
@@ -172,7 +190,7 @@ export const CollectionTable: FC = () => {
                   })
                 }
               >
-                {t("general.delete")}
+                {deviceMediaQuery ? t("general.delete") : undefined}
               </LoadingButton>
             )}
           </Stack>

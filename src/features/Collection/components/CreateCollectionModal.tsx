@@ -23,7 +23,8 @@ import { UploadImages } from "../../../common/components/UploadImages";
 import { AddedNewField } from "./AddedNewField";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
-import { THEME_TRANSLATIONS_KEYS } from "../constants/theme";
+import { useDispatch } from "react-redux";
+import { userApi } from "../../Profile/api/user.api";
 
 interface IProps {
   onClose: () => void;
@@ -45,6 +46,7 @@ const converter = new Showdown.Converter({
 });
 
 export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
+  const dispatch = useDispatch();
   const [selectedTab, setSelectedTab] = useState("write");
   const {
     register,
@@ -63,7 +65,7 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
   const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<ICreateCollectionForm> = async (data) => {
-    createCollection({
+    await createCollection({
       name: data.name,
       optionalFields: data.optionalFields,
       imgSrc:
@@ -72,6 +74,7 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
       description: data.description,
       theme: data.theme,
     });
+    dispatch(userApi.util.invalidateTags(["User"]));
   };
 
   useEffect(() => {
