@@ -140,7 +140,7 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
           >
             {themesData?.map(({ theme }) => (
               <MenuItem key={theme} value={theme}>
-                {THEME_TRANSLATIONS_KEYS[theme]}
+                {t(`general.themes.${theme}`)}
               </MenuItem>
             ))}
           </Select>

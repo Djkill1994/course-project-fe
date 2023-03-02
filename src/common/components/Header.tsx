@@ -50,7 +50,7 @@ export const Header: FC = () => {
           />
         )}
         <HeaderSearchApp />
-        <Stack direction="row" alignItems="center" gap="8px" minWidth="190px">
+        <Stack direction="row" alignItems="center" gap="8px">
           <HeaderSelectLeague />
           <HeaderThemeSwitcher />
           {data ? (

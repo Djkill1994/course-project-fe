@@ -85,7 +85,7 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
           </MenuItem>
         </Menu>
         <Box
-          sx={{ height: "100%", overflow: "auto" }}
+          sx={{ height: "314px", overflow: "auto" }}
           onClick={() =>
             navigate(
               generatePath(ROUTE_PATHS.Items, {
