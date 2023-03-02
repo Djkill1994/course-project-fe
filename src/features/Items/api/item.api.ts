@@ -7,7 +7,6 @@ interface ISender {
 }
 
 export interface IComment {
-  id: string;
   sender: ISender;
   comment: string;
   date: string;

@@ -76,12 +76,13 @@ export const ItemDrawer: FC<IProps> = ({
               render={({ field: { onChange, value, onBlur } }) => (
                 <Autocomplete
                   multiple
-                  value={value?.map(({ tag }) => tag)}
+                  freeSolo
+                  value={value?.map((valueItem) => valueItem?.tag || valueItem)}
                   onBlur={onBlur}
                   onChange={(event, item) => onChange(item)}
-                  options={tagsData?.map((tag) => tag.tag) || []}
-                  renderTags={(value: readonly string[], getTagProps) =>
-                    value?.map((option: string, index: number) => (
+                  options={tagsData?.map((tag) => tag?.tag || tag) || []}
+                  renderTags={(value, getTagProps) =>
+                    value?.map((option, index) => (
                       <Chip {...getTagProps({ index })} label={option} />
                     ))
                   }

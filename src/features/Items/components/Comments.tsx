@@ -25,11 +25,11 @@ export const Comments: FC<IProps> = ({ comments }) => {
         p="4px"
         gap="4px"
       >
-        {comments?.map((comment) => (
+        {comments?.map((comment, index) => (
           <Stack
             sx={{ wordWrap: "break-word", overflow: "x:hidden" }}
             direction="column"
-            key={comment.id}
+            key={index}
             p="6px"
             border="1px solid #dbdbdb"
             borderRadius="14px"

@@ -21,6 +21,7 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
 import * as Showdown from "showdown";
 import { MoreVert } from "@mui/icons-material";
+import { THEME_TRANSLATIONS_KEYS } from "../constants/theme";
 
 const converter = new Showdown.Converter({
   tables: true,
@@ -44,7 +45,7 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
   const { data: userData } = useAuthRefreshQuery();
 
   return (
-    <Card sx={{ height: "400px" }}>
+    <Card sx={{ height: "400px", overflowY: "scroll" }}>
       <CardHeader
         action={
           userData?.collections?.some(
@@ -58,7 +59,7 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
           ) : undefined
         }
         title={name}
-        subheader={theme}
+        subheader={THEME_TRANSLATIONS_KEYS[theme]}
       />
       <CardActionArea>
         <Menu

@@ -1,8 +1,11 @@
 import {
-  Autocomplete,
   Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Modal,
   Paper,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -13,13 +16,14 @@ import {
   useCreateCollectionMutation,
   useGetThemesQuery,
 } from "../api/collections.api";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
 import { UploadImages } from "../../../common/components/UploadImages";
 import { AddedNewField } from "./AddedNewField";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
+import { THEME_TRANSLATIONS_KEYS } from "../constants/theme";
 
 interface IProps {
   onClose: () => void;
@@ -47,7 +51,6 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
     handleSubmit,
     setValue,
     watch,
-    control,
     formState: { errors },
   } = useForm<ICreateCollectionForm>({
     defaultValues: {
@@ -110,36 +113,24 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
             )}
             fullWidth
           />
-          <Controller
-            render={({ field: { onChange, onBlur } }) => (
-              <Autocomplete
-                freeSolo
-                onBlur={onBlur}
-                onChange={(event, item) => onChange(item)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    error={!!errors.theme}
-                    helperText={
-                      !!errors.name &&
-                      t(
-                        "features.CollectionPage.CreateCollectionModal.errors.theme"
-                      )
-                    }
-                    size="small"
-                    autoComplete="theme"
-                    label={t(
-                      "features.CollectionPage.CreateCollectionModal.labels.theme"
-                    )}
-                    fullWidth
-                  />
-                )}
-                options={themesData?.map(({ theme }) => theme) || []}
-              />
-            )}
-            name="theme"
-            control={control}
-          />
+          <FormControl>
+            <InputLabel>
+              {t("features.CollectionPage.CreateCollectionModal.labels.theme")}
+            </InputLabel>
+            <Select
+              {...register("theme")}
+              label={t(
+                "features.CollectionPage.CreateCollectionModal.labels.theme"
+              )}
+            >
+              {themesData?.map(({ theme }) => (
+                <MenuItem key={theme} value={theme}>
+                  {THEME_TRANSLATIONS_KEYS[theme]}
+                </MenuItem>
+              ))}
+              <MenuItem value="text">Text</MenuItem>
+            </Select>
+          </FormControl>
           <ReactMde
             value={watch("description")}
             onChange={(value) => setValue("description", value)}

@@ -1,10 +1,9 @@
-import { Stack, Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { TagCloud } from "react-tagcloud";
 import { ItemCard } from "../../Items/components/ItemCard";
 import {
-  ITag,
   useGetItemsPortionQuery,
   useGetTagsQuery,
 } from "../../Items/api/item.api";
@@ -80,7 +79,7 @@ export const HomePage = () => {
               }}
             >
               {dataItems?.map(({ id, name, imgSrc, likes, date }) => (
-                <Box key={id} pl="12px">
+                <Box key={id} pl="12px" mt={1} mb={1}>
                   <ItemCard
                     id={id}
                     name={name}
@@ -141,7 +140,7 @@ export const HomePage = () => {
             >
               {dataCollections?.map(
                 ({ theme, description, date, name, imgSrc, id }) => (
-                  <Box key={id} pl="12px">
+                  <Box key={id} pl="12px" mt={1} mb={1}>
                     <CollectionCard
                       theme={theme}
                       description={description}
@@ -164,18 +163,27 @@ export const HomePage = () => {
           </Box>
         )}
         {isSuccessTags && (
-          <TagCloud
-            style={{ cursor: "pointer" }}
-            minSize={16}
-            maxSize={35}
-            colorOptions={{ luminosity: "light", hue: "blue" }}
-            tags={dataTags?.map((tag) => {
-              return { id: tag.id, count: tag.count, value: tag.tag };
-            })}
-            onClick={(tag: ITag) =>
-              navigate(generatePath(ROUTE_PATHS.FoundTags, { id: tag.id }))
-            }
-          />
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb={6}
+          >
+            <TagCloud
+              style={{ cursor: "pointer" }}
+              minSize={32}
+              maxSize={64}
+              colorOptions={{ luminosity: "light", hue: "blue" }}
+              tags={dataTags?.map((tag) => ({
+                id: tag.id,
+                count: tag.count,
+                value: tag.tag,
+              }))}
+              onClick={(tag) =>
+                navigate(generatePath(ROUTE_PATHS.FoundTags, { id: tag.id }))
+              }
+            />
+          </Box>
         )}
       </Box>
     </Stack>

@@ -111,7 +111,7 @@ export const OptionalField: FC<IProps> = ({
       <TextField
         value={optionalFields[index]?.value}
         multiline
-        rows={4}
+        minRows={4}
         maxRows={10}
         key={index}
         fullWidth

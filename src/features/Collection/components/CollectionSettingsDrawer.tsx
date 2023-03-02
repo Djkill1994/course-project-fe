@@ -2,6 +2,8 @@ import {
   Drawer,
   IconButton,
   List,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -14,6 +16,7 @@ import {
   ICollection,
   useDeleteCollectionMutation,
   useGetCollectionQuery,
+  useGetThemesQuery,
   useSettingsCollectionMutation,
 } from "../api/collections.api";
 import { generatePath, useNavigate, useParams } from "react-router-dom";
@@ -25,6 +28,7 @@ import { AddedNewField } from "./AddedNewField";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
+import { THEME_TRANSLATIONS_KEYS } from "../constants/theme";
 
 interface IProps {
   onClose: () => void;
@@ -45,6 +49,7 @@ const converter = new Showdown.Converter({
 export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
   const [selectedTab, setSelectedTab] = useState("write");
   const params = useParams();
+  const { data: themesData } = useGetThemesQuery();
   const { data } = useGetCollectionQuery(params.id as string);
   const [deleteCollection, { isSuccess: deleteIsSuccess }] =
     useDeleteCollectionMutation();
@@ -115,15 +120,19 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
             )}
             {...register("name", { required: true })}
           />
-          <TextField
-            fullWidth
-            size="small"
+          <Select
+            {...register("theme")}
+            defaultValue={watch("theme")}
             label={t(
-              "features.CollectionPage.CollectionSettingsDrawer.labels.theme"
+              "features.CollectionPage.CreateCollectionModal.labels.theme"
             )}
-            {...register("theme", { required: true })}
-          />
-
+          >
+            {themesData?.map(({ theme }) => (
+              <MenuItem key={theme} value={theme}>
+                {THEME_TRANSLATIONS_KEYS[theme]}
+              </MenuItem>
+            ))}
+          </Select>
           <ReactMde
             value={watch("description")}
             onChange={(value) => setValue("description", value)}
