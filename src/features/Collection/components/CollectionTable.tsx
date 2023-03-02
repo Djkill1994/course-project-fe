@@ -120,7 +120,9 @@ export const CollectionTable: FC = () => {
               sx={{ textTransform: "none" }}
               onClick={openSettings}
             >
-              Collection settings
+              {t(
+                "features.CollectionPage.CollectionTableToolbar.collectionSettings"
+              )}
             </Button>
             <Button
               onClick={openNewItem}
@@ -157,7 +159,7 @@ export const CollectionTable: FC = () => {
                 })
               }
             >
-              Export All Data
+              {t("features.CollectionPage.CollectionTableToolbar.exportData")}
             </Button>
             <LoadingButton
               variant="contained"

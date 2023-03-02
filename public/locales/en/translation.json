@@ -35,7 +35,9 @@
       },
       "CollectionTableToolbar": {
         "collectionsLink": "Collections",
-        "newItem": "New item"
+        "newItem": "New item",
+        "collectionSettings": "Collection settings",
+        "exportData": "Export All Data"
       },
       "CollectionTableHeader": {
         "id": "ID",
@@ -151,7 +153,8 @@
     },
     "Item": {
       "comments": "Comments",
-      "comment": "Comment"
+      "comment": "Comment",
+      "additionInformation": "Addition information"
     },
     "HomePage": {
       "lastAddedItem": "Last added Items",

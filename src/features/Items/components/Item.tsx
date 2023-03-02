@@ -137,7 +137,7 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
                       variant="contained"
                       {...bindTrigger(popupState)}
                     >
-                      Дополнительная информация
+                      {t("features.Item.additionInformation")}
                     </Button>
                     <Popover
                       sx={{ padding: "10px" }}

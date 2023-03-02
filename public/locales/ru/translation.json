@@ -35,7 +35,9 @@
       },
       "CollectionTableToolbar": {
         "collectionsLink": "Коллекции",
-        "newItem": "Новый элемент"
+        "newItem": "Новый элемент",
+        "collectionSettings": "Настройки коллекции",
+        "exportData": "Экспортировать все данные"
       },
       "CollectionTableHeader": {
         "id": "ID",
@@ -150,6 +152,7 @@
       "email": "Почта"
     },
     "Item": {
+      "additionInformation": "Дополнительная информация",
       "comments": "Комментарии",
       "comment": "Комментарий"
     },
