@@ -125,10 +125,9 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
             >
               {themesData?.map(({ theme }) => (
                 <MenuItem key={theme} value={theme}>
-                  {THEME_TRANSLATIONS_KEYS[theme]}
+                  {t(`general.themes.${theme}`)}
                 </MenuItem>
               ))}
-              <MenuItem value="text">Text</MenuItem>
             </Select>
           </FormControl>
           <ReactMde

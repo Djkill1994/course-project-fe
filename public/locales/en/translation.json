@@ -8,7 +8,20 @@
     "myProfile": "Profile",
     "home": "Home",
     "adminArea": "Admin",
-    "uploadImages": "Upload images"
+    "uploadImages": "Upload images",
+    "themes": {
+      "coins": "Coins",
+      "stamps": "Stamps",
+      "cars": "Cars",
+      "watch": "Watch",
+      "paintings": "Paintings",
+      "animals": "Animals",
+      "alcohol": "Alcohol",
+      "books": "Books",
+      "games": "Games",
+      "tattoos": "Tattoos",
+      "cinema": "Cinema"
+    }
   },
   "features": {
     "Auth": {

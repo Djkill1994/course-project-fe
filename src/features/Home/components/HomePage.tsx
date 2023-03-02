@@ -60,21 +60,25 @@ export const HomePage = () => {
               pauseOnHover
               renderDotsOutside
               responsive={{
+                superLargeDesktop: {
+                  breakpoint: { max: 4000, min: 3000 },
+                  items: 6,
+                },
                 desktop: {
-                  breakpoint: {
-                    max: 3000,
-                    min: 1024,
-                  },
+                  breakpoint: { max: 3000, min: 1024 },
                   items: 4,
-                  partialVisibilityGutter: 10,
                 },
                 tablet: {
-                  breakpoint: {
-                    max: 1024,
-                    min: 464,
-                  },
+                  breakpoint: { max: 1024, min: 860 },
+                  items: 3,
+                },
+                tabletSmall: {
+                  breakpoint: { max: 860, min: 570 },
                   items: 2,
-                  partialVisibilityGutter: 10,
+                },
+                mobile: {
+                  breakpoint: { max: 570, min: 0 },
+                  items: 1,
                 },
               }}
             >
@@ -120,21 +124,21 @@ export const HomePage = () => {
               pauseOnHover
               renderDotsOutside
               responsive={{
+                superLargeDesktop: {
+                  breakpoint: { max: 4000, min: 3000 },
+                  items: 5,
+                },
                 desktop: {
-                  breakpoint: {
-                    max: 3000,
-                    min: 1024,
-                  },
+                  breakpoint: { max: 3000, min: 1024 },
                   items: 3,
-                  partialVisibilityGutter: 10,
                 },
                 tablet: {
-                  breakpoint: {
-                    max: 1024,
-                    min: 464,
-                  },
+                  breakpoint: { max: 1024, min: 860 },
                   items: 2,
-                  partialVisibilityGutter: 10,
+                },
+                tabletSmall: {
+                  breakpoint: { max: 860, min: 0 },
+                  items: 1,
                 },
               }}
             >

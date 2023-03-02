@@ -7,9 +7,10 @@ import {
   MenuItem,
   Paper,
   Stack,
+  useMediaQuery,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { Add, FileDownload, Settings } from "@mui/icons-material";
+import { Add, FileDownload, Settings, Delete } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import {
   useDeleteItemMutation,
@@ -29,6 +30,7 @@ import {
   useGetItemQuery,
   useSettingsItemMutation,
 } from "../../Items/api/item.api";
+import { logOutUser } from "../../../common/utils/logOutUser";
 
 export const CollectionTable: FC = () => {
   const { t } = useTranslation();
@@ -55,6 +57,7 @@ export const CollectionTable: FC = () => {
     open: openNewItem,
     close: closeNewItem,
   } = useModal();
+  const deviceMediaQuery = useMediaQuery("(min-width:600px)");
 
   return (
     <Paper sx={{ width: "100%" }}>
@@ -156,17 +159,22 @@ export const CollectionTable: FC = () => {
             >
               {t("features.CollectionPage.CollectionTableToolbar.exportData")}
             </Button>
-            <LoadingButton
-              variant="contained"
-              loading={isLoading}
-              onClick={() =>
-                table.getSelectedRowModel().flatRows.map((row) => {
-                  deleteItem(row.getValue("id"));
-                })
-              }
-            >
-              {t("general.delete")}
-            </LoadingButton>
+            {!!Object.keys(rowSelection).length && (
+              <LoadingButton
+                variant="contained"
+                size="small"
+                startIcon={<Delete />}
+                sx={{ textTransform: "none" }}
+                loading={isLoading}
+                onClick={() =>
+                  table.getSelectedRowModel().flatRows.map((row) => {
+                    deleteItem(row.getValue("id"));
+                  })
+                }
+              >
+                {t("general.delete")}
+              </LoadingButton>
+            )}
           </Stack>
         )}
         muiSearchTextFieldProps={{

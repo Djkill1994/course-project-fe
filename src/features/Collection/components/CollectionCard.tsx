@@ -45,7 +45,7 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
   const { data: userData } = useAuthRefreshQuery();
 
   return (
-    <Card sx={{ height: "400px", overflowY: "scroll" }}>
+    <Card sx={{ height: "400px" }}>
       <CardHeader
         action={
           userData?.collections?.some(
@@ -59,7 +59,7 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
           ) : undefined
         }
         title={name}
-        subheader={THEME_TRANSLATIONS_KEYS[theme]}
+        subheader={t(`general.themes.${theme}`)}
       />
       <CardActionArea>
         <Menu
@@ -85,6 +85,7 @@ export const CollectionCard: FC<Omit<ICollection, "optionalFields">> = ({
           </MenuItem>
         </Menu>
         <Box
+          sx={{ height: "100%", overflow: "auto" }}
           onClick={() =>
             navigate(
               generatePath(ROUTE_PATHS.Items, {

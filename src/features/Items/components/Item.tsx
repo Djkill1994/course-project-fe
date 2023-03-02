@@ -16,7 +16,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { FC, useEffect } from "react";
-import { Close, Send } from "@mui/icons-material";
+import { Close, Send, Info } from "@mui/icons-material";
 import {
   IComment,
   IItem,
@@ -129,36 +129,46 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
                       />
                     ))}
                   </Stack>
-                  <Box>
-                    <Button
-                      size="small"
-                      variant="contained"
-                      {...bindTrigger(popupState)}
-                    >
-                      {t("features.Item.additionInformation")}
-                    </Button>
-                    <Popover
-                      sx={{ padding: "10px" }}
-                      {...bindPopover(popupState)}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                      }}
-                    >
-                      <Box p="5px">
-                        {itemData?.optionalFields.map(({ name, value, id }) => (
-                          <Stack key={id} direction="row" gap="8px">
-                            <Typography fontWeight="bold">{name}:</Typography>
-                            <Typography>{value}</Typography>
-                          </Stack>
-                        ))}
-                      </Box>
-                    </Popover>
-                  </Box>
+                  {itemData?.optionalFields.length ? (
+                    <Box>
+                      <IconButton
+                        size="small"
+                        color="warning"
+                        sx={{ textTransform: "none" }}
+                        {...bindTrigger(popupState)}
+                      >
+                        <Info />
+                        <Typography pl="6px" fontSize="14px">
+                          {t("features.Item.additionInformation")}
+                        </Typography>
+                      </IconButton>
+                      <Popover
+                        sx={{ padding: "10px" }}
+                        {...bindPopover(popupState)}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "left",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "left",
+                        }}
+                      >
+                        <Box p="5px">
+                          {itemData?.optionalFields.map(
+                            ({ name, value, id }) => (
+                              <Stack key={id} direction="row" gap="8px">
+                                <Typography fontWeight="bold">
+                                  {name}:
+                                </Typography>
+                                <Typography>{value}</Typography>
+                              </Stack>
+                            )
+                          )}
+                        </Box>
+                      </Popover>
+                    </Box>
+                  ) : undefined}
                   <Comments comments={itemData?.comments} />
                 </Stack>
               </Stack>

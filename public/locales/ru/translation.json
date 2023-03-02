@@ -8,7 +8,20 @@
     "home": "Главная",
     "adminArea": "Админ",
     "myProfile": "Профиль",
-    "uploadImages": "Загрузить изображение"
+    "uploadImages": "Загрузить изображение",
+    "themes": {
+      "coins": "Монеты",
+      "stamps": "Почтовые марки",
+      "cars": "Автомобили",
+      "watch": "Часы",
+      "paintings": "Картины",
+      "animals": "Животные",
+      "alcohol": "Алкоголь",
+      "books": "Книги",
+      "games": "Игры",
+      "tattoos": "Татуировки",
+      "cinema": "Кинематограф"
+    }
   },
   "features": {
     "Auth": {

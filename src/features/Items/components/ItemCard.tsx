@@ -20,7 +20,7 @@ export const ItemCard: FC<
   const { data } = useGetItemQuery(id);
 
   return (
-    <Card sx={{ height: "328px", overflowY: "scroll" }}>
+    <Card sx={{ height: "328px", overflow: "auto" }}>
       {isOpened && <Item id={id} onClose={close} />}
       <CardActionArea onClick={open}>
         <CardMedia component="img" height="194" image={imgSrc} alt="Image" />

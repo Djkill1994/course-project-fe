@@ -45,8 +45,15 @@ export const ItemDrawer: FC<IProps> = ({
   const dispatch = useDispatch();
 
   return (
-    <Drawer anchor="right" open onClose={onClose}>
-      <List sx={{ width: "542px", padding: "12px 22px" }}>
+    <Drawer
+      sx={{
+        "& .MuiDrawer-paper": { width: { xs: "100%", sm: "540px" } },
+      }}
+      anchor="right"
+      open
+      onClose={onClose}
+    >
+      <List sx={{ padding: "12px 22px" }}>
         <IconButton onClick={onClose}>
           <ChevronRight />
         </IconButton>

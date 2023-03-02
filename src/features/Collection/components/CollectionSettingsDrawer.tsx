@@ -84,8 +84,19 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
   }, [deleteIsSuccess]);
 
   return (
-    <Drawer anchor="right" open onClose={onClose}>
-      <List sx={{ width: "542px", padding: "12px 22px" }}>
+    <Drawer
+      sx={{
+        "& .MuiDrawer-paper": { width: { xs: "100%", sm: "540px" } },
+      }}
+      anchor="right"
+      open
+      onClose={onClose}
+    >
+      <List
+        sx={{
+          padding: "12px 22px",
+        }}
+      >
         <Stack direction="row" justifyContent="space-between">
           <IconButton onClick={onClose}>
             <ChevronRight />
