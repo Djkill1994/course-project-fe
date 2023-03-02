@@ -5,6 +5,7 @@
     "search": "Search",
     "delete": "Delete",
     "collections": "Collections",
+    "myProfile": "Profile",
     "home": "Home",
     "adminArea": "Admin",
     "uploadImages": "Upload images"
@@ -28,6 +29,10 @@
       }
     },
     "CollectionPage": {
+      "themes": {
+        "book": "Book",
+        "alcohol": "Alcohol"
+      },
       "CollectionTableToolbar": {
         "collectionsLink": "Collections",
         "newItem": "New item"

@@ -1,5 +1,5 @@
 import { KeyboardArrowLeft } from "@mui/icons-material";
-import { Box, Breadcrumbs, Grid, Stack, Typography, Link } from "@mui/material";
+import { Box, Breadcrumbs, Grid, Link, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,7 +16,6 @@ export const FoundTags: FC = () => {
     <Box p="0 22px 22px 22px">
       <Breadcrumbs sx={{ pb: "12px" }}>
         <Link
-          // todo протестить navigate
           onClick={() => navigate(-1)}
           underline="hover"
           color="inherit"

@@ -1,10 +1,14 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
-import { IItem } from "../../Items/api/item.api";
+import { IItem, ITag } from "../../Items/api/item.api";
 
 export interface IOptionalFields {
   name: string;
   type: string;
+}
+
+export interface ITheme {
+  theme: string;
 }
 
 export interface ICollection {
@@ -12,7 +16,7 @@ export interface ICollection {
   optionalFields: IOptionalFields[];
   name: string;
   description: string;
-  theme: string;
+  theme: ITheme;
   imgSrc?: string;
   date: string;
   items?: IItem[];
@@ -76,6 +80,13 @@ export const collectionApi = createApi({
       },
       invalidatesTags: ["Collection"],
     }),
+    getThemes: build.query<ITheme[], void>({
+      query() {
+        return {
+          url: "/collections/themes",
+        };
+      },
+    }),
     deleteCollection: build.mutation<void, string>({
       query(id) {
         return {
@@ -107,4 +118,5 @@ export const {
   useGetAllCollectionsQuery,
   useSettingsCollectionMutation,
   useDeleteItemMutation,
+  useGetThemesQuery,
 } = collectionApi;

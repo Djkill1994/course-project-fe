@@ -30,8 +30,6 @@ interface IProps {
   onClose: () => void;
 }
 
-// todo перевести поля????, зарефачить код,
-
 type SettingsForm = Pick<
   ICollection,
   "name" | "optionalFields" | "theme" | "description" | "imgSrc"

@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardContent,
   CardMedia,
@@ -8,12 +9,15 @@ import {
   CircularProgress,
   IconButton,
   Modal,
+  Popover,
+  Popper,
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
-import { FC, useEffect } from "react";
-import { Send } from "@mui/icons-material";
+import { FC, useEffect, useState } from "react";
+import { Send, Close } from "@mui/icons-material";
 import {
   IComment,
   IItem,
@@ -25,6 +29,11 @@ import { useAuthRefreshQuery } from "../../Profile/api/user.api";
 import { useTranslation } from "react-i18next";
 import { Comments } from "./Comments";
 import { Likes } from "./Likes";
+import {
+  usePopupState,
+  bindTrigger,
+  bindPopover,
+} from "material-ui-popup-state/hooks";
 
 type CommentForm = Pick<IComment, "sender" | "comment">;
 interface IProps {
@@ -39,6 +48,13 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
   });
   const [createComment, { isSuccess }] = useCreateCommentMutation();
   const { t } = useTranslation();
+  const [isOpened, setIsOpened] = useState<null | HTMLElement>(null);
+  const deviceMediaQuery = useMediaQuery("(min-width:600px)");
+
+  const popupState = usePopupState({
+    variant: "popover",
+    popupId: "popover",
+  });
 
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
     createComment({
@@ -65,13 +81,34 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
 
   return (
     <Modal open onClose={onClose} sx={{ display: "flex" }}>
-      <Card sx={{ display: "flex", m: "auto" }}>
+      <Card
+        sx={
+          deviceMediaQuery
+            ? { display: "flex", m: "10px auto" }
+            : { flexDirection: "column", overflow: "auto" }
+        }
+      >
         <CardMedia
-          sx={{ width: "50%" }}
+          sx={deviceMediaQuery ? { width: "50%" } : undefined}
           component="img"
           image={itemData?.imgSrc}
           alt="Image"
         />
+        {!deviceMediaQuery && (
+          // todo подправить кнопку
+          <IconButton
+            size="large"
+            sx={{
+              position: "absolut",
+              bottom: "76%",
+              left: "6%",
+              transform: "translate(-50%, -50%)",
+            }}
+            onClick={onClose}
+          >
+            <Close />
+          </IconButton>
+        )}
         <Box display="flex" flexDirection="column" width="100%">
           <CardContent
             sx={{ height: "100%", "&:last-child": { p: "12px 12px 6px" } }}
@@ -94,6 +131,36 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
                       />
                     ))}
                   </Stack>
+                  <Box>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      {...bindTrigger(popupState)}
+                    >
+                      Дополнительная информация
+                    </Button>
+                    <Popover
+                      sx={{ padding: "10px" }}
+                      {...bindPopover(popupState)}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                    >
+                      <Box p="5px">
+                        {itemData?.optionalFields.map(({ name, value, id }) => (
+                          <Stack key={id} direction="row" gap="8px">
+                            <Typography fontWeight="bold">{name}:</Typography>
+                            <Typography>{value}</Typography>
+                          </Stack>
+                        ))}
+                      </Box>
+                    </Popover>
+                  </Box>
                   <Comments comments={itemData?.comments} />
                 </Stack>
               </Stack>

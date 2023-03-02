@@ -71,7 +71,9 @@ export const CollectionTable: FC = () => {
               newItem: {
                 optionalFields: data.optionalFields,
                 name: data.name,
-                imgSrc: data.imgSrc || defaultImages,
+                imgSrc:
+                  data.imgSrc ||
+                  "https://res.cloudinary.com/djkill/image/upload/v1677697696/images_2_djj1rw.png",
                 tags: data.tags,
               },
             })

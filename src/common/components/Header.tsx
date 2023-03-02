@@ -5,6 +5,10 @@ import {
   IconButton,
   Stack,
   Typography,
+  useMediaQuery,
+  Box,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { generatePath, useNavigate } from "react-router-dom";
 import { FC } from "react";
@@ -17,11 +21,14 @@ import { HeaderSearchApp } from "./HeaderSearchApp";
 import { AUTH_TOKEN_KEY } from "../constans/localStorage";
 import { useTranslation } from "react-i18next";
 import { logOutUser } from "../utils/logOutUser";
+import { MobileHeaderNavigation } from "./MobileHeaderNavigation";
+import { HeaderNavigation } from "./HeaderNavigation";
 
 export const Header: FC = () => {
   const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const navigate = useNavigate();
   const { data } = useAuthRefreshQuery(undefined, { skip: !token });
+  const deviceMediaQuery = useMediaQuery("(min-width:600px)");
   const { t } = useTranslation();
 
   return (
@@ -34,54 +41,19 @@ export const Header: FC = () => {
         borderBottom="1px solid #dbdbdb"
         p="0 10px"
       >
-        <Stack gap="18px" direction="row" alignItems="center">
-          {data && (
-            <Stack gap="8px" direction="row" alignItems="center">
-              <IconButton
-                onClick={() =>
-                  navigate(
-                    generatePath(ROUTE_PATHS.MyProfile, { id: data?.id }),
-                    {
-                      replace: true,
-                    }
-                  )
-                }
-              >
-                <Avatar src={data?.avatarSrc} />
-              </IconButton>
-              {data?.role === "admin" && (
-                <Typography
-                  sx={{ cursor: "pointer" }}
-                  onClick={() => navigate(ROUTE_PATHS.Admin, { replace: true })}
-                  fontWeight="bold"
-                >
-                  {t("general.adminArea")}
-                </Typography>
-              )}
-              <Typography
-                sx={{ cursor: "pointer" }}
-                onClick={() =>
-                  navigate(
-                    generatePath(ROUTE_PATHS.Collection, { userId: data.id }),
-                    {
-                      replace: true,
-                    }
-                  )
-                }
-                fontWeight="bold"
-              >
-                {t("general.collections")}
-              </Typography>
-            </Stack>
-          )}
-          <Typography
-            sx={{ cursor: "pointer" }}
-            onClick={() => navigate(ROUTE_PATHS.Home, { replace: true })}
-            fontWeight="bold"
-          >
-            {t("general.home")}
-          </Typography>
-        </Stack>
+        {deviceMediaQuery ? (
+          <HeaderNavigation
+            id={data?.id}
+            role={data?.role}
+            avatarSrc={data?.avatarSrc}
+          />
+        ) : (
+          <MobileHeaderNavigation
+            id={data?.id}
+            role={data?.role}
+            avatarSrc={data?.avatarSrc}
+          />
+        )}
         <HeaderSearchApp />
         <Stack direction="row" alignItems="center" gap="10px">
           <HeaderSelectLeague />

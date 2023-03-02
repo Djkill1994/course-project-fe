@@ -11,7 +11,7 @@ export const Items: FC = () => {
   const navigate = useNavigate();
   const params = useParams();
   const { data } = useGetCollectionItemsQuery(params.collectionId as string);
-  console.log(data);
+
   return (
     <Box p="0 22px 22px 22px">
       <Breadcrumbs sx={{ pb: "12px" }}>

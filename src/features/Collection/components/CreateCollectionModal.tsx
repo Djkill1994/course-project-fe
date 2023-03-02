@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Button,
   Modal,
   Paper,
@@ -10,11 +11,11 @@ import { FC, useEffect, useState } from "react";
 import {
   ICollection,
   useCreateCollectionMutation,
+  useGetThemesQuery,
 } from "../api/collections.api";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
-import defaultImages from "../../../../public/defaulImg.jpg";
 import { UploadImages } from "../../../common/components/UploadImages";
 import { AddedNewField } from "./AddedNewField";
 import ReactMde from "react-mde";
@@ -46,6 +47,7 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm<ICreateCollectionForm>({
     defaultValues: {
@@ -54,13 +56,16 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
   });
   const [createCollection, { isLoading, isSuccess }] =
     useCreateCollectionMutation();
+  const { data: themesData } = useGetThemesQuery();
   const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<ICreateCollectionForm> = async (data) => {
     createCollection({
       name: data.name,
       optionalFields: data.optionalFields,
-      imgSrc: data.imgSrc || defaultImages,
+      imgSrc:
+        data.imgSrc ||
+        "https://res.cloudinary.com/djkill/image/upload/v1677695986/defaulImg_i0onot.jpg",
       description: data.description,
       theme: data.theme,
     });
@@ -105,21 +110,36 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
             )}
             fullWidth
           />
-          <TextField
-            {...register("theme", { required: true })}
-            error={!!errors.theme}
-            helperText={
-              !!errors.name &&
-              t("features.CollectionPage.CreateCollectionModal.errors.theme")
-            }
-            size="small"
-            autoComplete="theme"
-            label={t(
-              "features.CollectionPage.CreateCollectionModal.labels.theme"
+          <Controller
+            render={({ field: { onChange, onBlur } }) => (
+              <Autocomplete
+                freeSolo
+                onBlur={onBlur}
+                onChange={(event, item) => onChange(item)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    error={!!errors.theme}
+                    helperText={
+                      !!errors.name &&
+                      t(
+                        "features.CollectionPage.CreateCollectionModal.errors.theme"
+                      )
+                    }
+                    size="small"
+                    autoComplete="theme"
+                    label={t(
+                      "features.CollectionPage.CreateCollectionModal.labels.theme"
+                    )}
+                    fullWidth
+                  />
+                )}
+                options={themesData?.map(({ theme }) => theme) || []}
+              />
             )}
-            fullWidth
+            name="theme"
+            control={control}
           />
-          {/*todo MARKDOWN*/}
           <ReactMde
             value={watch("description")}
             onChange={(value) => setValue("description", value)}
@@ -129,22 +149,6 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
               Promise.resolve(converter.makeHtml(markdown))
             }
           />
-          {/*<TextField*/}
-          {/*  {...register("description", { required: true })}*/}
-          {/*  error={!!errors.name}*/}
-          {/*  helperText={*/}
-          {/*    !!errors.name &&*/}
-          {/*    t(*/}
-          {/*      "features.CollectionPage.CreateCollectionModal.errors.description"*/}
-          {/*    )*/}
-          {/*  }*/}
-          {/*  size="small"*/}
-          {/*  autoComplete="description"*/}
-          {/*  label={t(*/}
-          {/*    "features.CollectionPage.CreateCollectionModal.labels.description"*/}
-          {/*  )}*/}
-          {/*  fullWidth*/}
-          {/*/>*/}
           <UploadImages
             onChange={(imgSrc) => setValue("imgSrc", imgSrc)}
             imgSrc={watch("imgSrc")}
