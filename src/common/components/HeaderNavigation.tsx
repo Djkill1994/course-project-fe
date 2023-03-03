@@ -24,7 +24,7 @@ export const HeaderNavigation: FC<IHeaderNavigationProps> = ({
         <Stack gap="8px" direction="row" alignItems="center">
           <IconButton
             onClick={() =>
-              navigate(generatePath(ROUTE_PATHS.MyProfile, { id: id }), {
+              navigate(generatePath(ROUTE_PATHS.MyProfile, { userId: id }), {
                 replace: true,
               })
             }

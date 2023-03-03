@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardContent,
   CardMedia,
@@ -16,7 +15,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { FC, useEffect } from "react";
-import { Close, Send, Info } from "@mui/icons-material";
+import { Close, Info, Send } from "@mui/icons-material";
 import {
   IComment,
   IItem,
@@ -24,6 +23,7 @@ import {
   useGetItemQuery,
 } from "../api/item.api";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { generatePath, useNavigate } from "react-router-dom";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
 import { useTranslation } from "react-i18next";
 import { Comments } from "./Comments";
@@ -33,6 +33,7 @@ import {
   bindTrigger,
   usePopupState,
 } from "material-ui-popup-state/hooks";
+import { ROUTE_PATHS } from "../../../App";
 
 type CommentForm = Pick<IComment, "sender" | "comment">;
 interface IProps {
@@ -48,7 +49,7 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
   const [createComment, { isSuccess }] = useCreateCommentMutation();
   const { t } = useTranslation();
   const deviceMediaQuery = useMediaQuery("(min-width:600px)");
-
+  const navigate = useNavigate();
   const popupState = usePopupState({
     variant: "popover",
     popupId: "popover",
@@ -63,6 +64,7 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
       },
     });
   };
+
   useEffect(() => {
     if (isSuccess) {
       reset();
@@ -82,46 +84,59 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
       <Card
         sx={
           deviceMediaQuery
-            ? { display: "flex", m: "10px auto" }
-            : { flexDirection: "column", overflow: "auto" }
+            ? { display: "flex", m: "10px auto", alignItems: "center" }
+            : { flexDirection: "column", overflow: "auto", width: "100%" }
         }
       >
+        <IconButton
+          size="large"
+          sx={{
+            position: "absolute",
+            top: { xs: 0, sm: "20px" },
+          }}
+          onClick={onClose}
+        >
+          <Close color="primary" />
+        </IconButton>
         <CardMedia
-          sx={deviceMediaQuery ? { width: "50%" } : undefined}
+          sx={deviceMediaQuery ? { minWidth: "420px" } : undefined}
           component="img"
           image={itemData?.imgSrc}
           alt="Image"
         />
-        {!deviceMediaQuery && (
-          // todo подправить кнопку
-          <IconButton
-            size="large"
-            sx={{
-              position: "absolut",
-              bottom: "76%",
-              left: "6%",
-              transform: "translate(-50%, -50%)",
-            }}
-            onClick={onClose}
-          >
-            <Close />
-          </IconButton>
-        )}
-        <Box display="flex" flexDirection="column" width="100%">
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="100%"
+          sx={{ height: { sm: "100%" } }}
+        >
           <CardContent
-            sx={{ height: "100%", "&:last-child": { p: "12px 12px 6px" } }}
+            sx={{
+              "&:last-child": { p: "12px 12px 6px" },
+              overflow: "auto",
+              maxHeight: "592px",
+              height: "100%",
+            }}
           >
             <Stack height="100%" justifyContent="space-between">
-              <Stack direction="column" alignItems="space-between" gap="22px">
+              <Stack direction="column" alignItems="space-between" gap="8px">
                 <Stack direction="row" alignItems="center" gap="8px">
                   <Avatar src={itemData?.author?.avatarSrc} />
                   <Typography>{itemData?.author?.userName}</Typography>
                 </Stack>
-                <Stack gap="22px">
+                <Stack gap="8px">
                   <Typography variant="h5">{itemData?.name}</Typography>
                   <Stack gap="4px" flexWrap="wrap" direction="row">
                     {itemData?.tags.map(({ tag, id }) => (
                       <Chip
+                        onClick={() =>
+                          navigate(
+                            generatePath(ROUTE_PATHS.FoundTags, {
+                              id: id,
+                              tagName: tag,
+                            })
+                          )
+                        }
                         key={id}
                         label={tag}
                         variant="outlined"
@@ -156,8 +171,8 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
                       >
                         <Box p="5px">
                           {itemData?.optionalFields.map(
-                            ({ name, value, id }) => (
-                              <Stack key={id} direction="row" gap="8px">
+                            ({ name, value }, index) => (
+                              <Stack key={index} direction="row" gap="8px">
                                 <Typography fontWeight="bold">
                                   {name}:
                                 </Typography>

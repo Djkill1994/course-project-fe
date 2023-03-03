@@ -3,7 +3,7 @@ import {
   Breadcrumbs,
   CircularProgress,
   Grid,
-  Link,
+  IconButton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -11,7 +11,7 @@ import { FC } from "react";
 import { ItemCard } from "./ItemCard";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { KeyboardArrowLeft } from "@mui/icons-material";
+import { ChevronLeft } from "@mui/icons-material";
 import { useGetCollectionItemsQuery } from "../api/item.api";
 import { ReactComponent as NoData } from "../../../../public/no-data.svg";
 
@@ -24,29 +24,24 @@ export const Items: FC = () => {
   );
 
   return (
-    <Box p="0 22px 22px 22px">
+    <Box p="0 22px 22px 22px" mb="10px">
       <Breadcrumbs sx={{ pb: "12px" }}>
-        <Link
-          onClick={() => navigate(-1)}
-          underline="hover"
-          color="inherit"
-          sx={{ cursor: "pointer" }}
-        >
-          <Stack direction="row">
-            <KeyboardArrowLeft />
-            {t(
-              "features.CollectionPage.CollectionTableToolbar.collectionsLink"
-            )}
-          </Stack>
-        </Link>
-        <Typography color="text.primary">{params.collectionName}</Typography>
+        <Stack direction="row" alignItems="center" gap="8px">
+          <IconButton onClick={() => navigate(-1)}>
+            <ChevronLeft />
+          </IconButton>
+          <Typography>{t("features.Items.collection")}</Typography>
+        </Stack>
+        <Typography color="text.primary" fontSize="22px">
+          {params.collectionName}
+        </Typography>
       </Breadcrumbs>
       <Grid container spacing={2} justifyContent="center">
         {isLoading ? (
           <CircularProgress />
         ) : isSuccess && data?.length ? (
           data?.map(({ name, imgSrc, id, likes, date }) => (
-            <Grid key={id} item xs={4}>
+            <Grid key={id} item xs={9} md={4}>
               <ItemCard
                 id={id}
                 name={name}
@@ -57,7 +52,7 @@ export const Items: FC = () => {
             </Grid>
           ))
         ) : (
-          <NoData />
+          <NoData width="520px" />
         )}
       </Grid>
     </Box>

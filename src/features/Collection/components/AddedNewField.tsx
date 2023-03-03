@@ -18,7 +18,7 @@ interface IProps {
   optionalFields: IOptionalFields[];
   onChange: (optionalFields: IOptionalFields[]) => void;
 }
-//todo rename component поправить компонент , не работает
+
 export const AddedNewField: FC<IProps> = ({ optionalFields, onChange }) => {
   const { t } = useTranslation();
   return (

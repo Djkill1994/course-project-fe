@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  IconButton,
-  Typography,
-  Box,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { Avatar, Box, IconButton, Menu, MenuItem, Stack } from "@mui/material";
 import { Home } from "@mui/icons-material";
 import { generatePath, useNavigate } from "react-router-dom";
 import { FC, useState } from "react";
@@ -23,10 +16,9 @@ export const MobileHeaderNavigation: FC<IHeaderNavigationProps> = ({
   const { t } = useTranslation();
 
   return (
-    <Box sx={{ flexGrow: 0 }}>
-      {id ? (
+    <Stack direction="row" gap="8px" sx={{ flexGrow: 0 }}>
+      {id && (
         <Box>
-          {" "}
           <IconButton
             onClick={({ currentTarget }) => setIsOpened(currentTarget)}
             sx={{ p: 0 }}
@@ -50,34 +42,35 @@ export const MobileHeaderNavigation: FC<IHeaderNavigationProps> = ({
           >
             <MenuItem
               onClick={() =>
-                navigate(generatePath(ROUTE_PATHS.MyProfile, { id: id }), {
+                navigate(generatePath(ROUTE_PATHS.MyProfile, { userId: id }), {
                   replace: true,
                 })
               }
             >
               {t("general.myProfile")}
             </MenuItem>
+            <MenuItem
+              onClick={() =>
+                navigate(generatePath(ROUTE_PATHS.Collection, { userId: id }), {
+                  replace: true,
+                })
+              }
+            >
+              {t("general.collections")}
+            </MenuItem>
             {role === "admin" && (
               <MenuItem
                 onClick={() => navigate(ROUTE_PATHS.Admin, { replace: true })}
               >
-                {t("general.adminArea")}
+                {t("general.collections")}
               </MenuItem>
             )}
-            <MenuItem
-              onClick={() => navigate(ROUTE_PATHS.Home, { replace: true })}
-            >
-              {t("general.home")}
-            </MenuItem>
           </Menu>
         </Box>
-      ) : (
-        <IconButton
-          onClick={() => navigate(ROUTE_PATHS.Home, { replace: true })}
-        >
-          <Home sx={{ color: "black" }} />
-        </IconButton>
       )}
-    </Box>
+      <IconButton onClick={() => navigate(ROUTE_PATHS.Home, { replace: true })}>
+        <Home />
+      </IconButton>
+    </Stack>
   );
 };

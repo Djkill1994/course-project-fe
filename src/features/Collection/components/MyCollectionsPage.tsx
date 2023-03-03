@@ -38,9 +38,9 @@ export const MyCollectionsPage: FC = () => {
               "features.CollectionPage.MyCollectionsPage.button.newCollection"
             )}
           </Button>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justifyContent="center">
             {data?.map(({ name, id, theme, description, imgSrc, date }) => (
-              <Grid key={id} item xs={4}>
+              <Grid key={id} item xs={9} md={4}>
                 <CollectionCard
                   id={id}
                   name={name}

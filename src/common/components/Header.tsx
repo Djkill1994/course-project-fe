@@ -2,12 +2,15 @@ import {
   AppBar,
   Button,
   IconButton,
+  Menu,
+  MenuItem,
   Stack,
   useMediaQuery,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Logout } from "@mui/icons-material";
+import MenuIcon from "@mui/icons-material/Menu";
 import { useAuthRefreshQuery } from "../../features/Profile/api/user.api";
 import { HeaderSelectLeague } from "./HeaderSelectLeague";
 import { HeaderThemeSwitcher } from "./HeaderThemeSwitcher";
@@ -22,6 +25,7 @@ import { HeaderNavigation } from "./HeaderNavigation";
 export const Header: FC = () => {
   const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const navigate = useNavigate();
+  const [isOpened, setIsOpened] = useState<null | HTMLElement>(null);
   const { data } = useAuthRefreshQuery(undefined, { skip: !token });
   const deviceMediaQuery = useMediaQuery("(min-width:600px)");
   const { t } = useTranslation();
@@ -35,6 +39,7 @@ export const Header: FC = () => {
         height="50px"
         borderBottom="1px solid #dbdbdb"
         p="0 10px"
+        gap="20px"
       >
         {deviceMediaQuery ? (
           <HeaderNavigation
@@ -50,9 +55,44 @@ export const Header: FC = () => {
           />
         )}
         <HeaderSearchApp />
-        <Stack direction="row" alignItems="center" gap="8px">
-          <HeaderSelectLeague />
-          <HeaderThemeSwitcher />
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          gap="14px"
+        >
+          {deviceMediaQuery ? (
+            <>
+              <HeaderSelectLeague />
+              <HeaderThemeSwitcher />
+            </>
+          ) : (
+            <>
+              <IconButton
+                onClick={({ currentTarget }) => setIsOpened(currentTarget)}
+                sx={{ p: 0 }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                sx={{ mt: "45px" }}
+                anchorEl={isOpened}
+                open={!!isOpened}
+                onClose={() => setIsOpened(null)}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <MenuItem>
+                  <HeaderSelectLeague />
+                </MenuItem>
+                <MenuItem sx={{ justifyContent: "center" }}>
+                  <HeaderThemeSwitcher />
+                </MenuItem>
+              </Menu>
+            </>
+          )}
           {data ? (
             <IconButton onClick={logOutUser}>
               <Logout />

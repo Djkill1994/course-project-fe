@@ -15,14 +15,14 @@ import {
 import { Item } from "../../features/Items/components/Item";
 
 export const HeaderSearchApp: FC = () => {
-  const { t } = useTranslation();
+  const [itemId, setItemId] = useState("");
   const [search, setSearch] = useState("");
+  const { t } = useTranslation();
   const { data } = useGetAllItemsQuery(search);
   const [refetchItems] = useLazyGetAllItemsQuery();
-  const [itemId, setItemId] = useState("");
 
   return (
-    <Box p="0 22px" width="600px" borderRadius="20px">
+    <Box width="100%">
       {itemId && <Item id={itemId} onClose={() => setItemId("")} />}
       <Autocomplete
         filterOptions={(options) => options}
@@ -30,7 +30,6 @@ export const HeaderSearchApp: FC = () => {
           setSearch("");
           refetchItems("");
         }}
-        onChange={(event, item) => console.log(item)}
         renderInput={(params) => (
           <TextField
             {...params}

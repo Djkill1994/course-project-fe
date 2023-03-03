@@ -17,8 +17,8 @@ export const Comments: FC<IProps> = ({ comments }) => {
       {t("features.Item.comments")}
       <Stack
         ref={ref}
-        maxHeight="300px"
-        minHeight="300px"
+        maxHeight="260px"
+        minHeight="260px"
         sx={{ overflow: "auto" }}
         border="1px solid #dbdbdb"
         borderRadius="5px"

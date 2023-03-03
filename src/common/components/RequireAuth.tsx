@@ -8,8 +8,8 @@ interface IRequireAuthProps {
 }
 
 export const RequireAuth: FC<IRequireAuthProps> = ({ children }) => {
-  const { data, isLoading } = useAuthRefreshQuery();
   const params = useParams();
+  const { data, isLoading } = useAuthRefreshQuery();
 
   if (isLoading) {
     return (

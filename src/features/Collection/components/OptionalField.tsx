@@ -2,6 +2,7 @@ import { FC } from "react";
 import { FormControlLabel, FormGroup, Switch, TextField } from "@mui/material";
 import { IOptionalFieldsItem } from "../../Items/api/item.api";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { convertStringToBoolean } from "../../../common/utils/convertStringToBoolean";
 
 interface IProps {
   optionalField: IOptionalFieldsItem;
@@ -67,7 +68,7 @@ export const OptionalField: FC<IProps> = ({
         <FormControlLabel
           control={
             <Switch
-              value={optionalFields[index]?.value}
+              checked={convertStringToBoolean(optionalFields[index]?.value)}
               onChange={({ target: { checked } }) =>
                 onChange(
                   optionalFields.map(
@@ -130,6 +131,5 @@ export const OptionalField: FC<IProps> = ({
       />
     );
   }
-
   return null;
 };

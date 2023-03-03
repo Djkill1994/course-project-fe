@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { authFetchBaseQuery } from "../../../common/utils/authFetchBaseQuery";
-import { IItem, ITag } from "../../Items/api/item.api";
+import { IItem } from "../../Items/api/item.api";
 
 export interface IOptionalFields {
   name: string;

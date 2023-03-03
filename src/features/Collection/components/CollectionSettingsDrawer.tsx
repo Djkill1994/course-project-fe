@@ -11,7 +11,6 @@ import {
 import { FC, useEffect, useState } from "react";
 import { ChevronRight, DeleteForever } from "@mui/icons-material";
 import { SubmitHandler, useForm } from "react-hook-form";
-
 import {
   ICollection,
   useDeleteCollectionMutation,
@@ -28,7 +27,6 @@ import { AddedNewField } from "./AddedNewField";
 import ReactMde from "react-mde";
 import * as Showdown from "showdown";
 import { useAuthRefreshQuery } from "../../Profile/api/user.api";
-import { THEME_TRANSLATIONS_KEYS } from "../constants/theme";
 
 interface IProps {
   onClose: () => void;
@@ -145,6 +143,14 @@ export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
             ))}
           </Select>
           <ReactMde
+            l18n={{
+              preview: t(
+                "features.CollectionPage.CreateCollectionModal.reactMde.preview"
+              ),
+              write: t(
+                "features.CollectionPage.CreateCollectionModal.reactMde.write"
+              ),
+            }}
             value={watch("description")}
             onChange={(value) => setValue("description", value)}
             selectedTab={selectedTab}

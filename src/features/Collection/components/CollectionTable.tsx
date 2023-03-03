@@ -90,7 +90,10 @@ export const CollectionTable: FC = () => {
           onSubmit={(data) =>
             settingsItem({
               itemId: openId,
-              settingsItem: data,
+              settingsItem: {
+                ...data,
+                tags: data.tags.map((tag) => tag?.tag || tag),
+              },
             })
           }
         />
@@ -162,8 +165,9 @@ export const CollectionTable: FC = () => {
                   headers: [
                     t("features.CollectionPage.CollectionTableHeader.id"),
                     t("features.CollectionPage.CollectionTableHeader.name"),
-                    // todo i18n
-                    "Optional fields",
+                    t(
+                      "features.CollectionPage.CollectionTableHeader.optionalFields"
+                    ),
                     t("features.CollectionPage.CollectionTableHeader.img"),
                     t("features.CollectionPage.CollectionTableHeader.tags"),
                   ],
@@ -187,6 +191,7 @@ export const CollectionTable: FC = () => {
                 onClick={() =>
                   table.getSelectedRowModel().flatRows.map((row) => {
                     deleteItem(row.getValue("id"));
+                    setRowSelection({});
                   })
                 }
               >

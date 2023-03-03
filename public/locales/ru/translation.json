@@ -42,10 +42,6 @@
       }
     },
     "CollectionPage": {
-      "themes": {
-        "book": "Книга",
-        "alcohol": "Алкоголь"
-      },
       "CollectionTableToolbar": {
         "collectionsLink": "Коллекции",
         "newItem": "Новый элемент",
@@ -59,7 +55,8 @@
         "comments": "Комментарии",
         "tags": "Тэги",
         "likes": "Лайки",
-        "edit": "Редактировать"
+        "edit": "Редактировать",
+        "optionalFields": "Опциональные поля"
       },
       "MyCollectionsPage": {
         "titleFirstCollection": "Создать первую коллекцию",
@@ -68,6 +65,10 @@
         }
       },
       "CreateCollectionModal": {
+        "reactMde": {
+          "preview": "Превью",
+          "write": "Ввод"
+        },
         "title": "Создать новую коллекцию",
         "labels": {
           "name": "Название",
@@ -172,6 +173,12 @@
     "HomePage": {
       "lastAddedItem": "Последние добавленные элементы",
       "mostBiggestCollection": "Самые большие коллекции"
+    },
+    "FoundTags": {
+      "resultsByTag": "Результаты по тэгу"
+    },
+    "Items": {
+      "collection": "Коллекция"
     }
   }
 }

@@ -1,4 +1,4 @@
-import { TableHead, TableRow, TableCell } from "@mui/material";
+import { TableCell, TableHead, TableRow } from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 

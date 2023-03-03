@@ -12,7 +12,7 @@ import { CollectionCard } from "../../Collection/components/CollectionCard";
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { generatePath, useNavigate } from "react-router-dom";
-//todo подкрутить карусель
+
 export const HomePage = () => {
   const {
     data: dataItems,
@@ -97,7 +97,6 @@ export const HomePage = () => {
           </Box>
         )}
       </Box>
-
       <Box>
         <Typography
           flexDirection="column"
@@ -184,7 +183,12 @@ export const HomePage = () => {
                 value: tag.tag,
               }))}
               onClick={(tag) =>
-                navigate(generatePath(ROUTE_PATHS.FoundTags, { id: tag.id }))
+                navigate(
+                  generatePath(ROUTE_PATHS.FoundTags, {
+                    id: tag.id,
+                    tagName: tag.value,
+                  })
+                )
               }
             />
           </Box>

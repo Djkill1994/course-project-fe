@@ -1,11 +1,11 @@
 import { CloudDownload } from "@mui/icons-material";
 import {
+  Avatar,
   Box,
   CardMedia,
+  CircularProgress,
   Stack,
   Typography,
-  CircularProgress,
-  Avatar,
 } from "@mui/material";
 import { FC, useEffect } from "react";
 import { useTranslation } from "react-i18next";

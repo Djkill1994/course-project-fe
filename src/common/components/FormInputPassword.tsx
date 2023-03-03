@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { FC, useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useTranslation } from "react-i18next";
 
 interface IProps {
   inputProps: OutlinedInputProps;
@@ -25,7 +24,6 @@ export const FormInputPassword: FC<IProps> = ({
   id,
 }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { t } = useTranslation();
 
   return (
     <FormControl variant="outlined" size="small" fullWidth>

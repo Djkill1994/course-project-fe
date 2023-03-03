@@ -88,21 +88,6 @@ export const ProfilePage: FC = () => {
               avatarSize="188px"
             />
           ) : (
-            // <IconButton component="label">
-            //   <input
-            //     hidden
-            //     accept="image/*"
-            //     multiple
-            //     type="file"
-            //     onChange={async ({ target: { files } }) => {
-            //       setValue("avatarSrc", await uploadImage(files?.[0]));
-            //     }}
-            //   />
-            //   <Avatar
-            //     src={watch("avatarSrc") || data?.avatarSrc}
-            //     sx={{ width: "188px", height: "188px" }}
-            //   />
-            // </IconButton>
             <Avatar
               src={data?.avatarSrc}
               sx={{ width: "188px", height: "188px" }}

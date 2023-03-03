@@ -134,6 +134,14 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
             </Select>
           </FormControl>
           <ReactMde
+            l18n={{
+              preview: t(
+                "features.CollectionPage.CreateCollectionModal.reactMde.preview"
+              ),
+              write: t(
+                "features.CollectionPage.CreateCollectionModal.reactMde.write"
+              ),
+            }}
             value={watch("description")}
             onChange={(value) => setValue("description", value)}
             selectedTab={selectedTab}

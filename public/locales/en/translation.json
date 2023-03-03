@@ -42,10 +42,6 @@
       }
     },
     "CollectionPage": {
-      "themes": {
-        "book": "Book",
-        "alcohol": "Alcohol"
-      },
       "CollectionTableToolbar": {
         "collectionsLink": "Collections",
         "newItem": "New item",
@@ -59,7 +55,8 @@
         "comments": "Comments",
         "tags": "Tags",
         "likes": "Likes",
-        "edit": "Edit"
+        "edit": "Edit",
+        "optionalFields": "Optional fields"
       },
       "MyCollectionsPage": {
         "titleFirstCollection": "Create first collection",
@@ -68,6 +65,10 @@
         }
       },
       "CreateCollectionModal": {
+        "reactMde": {
+          "preview": "Preview",
+          "write": "Write"
+        },
         "title": "Create new collection",
         "labels": {
           "name": "Name",
@@ -172,6 +173,12 @@
     "HomePage": {
       "lastAddedItem": "Last added Items",
       "mostBiggestCollection": "The most biggest collections"
+    },
+    "FoundTags": {
+      "resultsByTag": "Results by tag"
+    },
+    "Items": {
+      "collection": "Collection"
     }
   }
 }

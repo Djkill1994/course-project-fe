@@ -178,7 +178,6 @@ export const {
   useGetAllItemsQuery,
   useLazyGetAllItemsQuery,
   useGetTagsQuery,
-  useLazyGetTagsQuery,
   useCreateCommentMutation,
   useSettingsItemMutation,
   useLikeMutation,

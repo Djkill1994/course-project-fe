@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { RequireAuth } from "./common/components/RequireAuth";
 import { UserListPage } from "./features/Admin/components/UserListPage";
@@ -14,6 +14,7 @@ import { Items } from "./features/Items/components/Items";
 import { LoginPage } from "./features/Auth/components/LoginPage";
 import { RequireAdmin } from "./common/components/RequireAdmin";
 import { FoundTags } from "./features/Home/components/FoundTags";
+import { useAuthRefreshQuery } from "./features/Profile/api/user.api";
 
 export const ROUTE_PATHS = {
   Home: "/",
@@ -22,13 +23,20 @@ export const ROUTE_PATHS = {
   Admin: "/admin",
   Collection: "/collections/:userId",
   CollectionId: "/collection/:userId/:id",
-  MyProfile: "/me/:id",
+  MyProfile: "/me/:userId",
   Items: "/collection/:collectionId/:collectionName/items",
   Item: "/item",
-  FoundTags: "/tag/:id",
+  FoundTags: "/tag/:id/:tagName",
 };
 
 export const App: FC = () => {
+  const { isError } = useAuthRefreshQuery();
+  useEffect(() => {
+    if (isError) {
+      localStorage.clear();
+    }
+  }, [isError]);
+
   return (
     <Box height="100vh">
       <Toaster position="top-right" />
