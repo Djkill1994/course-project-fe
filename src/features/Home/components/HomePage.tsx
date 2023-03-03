@@ -12,8 +12,11 @@ import { CollectionCard } from "../../Collection/components/CollectionCard";
 import { useTranslation } from "react-i18next";
 import { ROUTE_PATHS } from "../../../App";
 import { generatePath, useNavigate } from "react-router-dom";
+import { FC } from "react";
 
-export const HomePage = () => {
+export const HomePage: FC = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     data: dataItems,
     isLoading: isLoadingItems,
@@ -29,8 +32,6 @@ export const HomePage = () => {
     isLoading: isLoadingTags,
     isSuccess: isSuccessTags,
   } = useGetTagsQuery();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   return (
     <Stack gap="60px">

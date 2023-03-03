@@ -17,11 +17,11 @@ import { ReactComponent as NoData } from "../../../../public/no-data.svg";
 
 export const FoundTags: FC = () => {
   const params = useParams();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data, isLoading, isSuccess } = useGetFoundTagsQuery(
     params.id as string
   );
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   return (
     <Box p="0 22px 22px 22px">

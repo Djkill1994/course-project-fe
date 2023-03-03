@@ -24,6 +24,7 @@ export const CollectionFields: FC<IProps> = ({ defaultValue, onChange }) => {
   const { register, watch } = useForm<IOptionalFields>({
     defaultValues: defaultValue,
   });
+
   watch((data) => onChange(data as IOptionalFields));
 
   return (

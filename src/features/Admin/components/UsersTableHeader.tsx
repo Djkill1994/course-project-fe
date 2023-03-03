@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 export const UsersTableHeader: FC = () => {
   const { t } = useTranslation();
+
   return (
     <TableHead>
       <TableRow>

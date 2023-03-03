@@ -36,13 +36,13 @@ export const ItemDrawer: FC<IProps> = ({
   defaultValues,
   isEditMode,
 }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { data: tagsData } = useGetTagsQuery();
   const { register, handleSubmit, setValue, watch, control } =
     useForm<NewItemForm>({
       defaultValues,
     });
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   return (
     <Drawer

@@ -15,7 +15,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { FC, useEffect } from "react";
-import { Close, Info, Send } from "@mui/icons-material";
+import { Add, Close, Info, Remove, Send } from "@mui/icons-material";
 import {
   IComment,
   IItem,
@@ -41,12 +41,6 @@ interface IProps {
 }
 
 export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
-  const { register, handleSubmit, reset } = useForm<CommentForm>();
-  const { data: userData } = useAuthRefreshQuery();
-  const { data: itemData, isLoading } = useGetItemQuery(id, {
-    pollingInterval: 2000,
-  });
-  const [createComment, { isSuccess }] = useCreateCommentMutation();
   const { t } = useTranslation();
   const deviceMediaQuery = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
@@ -54,6 +48,12 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
     variant: "popover",
     popupId: "popover",
   });
+  const { data: userData } = useAuthRefreshQuery();
+  const { data: itemData, isLoading } = useGetItemQuery(id, {
+    pollingInterval: 2000,
+  });
+  const [createComment, { isSuccess }] = useCreateCommentMutation();
+  const { register, handleSubmit, reset } = useForm<CommentForm>();
 
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
     createComment({
@@ -180,12 +180,22 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
                       >
                         <Box p="5px">
                           {itemData?.optionalFields.map(
-                            ({ name, value }, index) => (
+                            ({ name, value, type }, index) => (
                               <Stack key={index} direction="row" gap="8px">
                                 <Typography fontWeight="bold">
                                   {name}:
                                 </Typography>
-                                <Typography>{value}</Typography>
+                                <Typography>
+                                  {type === "boolean" ? (
+                                    value === "true" ? (
+                                      <Add />
+                                    ) : (
+                                      <Remove />
+                                    )
+                                  ) : (
+                                    value
+                                  )}
+                                </Typography>
                               </Stack>
                             )
                           )}

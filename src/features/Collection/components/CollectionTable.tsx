@@ -32,20 +32,10 @@ import {
 } from "../../Items/api/item.api";
 
 export const CollectionTable: FC = () => {
+  const [openId, setOpenId] = useState<string>("");
+  const [rowSelection, setRowSelection] = useState({});
   const { t } = useTranslation();
   const params = useParams();
-  const [openId, setOpenId] = useState<string>("");
-  const [createItem, { isLoading: isCreateItemLoading }] =
-    useCreateItemMutation();
-  const { data: collectionData, isLoading: isCollectionLoading } =
-    useGetCollectionQuery(params.id as string);
-  const [settingsItem, { isLoading: settingItemLoading }] =
-    useSettingsItemMutation();
-  const { data: itemData, isLoading: isItemLoading } = useGetItemQuery(openId, {
-    skip: !openId,
-  });
-  const [rowSelection, setRowSelection] = useState({});
-  const [deleteItem, { isLoading }] = useDeleteItemMutation();
   const {
     isOpened: isOpenedSettings,
     open: openSettings,
@@ -57,6 +47,16 @@ export const CollectionTable: FC = () => {
     close: closeNewItem,
   } = useModal();
   const deviceMediaQuery = useMediaQuery("(min-width:850px)");
+  const [createItem, { isLoading: isCreateItemLoading }] =
+    useCreateItemMutation();
+  const { data: collectionData, isLoading: isCollectionLoading } =
+    useGetCollectionQuery(params.id as string);
+  const [settingsItem, { isLoading: settingItemLoading }] =
+    useSettingsItemMutation();
+  const { data: itemData, isLoading: isItemLoading } = useGetItemQuery(openId, {
+    skip: !openId,
+  });
+  const [deleteItem, { isLoading }] = useDeleteItemMutation();
 
   return (
     <Paper sx={{ width: "100%" }}>
@@ -74,7 +74,7 @@ export const CollectionTable: FC = () => {
                 name: data.name,
                 imgSrc:
                   data.imgSrc ||
-                  "https://res.cloudinary.com/djkill/image/upload/c_limit,h_200,w_200/v1677759119/default-item-logo_r09x9c.jpg",
+                  "https://res.cloudinary.com/djkill/image/upload/v1677829734/vuhk6nnbvzqljt9hae3k.jpg",
                 tags: data.tags,
               },
             })

@@ -31,6 +31,7 @@ export const ROUTE_PATHS = {
 
 export const App: FC = () => {
   const { isError } = useAuthRefreshQuery();
+
   useEffect(() => {
     if (isError) {
       localStorage.clear();

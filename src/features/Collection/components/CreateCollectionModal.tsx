@@ -46,8 +46,12 @@ const converter = new Showdown.Converter({
 });
 
 export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
-  const dispatch = useDispatch();
   const [selectedTab, setSelectedTab] = useState("write");
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const [createCollection, { isLoading, isSuccess }] =
+    useCreateCollectionMutation();
+  const { data: themesData } = useGetThemesQuery();
   const {
     register,
     handleSubmit,
@@ -59,10 +63,6 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
       optionalFields: [],
     },
   });
-  const [createCollection, { isLoading, isSuccess }] =
-    useCreateCollectionMutation();
-  const { data: themesData } = useGetThemesQuery();
-  const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<ICreateCollectionForm> = async (data) => {
     await createCollection({
@@ -70,7 +70,7 @@ export const CreateCollectionModal: FC<IProps> = ({ onClose }) => {
       optionalFields: data.optionalFields,
       imgSrc:
         data.imgSrc ||
-        "https://res.cloudinary.com/djkill/image/upload/v1677759112/default-collection-logo_tt9c8r.png",
+        "https://res.cloudinary.com/djkill/image/upload/v1677810796/imjle02ucl6i4tbhlp6e.jpg",
       description: data.description,
       theme: data.theme,
     });

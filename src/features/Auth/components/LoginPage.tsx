@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 
 export const LoginPage: FC = () => {
   const { t } = useTranslation();
+
   return (
     <Stack alignItems="center" m="0 20px">
       <Stack mb="40px" alignItems="center">

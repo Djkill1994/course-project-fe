@@ -18,9 +18,9 @@ import { useParams } from "react-router-dom";
 
 export const MyCollectionsPage: FC = () => {
   const { userId } = useParams();
-  const { data, isLoading } = useGetCollectionsQuery(userId || "");
   const { isOpened, open, close } = useModal();
   const { t } = useTranslation();
+  const { data, isLoading } = useGetCollectionsQuery(userId || "");
 
   return (
     <>

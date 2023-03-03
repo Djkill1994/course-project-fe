@@ -19,9 +19,9 @@ import { ROUTE_PATHS } from "../../../App";
 export const ItemCard: FC<
   Omit<IItem, "comments" | "tags" | "optionalFields">
 > = ({ name, imgSrc, id, likes, date }) => {
+  const navigate = useNavigate();
   const { isOpened, open, close } = useModal();
   const { data } = useGetItemQuery(id);
-  const navigate = useNavigate();
 
   return (
     <Card sx={{ overflow: "auto" }}>

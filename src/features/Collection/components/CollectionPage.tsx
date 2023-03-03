@@ -8,9 +8,9 @@ import { useGetCollectionQuery } from "../api/collections.api";
 
 export const CollectionPage: FC = () => {
   const params = useParams();
-  const { data } = useGetCollectionQuery(params.id as string);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { data } = useGetCollectionQuery(params.id as string);
 
   return (
     <Stack m="auto" maxWidth="1200px" gap="12px">

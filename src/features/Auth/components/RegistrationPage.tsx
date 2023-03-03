@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 
 export const RegistrationPage: FC = () => {
   const { t } = useTranslation();
+
   return (
     <Stack alignItems="center">
       <Stack mb="20px" alignItems="center">

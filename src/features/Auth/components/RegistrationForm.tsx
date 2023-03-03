@@ -19,6 +19,8 @@ export interface IRegistrationForm {
 }
 
 export const RegistrationForm: FC = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -27,8 +29,6 @@ export const RegistrationForm: FC = () => {
     formState: { errors },
   } = useForm<IRegistrationForm>();
   const [registerUser, { isSuccess, isLoading }] = useRegistrationMutation();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<IRegistrationForm> = (data) => {
     registerUser({

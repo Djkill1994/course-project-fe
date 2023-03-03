@@ -18,10 +18,10 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../App";
 
 export const UsersTable: FC = () => {
-  const { data } = useGetUsersQuery();
-  const { data: authData } = useAuthRefreshQuery();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { data: usersData } = useGetUsersQuery();
+  const { data: authData } = useAuthRefreshQuery();
 
   return (
     <Paper sx={{ width: "100%", mb: 2 }}>
@@ -29,7 +29,7 @@ export const UsersTable: FC = () => {
         <Table aria-labelledby="tableTitle">
           <UsersTableHeader />
           <TableBody>
-            {data?.map(({ userName, id, avatarSrc, banned, role }) => (
+            {usersData?.map(({ userName, id, avatarSrc, banned, role }) => (
               <TableRow
                 sx={{ cursor: "pointer" }}
                 hover={true}

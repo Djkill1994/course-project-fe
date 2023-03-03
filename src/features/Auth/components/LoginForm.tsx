@@ -17,14 +17,14 @@ interface ILoginForm {
 }
 
 export const LoginForm: FC = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ILoginForm>();
   const [login, { data, isLoading }] = useLoginMutation();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const onSubmit: SubmitHandler<ILoginForm> = (data) => {
     login(data);

@@ -47,18 +47,18 @@ const converter = new Showdown.Converter({
 export const CollectionSettingsDrawer: FC<IProps> = ({ onClose }) => {
   const [selectedTab, setSelectedTab] = useState("write");
   const params = useParams();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const { data: themesData } = useGetThemesQuery();
   const { data } = useGetCollectionQuery(params.id as string);
   const [deleteCollection, { isSuccess: deleteIsSuccess }] =
     useDeleteCollectionMutation();
   const [settingsCollection, { isLoading, isSuccess: settingsIsSuccess }] =
     useSettingsCollectionMutation();
+  const { data: authData } = useAuthRefreshQuery();
   const { register, handleSubmit, setValue, watch } = useForm<SettingsForm>({
     defaultValues: data,
   });
-  const { data: authData } = useAuthRefreshQuery();
-  const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<SettingsForm> = (data) => {
     settingsCollection({

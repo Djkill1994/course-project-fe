@@ -21,6 +21,7 @@ interface IProps {
 
 export const AddedNewField: FC<IProps> = ({ optionalFields, onChange }) => {
   const { t } = useTranslation();
+
   return (
     <Accordion>
       <AccordionDetails>

@@ -30,13 +30,13 @@ interface IProfileEditingForm {
 }
 
 export const ProfilePage: FC = () => {
+  const [edit, setEdit] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const { data } = useAuthRefreshQuery();
   const [profileEditing, { isLoading, isSuccess: isSuccessEditing }] =
     useEditingProfileUserMutation();
   const [deleteUser, { isSuccess: isSuccessDelete }] = useDeleteUserMutation();
-  const [edit, setEdit] = useState<boolean>(false);
-  const navigate = useNavigate();
-  const { t } = useTranslation();
   const {
     register,
     handleSubmit,

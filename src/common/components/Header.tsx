@@ -23,12 +23,12 @@ import { MobileHeaderNavigation } from "./MobileHeaderNavigation";
 import { HeaderNavigation } from "./HeaderNavigation";
 
 export const Header: FC = () => {
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
-  const navigate = useNavigate();
   const [isOpened, setIsOpened] = useState<null | HTMLElement>(null);
-  const { data } = useAuthRefreshQuery(undefined, { skip: !token });
+  const navigate = useNavigate();
   const deviceMediaQuery = useMediaQuery("(min-width:600px)");
   const { t } = useTranslation();
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  const { data } = useAuthRefreshQuery(undefined, { skip: !token });
 
   return (
     <AppBar color="default" position="sticky">

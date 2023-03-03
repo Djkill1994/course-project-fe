@@ -62,7 +62,7 @@ export const MobileHeaderNavigation: FC<IHeaderNavigationProps> = ({
               <MenuItem
                 onClick={() => navigate(ROUTE_PATHS.Admin, { replace: true })}
               >
-                {t("general.collections")}
+                {t("general.adminArea")}
               </MenuItem>
             )}
           </Menu>
