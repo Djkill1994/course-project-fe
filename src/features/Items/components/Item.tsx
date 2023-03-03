@@ -104,7 +104,7 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
           <Close color="primary" />
         </IconButton>
         <CardMedia
-          sx={deviceMediaQuery ? { width: "50%" } : undefined}
+          sx={deviceMediaQuery ? { width: "55%" } : undefined}
           component="img"
           image={itemData?.imgSrc}
           alt="Image"
@@ -112,24 +112,28 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
         <Box
           display="flex"
           flexDirection="column"
-          width="100%"
+          width={deviceMediaQuery ? "45%" : undefined}
           sx={{ height: { sm: "100%" } }}
         >
           <CardContent
             sx={{
               "&:last-child": { p: "12px 12px 6px" },
               overflow: "auto",
-              maxHeight: "592px",
               height: "100%",
             }}
           >
             <Stack height="100%" justifyContent="space-between">
-              <Stack direction="column" alignItems="space-between" gap="8px">
+              <Stack
+                height="100%"
+                direction="column"
+                alignItems="space-between"
+                gap="8px"
+              >
                 <Stack direction="row" alignItems="center" gap="8px">
                   <Avatar src={itemData?.author?.avatarSrc} />
                   <Typography>{itemData?.author?.userName}</Typography>
                 </Stack>
-                <Stack gap="8px">
+                <Stack height="100%" gap="8px">
                   <Typography variant="h5">{itemData?.name}</Typography>
                   <Stack gap="4px" flexWrap="wrap" direction="row">
                     {itemData?.tags.map(({ tag, id }) => (

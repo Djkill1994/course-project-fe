@@ -13,13 +13,12 @@ export const Comments: FC<IProps> = ({ comments }) => {
   const ref = useChatScroll(comments || []);
 
   return (
-    <Box>
+    <Stack height="100%">
       {t("features.Item.comments")}
       <Stack
         ref={ref}
-        maxHeight="260px"
-        minHeight="260px"
-        sx={{ overflow: "auto" }}
+        height="100%"
+        sx={{ overflow: "auto", minHeight: "200px" }}
         border="1px solid #dbdbdb"
         borderRadius="5px"
         p="4px"
@@ -56,6 +55,6 @@ export const Comments: FC<IProps> = ({ comments }) => {
           </Stack>
         ))}
       </Stack>
-    </Box>
+    </Stack>
   );
 };
