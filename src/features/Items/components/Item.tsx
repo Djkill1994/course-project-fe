@@ -84,7 +84,12 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
       <Card
         sx={
           deviceMediaQuery
-            ? { display: "flex", m: "10px auto", alignItems: "center" }
+            ? {
+                display: "flex",
+                m: "10px auto",
+                alignItems: "center",
+                width: "70vw",
+              }
             : { flexDirection: "column", overflow: "auto", width: "100%" }
         }
       >
@@ -99,7 +104,7 @@ export const Item: FC<Pick<IItem, "id"> & IProps> = ({ id, onClose }) => {
           <Close color="primary" />
         </IconButton>
         <CardMedia
-          sx={deviceMediaQuery ? { minWidth: "420px" } : undefined}
+          sx={deviceMediaQuery ? { width: "50%" } : undefined}
           component="img"
           image={itemData?.imgSrc}
           alt="Image"

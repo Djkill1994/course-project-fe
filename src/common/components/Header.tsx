@@ -100,6 +100,7 @@ export const Header: FC = () => {
           ) : (
             <Button
               size="small"
+              sx={{ whiteSpace: "nowrap" }}
               onClick={() => navigate(ROUTE_PATHS.Login, { replace: true })}
               variant="contained"
             >
